@@ -79,6 +79,7 @@ export function ContactFooter({
     if (isSubmitting) return;
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
+    const website = (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
 
     if (trimmedName.length < 2) {
       setErrorMessage('Please enter your name or organization.');
@@ -100,13 +101,14 @@ export function ContactFooter({
       note: contextNote.trim(),
     };
 
-    const { error } = await supabase.from('website_enquiries').insert({
-      name: inquiry.name,
-      email: inquiry.email,
-      service: inquiry.service,
-      message: inquiry.note || '',
-      status: 'new',
-      admin_notes: '',
+    const { error } = await supabase.functions.invoke('website-enquiry', {
+      body: {
+        name: inquiry.name,
+        email: inquiry.email,
+        service: inquiry.service,
+        message: inquiry.note || '',
+        website,
+      },
     });
 
     setIsSubmitting(false);
@@ -173,6 +175,10 @@ export function ContactFooter({
 
         <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-10 lg:gap-16 items-start">
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3.5 max-w-[580px]">
+            <div aria-hidden="true" className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden">
+              <label htmlFor="leadWebsite">Leave this field empty</label>
+              <input id="leadWebsite" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
                 <label htmlFor="leadName" className="sr-only">
