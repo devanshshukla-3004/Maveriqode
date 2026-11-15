@@ -3,6 +3,7 @@ import { motion, MotionConfig, useReducedMotion } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { HeroWorkbench } from './components/HeroWorkbench';
 import { ContactFooter } from './components/ContactFooter';
+import { ManagedContentSection } from './components/ManagedContentSection';
 import { BackToTopButton } from './components/BackToTopButton';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
@@ -251,6 +252,7 @@ export default function App() {
           >
             <GlobalSectionReveal>
               <CompanySection onNotify={showToast} />
+              <ManagedContentSection slug="company" />
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
@@ -261,6 +263,7 @@ export default function App() {
           >
             <GlobalSectionReveal>
               <CapabilitiesSection onRequestService={handleRequestWithService} />
+              <ManagedContentSection slug="capabilities" />
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
@@ -271,6 +274,7 @@ export default function App() {
           >
             <GlobalSectionReveal>
               <SolutionsSection onSelectSolution={handleRequestWithService} />
+              <ManagedContentSection slug="solutions" />
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
@@ -281,6 +285,7 @@ export default function App() {
           >
             <GlobalSectionReveal>
               <WorkSection onRequestSimilar={handleRequestWithService} />
+              <ManagedContentSection slug="work" />
             </GlobalSectionReveal>
           </LazySection>
         </main>
