@@ -3,7 +3,7 @@ import { motion, MotionConfig, useReducedMotion } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { HeroWorkbench } from './components/HeroWorkbench';
 import { ContactFooter } from './components/ContactFooter';
-import { ManagedContentSection } from './components/ManagedContentSection';
+import { ManagedPageSection } from './components/ManagedPageSection';
 import { BackToTopButton } from './components/BackToTopButton';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
@@ -251,8 +251,7 @@ export default function App() {
             minHeightPx={760}
           >
             <GlobalSectionReveal>
-              <CompanySection onNotify={showToast} />
-              <ManagedContentSection slug="company" />
+              <ManagedPageSection slug="company"><CompanySection onNotify={showToast} /></ManagedPageSection>
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
@@ -262,8 +261,7 @@ export default function App() {
             minHeightPx={780}
           >
             <GlobalSectionReveal>
-              <CapabilitiesSection onRequestService={handleRequestWithService} />
-              <ManagedContentSection slug="capabilities" />
+              <ManagedPageSection slug="capabilities"><CapabilitiesSection onRequestService={handleRequestWithService} /></ManagedPageSection>
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
@@ -273,8 +271,7 @@ export default function App() {
             minHeightPx={680}
           >
             <GlobalSectionReveal>
-              <SolutionsSection onSelectSolution={handleRequestWithService} />
-              <ManagedContentSection slug="solutions" />
+              <ManagedPageSection slug="solutions"><SolutionsSection onSelectSolution={handleRequestWithService} /></ManagedPageSection>
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
@@ -284,8 +281,7 @@ export default function App() {
             minHeightPx={520}
           >
             <GlobalSectionReveal>
-              <WorkSection onRequestSimilar={handleRequestWithService} />
-              <ManagedContentSection slug="work" />
+              <ManagedPageSection slug="work"><WorkSection onRequestSimilar={handleRequestWithService} /></ManagedPageSection>
             </GlobalSectionReveal>
           </LazySection>
         </main>
