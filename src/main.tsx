@@ -4,7 +4,7 @@ import AdminApp from './admin/AdminApp.tsx';
 import { supabase } from './lib/supabase';
 import './index.css';
 
-const isAdminRoute = window.location.pathname.replace(/\\/+$/, '') === '/admin';
+const isAdminRoute = window.location.pathname === '/admin' || window.location.pathname === '/admin/';
 document.documentElement.classList.toggle('admin-document', isAdminRoute);
 
 if (!isAdminRoute) {
