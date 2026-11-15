@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState, RefObject } from 'react';
+import { supabase } from '../lib/supabase';
 import { ArrowUpRight, Check, Copy, Mail } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
@@ -47,6 +48,7 @@ export function ContactFooter({
     note: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -72,8 +74,9 @@ export function ContactFooter({
     return `mailto:${OFFICIAL_CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
 
@@ -82,27 +85,42 @@ export function ContactFooter({
       return;
     }
 
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
+    const emailValid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(trimmedEmail);
     if (!emailValid) {
       setErrorMessage('Please enter a valid email address.');
       return;
     }
 
     setErrorMessage('');
+    setIsSubmitting(true);
     const inquiry = {
       name: trimmedName,
       email: trimmedEmail,
       service: selectedService,
       note: contextNote.trim(),
     };
+
+    const { error } = await supabase.from('website_enquiries').insert({
+      name: inquiry.name,
+      email: inquiry.email,
+      service: inquiry.service,
+      message: inquiry.note || null,
+      status: 'new',
+      admin_notes: null,
+    });
+
+    setIsSubmitting(false);
+    if (error) {
+      setErrorMessage('We could not send your request right now. Please email ' + OFFICIAL_CONTACT_EMAIL + ' directly.');
+      onNotify('Message not sent', 'Please try again or contact us by email.');
+      return;
+    }
+
     setPreparedInquiry(inquiry);
-
-    onNotify(
-      'Email application prepared',
-      `Opening your email client with a prepared message to ${OFFICIAL_CONTACT_EMAIL}. Nothing is stored on this site.`
-    );
-
-    window.location.href = buildMailtoHref(inquiry);
+    onNotify('Enquiry received', 'Your request has been securely submitted to MAVERIQODE.');
+    setName('');
+    setEmail('');
+    onContextNoteChange('');
   };
 
   const handleCopyBrief = async () => {
@@ -242,7 +260,7 @@ export function ContactFooter({
               whileTap={shouldReduceMotion ? undefined : { scale: 0.985 }}
               className="py-4 px-6 rounded-[10px] bg-gradient-to-br from-[#a100ff] to-[#2a00c8] text-[#ecebe6] font-semibold text-sm hover:opacity-95 transition-opacity cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ecebe6]"
             >
-              Open Prepared Email
+              {isSubmitting ? 'Sending securely…' : 'Send enquiry'}
             </motion.button>
 
             <p className="text-xs text-[var(--mq-muted)] leading-relaxed">
@@ -250,7 +268,7 @@ export function ContactFooter({
               <span className="font-mono text-[var(--mq-text-secondary)]">
                 {OFFICIAL_CONTACT_EMAIL}
               </span>
-              . No form data is stored or transmitted by this website.
+              . We store your enquiry so the team can respond.
             </p>
 
             <AnimatePresence initial={false}>
@@ -270,7 +288,7 @@ export function ContactFooter({
                       aria-hidden="true"
                     />
                     <span>
-                      Email draft prepared for {preparedInquiry.name} ({preparedInquiry.service}). Send from your mail client or copy below.
+                      Your enquiry has been received for {preparedInquiry.name} ({preparedInquiry.service}). The MAVERIQODE team can now review it.
                     </span>
                   </div>
                   <div className="flex items-center gap-4 shrink-0">
@@ -287,7 +305,7 @@ export function ContactFooter({
                       className="inline-flex items-center gap-1 text-[#93c5fd] hover:text-[var(--mq-text)] transition-colors"
                     >
                       <Mail className="w-3.5 h-3.5" aria-hidden="true" />
-                      <span>Open Mail</span>
+                      <span>Send follow-up email</span>
                     </a>
                   </div>
                 </motion.div>
