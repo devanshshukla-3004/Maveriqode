@@ -182,6 +182,7 @@ export function ContactFooter({
                   ref={nameInputRef}
                   id="leadName"
                   type="text"
+                  maxLength={120}
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -197,6 +198,7 @@ export function ContactFooter({
                 <input
                   id="leadEmail"
                   type="email"
+                  maxLength={254}
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -231,6 +233,7 @@ export function ContactFooter({
               <input
                 id="leadContext"
                 type="text"
+                maxLength={5000}
                 value={contextNote}
                 onChange={(e) => onContextNoteChange(e.target.value)}
                 placeholder="Problem summary, system context, or technical goals (optional)"
@@ -265,7 +268,7 @@ export function ContactFooter({
             </motion.button>
 
             <p className="text-xs text-[var(--mq-muted)] leading-relaxed">
-              Submitting opens your default email application with a message addressed to{' '}
+              Your message is securely submitted to the MAVERIQODE team. You can also reach us at{' '}
               <span className="font-mono text-[var(--mq-text-secondary)]">
                 {OFFICIAL_CONTACT_EMAIL}
               </span>
