@@ -1,4 +1,5 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import {
   Activity, ArrowUpRight, Check, ChevronDown, ChevronRight, FileText, Filter, Globe2,
   Inbox, LayoutDashboard, LogOut, Mail, Menu, Plus, RefreshCw, Search, ShieldCheck,
@@ -127,7 +128,7 @@ export default function AdminApp() {
   </div>;
 }
 
-function PageHeading({eyebrow,title,copy,action}:{eyebrow:string;title:string;copy:string;action?:React.ReactNode}){return <div className="admin-page-heading"><div><div className="admin-eyebrow"><Sparkles size={14}/>{eyebrow}</div><h1>{title}</h1><p>{copy}</p></div>{action&&<div className="admin-heading-action">{action}</div>}</div>;}
+function PageHeading({eyebrow,title,copy,action}:{eyebrow:string;title:string;copy:string;action?:ReactNode}){return <div className="admin-page-heading"><div><div className="admin-eyebrow"><Sparkles size={14}/>{eyebrow}</div><h1>{title}</h1><p>{copy}</p></div>{action&&<div className="admin-heading-action">{action}</div>}</div>;}
 function PanelHead({eyebrow,title,action}:{eyebrow:string;title:string;action?:React.ReactNode}){return <div className="admin-panel-head"><div><span className="admin-eyebrow">{eyebrow}</span><h2>{title}</h2></div>{action}</div>;}
 function Stat({label,value,note,icon:Icon,hot=false}:{label:string;value:number;note:string;icon:typeof LayoutDashboard;hot?:boolean}){return <div className={'admin-stat '+(hot?'hot':'')}><div><span>{label}</span><Icon size={18}/></div><strong>{value.toLocaleString('en-IN')}</strong><small>{note}</small></div>;}
 function Status({status}:{status:Enquiry['status']}){return <span className={'admin-status '+status}><i/>{statusText[status]}</span>;}
