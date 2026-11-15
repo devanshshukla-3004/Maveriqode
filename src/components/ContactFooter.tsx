@@ -104,9 +104,9 @@ export function ContactFooter({
       name: inquiry.name,
       email: inquiry.email,
       service: inquiry.service,
-      message: inquiry.note || null,
+      message: inquiry.note || '',
       status: 'new',
-      admin_notes: null,
+      admin_notes: '',
     });
 
     setIsSubmitting(false);
