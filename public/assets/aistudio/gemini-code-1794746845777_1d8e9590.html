@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAVERIQODE — Digital Engineering, AI Systems & Security</title>
+  <meta name="description" content="MAVERIQODE builds high-velocity web & mobile platforms, autonomous AI automation, and hardened security architectures for ambitious startups and enterprises." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070709;
+      --surface: #0E0E13;
+      --surface-elevated: #14141C;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #F5F5F7;
+      --muted: #8E8E98;
+      --grad: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-display { font-family: 'Syne', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Custom Magnetic Cursor Pill */
+    .cursor-pill {
+      position: fixed;
+      top: 0; left: 0;
+      padding: 0.55rem 1.15rem;
+      border-radius: 999px;
+      background: var(--grad);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.6);
+      transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.5);
+    }
+    .cursor-pill.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.15rem 4vw;
+      background: rgba(7, 7, 9, 0.84);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none; color: #fff; font-weight: 800; letter-spacing: 0.14em;
+      font-size: 0.95rem;
+    }
+    .logo-wrap {
+      width: 36px; height: 36px; border-radius: 9px;
+      border: 1px solid rgba(139, 92, 246, 0.45);
+      background: rgba(124, 58, 237, 0.12);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .logo-wrap img {
+      width: 100%; height: 100%; object-fit: contain;
+    }
+    .logo-fallback {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 0.8rem;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2.2rem; font-size: 0.85rem; color: var(--muted); }
+    .nav-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .btn-primary {
+      padding: 0.65rem 1.35rem; border-radius: 8px;
+      background: #fff; color: #070709; font-weight: 600; font-size: 0.82rem;
+      text-decoration: none; transition: all 0.25s ease;
+    }
+    .btn-primary:hover { background: var(--grad); color: #fff; }
+
+    /* Hero Physics Workbench */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      padding: 7.5rem 4vw 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    #physicsCanvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      z-index: 1; cursor: grab;
+    }
+    #physicsCanvas:active { cursor: grabbing; }
+    .hero-top, .hero-bottom { position: relative; z-index: 10; pointer-events: none; }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      padding: 0.4rem 0.85rem; border-radius: 999px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      font-size: 0.72rem; color: #C4B5FD; margin-bottom: 1.5rem;
+    }
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #34D399;
+      box-shadow: 0 0 10px #34D399;
+    }
+    .hero-top h1 {
+      font-size: clamp(2.7rem, 6.8vw, 6.6rem);
+      line-height: 0.96; letter-spacing: -0.04em; font-weight: 800; max-width: 1050px;
+    }
+    .grad-text {
+      background: linear-gradient(135deg, #A855F7 0%, #3B82F6 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .drag-hint {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      margin-top: 1.5rem; padding: 0.45rem 0.95rem;
+      border-radius: 999px; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); font-size: 0.72rem; color: var(--muted);
+    }
+    .hero-bottom {
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem;
+      padding-top: 2rem; border-top: 1px solid var(--border);
+    }
+    .hero-bottom p { max-width: 500px; color: var(--muted); font-size: 1rem; line-height: 1.6; }
+    .hero-actions { pointer-events: auto; display: flex; gap: 0.9rem; flex-wrap: wrap; }
+    .btn-grad {
+      display: inline-block; padding: 0.9rem 1.8rem; border-radius: 10px;
+      background: var(--grad); color: #fff; font-weight: 600; font-size: 0.9rem;
+      text-decoration: none; box-shadow: 0 12px 35px rgba(124, 58, 237, 0.35);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .btn-grad:hover { transform: translateY(-2px); opacity: 0.95; }
+    .btn-ghost {
+      display: inline-block; padding: 0.9rem 1.5rem; border-radius: 10px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      color: #fff; font-weight: 500; font-size: 0.9rem; text-decoration: none;
+      transition: border-color 0.2s ease;
+    }
+    .btn-ghost:hover { border-color: rgba(139, 92, 246, 0.6); }
+
+    /* =========================================================================
+       1. SERVICES: EXPANDING INTERACTIVE DRAWERS + CURSOR SPOTLIGHT
+       ========================================================================= */
+    .services-section {
+      position: relative; z-index: 10;
+      padding: 7rem 4vw;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .sec-head {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3.5rem; gap: 1rem; flex-wrap: wrap;
+    }
+    .sec-head h2 {
+      font-size: clamp(2.1rem, 4.4vw, 3.8rem);
+      letter-spacing: -0.03em; line-height: 1;
+    }
+
+    .service-list {
+      display: flex; flex-direction: column;
+      border-top: 1px solid var(--border);
+    }
+    .service-item {
+      position: relative;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.35s ease, opacity 0.35s ease;
+    }
+    .service-list:hover .service-item { opacity: 0.52; }
+    .service-list .service-item:hover,
+    .service-list .service-item.active {
+      opacity: 1;
+      background: radial-gradient(650px circle at var(--sx, 50%) var(--sy, 50%), rgba(124, 58, 237, 0.14), transparent 70%);
+    }
+
+    .service-header {
+      display: grid;
+      grid-template-columns: 95px 1.4fr 1.2fr 60px;
+      align-items: center;
+      padding: 2.1rem 1rem;
+      gap: 1.5rem;
+    }
+    .srv-num { font-size: 0.8rem; color: #A78BFA; }
+    .srv-title {
+      font-size: clamp(1.35rem, 2.4vw, 2.15rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .service-item:hover .srv-title { transform: translateX(10px); }
+    .srv-brief { font-size: 0.92rem; color: var(--muted); line-height: 1.5; }
+    .srv-toggle {
+      text-align: right; font-size: 1.5rem; color: var(--muted);
+      transition: transform 0.35s ease, color 0.35s ease;
+    }
+    .service-item.active .srv-toggle {
+      transform: rotate(45deg);
+      color: #60A5FA;
+    }
+
+    .service-drawer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .service-item.active .service-drawer {
+      max-height: 300px;
+    }
+    .drawer-inner {
+      padding: 0 1rem 2.2rem calc(95px + 1rem);
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.85rem; }
+    .tech-pill {
+      padding: 0.35rem 0.75rem; border-radius: 6px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      font-size: 0.74rem; color: #D4D4D8;
+    }
+    .live-widget {
+      padding: 1.15rem 1.35rem;
+      border-radius: 12px;
+      background: #0A0A0F;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      font-size: 0.78rem;
+    }
+    .meter-bar {
+      height: 6px; border-radius: 99px; background: rgba(255,255,255,0.08);
+      margin-top: 0.65rem; overflow: hidden;
+    }
+    .meter-fill {
+      height: 100%; width: 0%;
+      background: var(--grad);
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .service-item.active .meter-fill { width: var(--target-w, 95%); }
+
+    /* =========================================================================
+       2. PROJECTS: 3D SCROLL-STACKING DEPTH DECK
+       ========================================================================= */
+    .projects-section {
+      position: relative; z-index: 10;
+      padding: 7rem 4vw 10rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .stack-container {
+      position: relative;
+      display: flex; flex-direction: column; gap: 4rem;
+      margin-top: 3rem;
+    }
+    .project-card {
+      position: sticky;
+      top: 105px;
+      background: #0D0D13;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 2.8rem;
+      min-height: 430px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.78);
+      transform-origin: top center;
+      will-change: transform, filter;
+      transition: border-color 0.3s ease;
+    }
+    .project-card:hover { border-color: rgba(124, 58, 237, 0.65); }
+    .proj-meta { font-size: 0.75rem; color: #93C5FD; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
+    .proj-title {
+      font-size: clamp(1.75rem, 3.1vw, 2.7rem);
+      font-weight: 800; line-height: 1.08; margin-bottom: 1rem;
+    }
+    .proj-desc { color: var(--muted); font-size: 0.96rem; line-height: 1.6; margin-bottom: 1.75rem; }
+    .proj-stats {
+      display: flex; gap: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+    }
+    .proj-stats strong { display: block; font-size: 1.35rem; color: #fff; }
+    .proj-stats span { font-size: 0.72rem; color: var(--muted); }
+
+    .proj-stage {
+      height: 100%; min-height: 295px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.22), rgba(15, 23, 42, 0.92));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      overflow: hidden; position: relative;
+    }
+    .proj-stage-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card:hover .proj-stage-grid { transform: scale(1.08); }
+    .stage-ui-box {
+      position: relative; z-index: 2;
+      background: rgba(7, 7, 11, 0.84);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px; padding: 1.25rem;
+      backdrop-filter: blur(10px);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card:hover .stage-ui-box { transform: translateY(-6px); }
+
+    /* =========================================================================
+       3. PROCESS STRIP & LEAD CAPTURE FOOTER
+       ========================================================================= */
+    .process-section {
+      padding: 5.5rem 4vw;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .step-card {
+      padding: 2rem; border-radius: 18px;
+      background: var(--surface); border: 1px solid var(--border);
+    }
+    .step-card span { font-size: 0.75rem; color: #A78BFA; display: block; margin-bottom: 0.75rem; }
+    .step-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .step-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
+
+    footer {
+      padding: 6rem 4vw 3.5rem;
+      display: flex; flex-direction: column; gap: 2.5rem;
+    }
+    footer h2 { font-size: clamp(2.3rem, 5.2vw, 4.8rem); line-height: 1; letter-spacing: -0.03em; }
+    .lead-grid {
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: end;
+    }
+    .contact-form {
+      display: flex; flex-direction: column; gap: 0.9rem; max-width: 520px;
+    }
+    .form-row { display: flex; gap: 0.85rem; }
+    .contact-form input, .contact-form select {
+      flex: 1; padding: 0.95rem 1.15rem; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: #fff; font-size: 0.92rem; outline: none;
+    }
+    .contact-form input:focus, .contact-form select:focus {
+      border-color: #7C3AED;
+    }
+    .contact-form button {
+      padding: 1rem 1.8rem; border-radius: 10px; border: none;
+      background: var(--grad); color: #fff; font-weight: 600; font-size: 0.95rem;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .contact-form button:hover { opacity: 0.92; }
+
+    .direct-channels {
+      display: flex; flex-direction: column; gap: 0.75rem;
+      font-size: 0.88rem; color: var(--muted);
+    }
+    .direct-channels a {
+      color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .direct-channels a:hover { color: #A78BFA; }
+
+    .footer-bottom {
+      padding-top: 2rem; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+      font-size: 0.75rem; color: #63636E;
+    }
+
+    @media (max-width: 860px) {
+      .service-header, .drawer-inner, .project-card, .process-section, .lead-grid { grid-template-columns: 1fr; }
+      .drawer-inner { padding-left: 1rem; }
+      .project-card { position: relative; top: 0; }
+      .form-row { flex-direction: column; }
+      .nav-links, .cursor-pill { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-pill" id="cursorPill">INSPECT CASE &nearr;</div>
+
+  <header>
+    <a href="#" class="brand">
+      <div class="logo-wrap">
+        <!-- Place your official MAVERIQODE logo as logo.png in the same folder -->
+        <img src="logo.png" alt="MAVERIQODE" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="logo-fallback" style="display:none;">&lt;/&gt;</span>
+      </div>
+      <span>MAVERIQODE</span>
+    </a>
+    <div class="nav-links">
+      <a href="#services">Capabilities</a>
+      <a href="#work">Deployments</a>
+      <a href="#process">Execution</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="btn-primary">Start a Project</a>
+  </header>
+
+  <!-- Hero Physics Workbench -->
+  <section class="hero">
+    <canvas id="physicsCanvas"></canvas>
+    <div class="hero-top">
+      <div class="status-badge font-mono">
+        <span class="status-dot"></span>
+        <span>MAVERIQODE.TECH // ACCEPTING Q4/Q1 ENGINEERING SPRINTS</span>
+      </div>
+      <h1 class="font-display">
+        ENGINEERING <span class="grad-text">FLAGSHIP</span><br>
+        DIGITAL SYSTEMS.
+      </h1>
+      <div class="drag-hint font-mono">
+        <span>&#9673; INTERACTIVE ARCHITECTURE: DRAG &amp; THROW THE LIVE NODES</span>
+      </div>
+    </div>
+    <div class="hero-bottom">
+      <p>
+        MAVERIQODE partners with founders and institutions to build high-velocity web &amp; mobile platforms, autonomous AI workflows, and hardened security infrastructure.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-grad">Request Architecture Call &rarr;</a>
+        <a href="#work" class="btn-ghost">View Deployments</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. SERVICES -->
+  <section class="services-section" id="services">
+    <div class="sec-head">
+      <div>
+        <div class="font-mono" style="font-size:0.75rem; color:#A78BFA; margin-bottom:0.6rem;">[01 // CAPABILITIES — CLICK ANY ROW TO EXPAND]</div>
+        <h2 class="font-display">WHAT WE ENGINEER</h2>
+      </div>
+      <span class="font-mono" style="font-size:0.78rem; color:var(--muted);">END-TO-END OWNERSHIP</span>
+    </div>
+
+    <div class="service-list" id="serviceList">
+      <!-- Service 01 -->
+      <div class="service-item active" style="--target-w: 98%;">
+        <div class="service-header">
+          <span class="srv-num font-mono">01 / WEB</span>
+          <h3 class="srv-title">Web &amp; Cross-Platform App Engineering</h3>
+          <p class="srv-brief">60fps SaaS platforms, institutional portals, and mobile apps engineered for speed, scale, and conversion.</p>
+          <span class="srv-toggle font-mono">+</span>
+        </div>
+        <div class="service-drawer">
+          <div class="drawer-inner">
+            <div>
+              <p style="font-size:0.9rem; color:#D4D4D8; line-height:1.55;">
+                Custom full-stack applications built with Next.js, React, and TypeScript—featuring real-time dashboards, role-based portals, and zero bloated templates.
+              </p>
+              <div class="tag-cloud font-mono">
+                <span class="tech-pill">Next.js / React</span>
+                <span class="tech-pill">TypeScript</span>
+                <span class="tech-pill">Node / FastAPI</span>
+                <span class="tech-pill">Mobile Apps</span>
+              </div>
+            </div>
+            <div class="live-widget font-mono">
+              <div style="display:flex; justify-content:space-between;">
+                <span style="color:#93C5FD;">PERFORMANCE &amp; VITALS</span>
+                <span style="color:#34D399;">99 / 100</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill"></div></div>
+              <div style="margin-top:0.6rem; font-size:0.68rem; color:var(--muted);">Sub-second load times with edge caching &amp; clean UI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 02 -->
+      <div class="service-item" style="--target-w: 96%;">
+        <div class="service-header">
+          <span class="srv-num font-mono">02 / AI</span>
+          <h3 class="srv-title">AI Automation &amp; Autonomous Agents</h3>
+          <p class="srv-brief">Custom LLM pipelines, intelligent workflow bots, and predictive analytics wired directly into your operations.</p>
+          <span class="srv-toggle font-mono">+</span>
+        </div>
+        <div class="service-drawer">
+          <div class="drawer-inner">
+            <div>
+              <p style="font-size:0.9rem; color:#D4D4D8; line-height:1.55;">
+                Automate repetitive customer ops, lead qualification, and internal data pipelines with custom AI agents trained on your business logic.
+              </p>
+              <div class="tag-cloud font-mono">
+                <span class="tech-pill">Custom AI Agents</span>
+                <span class="tech-pill">Python</span>
+                <span class="tech-pill">RAG Knowledge Bases</span>
+                <span class="tech-pill">API Workflows</span>
+              </div>
+            </div>
+            <div class="live-widget font-mono">
+              <div style="display:flex; justify-content:space-between;">
+                <span style="color:#C4B5FD;">MANUAL WORKLOAD REDUCTION</span>
+                <span style="color:#34D399;">96.4%</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill"></div></div>
+              <div style="margin-top:0.6rem; font-size:0.68rem; color:var(--muted);">24/7 autonomous execution with human-in-the-loop controls</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 03 -->
+      <div class="service-item" style="--target-w: 95%;">
+        <div class="service-header">
+          <span class="srv-num font-mono">03 / SEC</span>
+          <h3 class="srv-title">AI &amp; Web Security Auditing</h3>
+          <p class="srv-brief">Vulnerability assessments, OWASP penetration testing, and hardened API security before you scale.</p>
+          <span class="srv-toggle font-mono">+</span>
+        </div>
+        <div class="service-drawer">
+          <div class="drawer-inner">
+            <div>
+              <p style="font-size:0.9rem; color:#D4D4D8; line-height:1.55;">
+                Deep-dive security audits across web apps, REST/GraphQL endpoints, and AI prompt-injection surfaces—delivered with actionable remediation patches.
+              </p>
+              <div class="tag-cloud font-mono">
+                <span class="tech-pill">OWASP Top 10</span>
+                <span class="tech-pill">API Hardening</span>
+                <span class="tech-pill">LLM Red-Teaming</span>
+                <span class="tech-pill">Auth &amp; RBAC</span>
+              </div>
+            </div>
+            <div class="live-widget font-mono">
+              <div style="display:flex; justify-content:space-between;">
+                <span style="color:#C4B5FD;">SECURITY POSTURE VERIFIED</span>
+                <span style="color:#34D399;">HARDENED</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill"></div></div>
+              <div style="margin-top:0.6rem; font-size:0.68rem; color:var(--muted);">Full vulnerability report + patch verification included</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 04 -->
+      <div class="service-item" style="--target-w: 97%;">
+        <div class="service-header">
+          <span class="srv-num font-mono">04 / UI</span>
+          <h3 class="srv-title">Brand Systems &amp; Product Design</h3>
+          <p class="srv-brief">High-conversion landing pages, design systems, and visual brand identities built for modern tech companies.</p>
+          <span class="srv-toggle font-mono">+</span>
+        </div>
+        <div class="service-drawer">
+          <div class="drawer-inner">
+            <div>
+              <p style="font-size:0.9rem; color:#D4D4D8; line-height:1.55;">
+                Cohesive UI/UX design systems, interactive prototypes, and sharp brand visuals engineered to earn immediate user trust.
+              </p>
+              <div class="tag-cloud font-mono">
+                <span class="tech-pill">UI/UX Systems</span>
+                <span class="tech-pill">Interactive Motion</span>
+                <span class="tech-pill">Brand Identity</span>
+                <span class="tech-pill">Conversion UX</span>
+              </div>
+            </div>
+            <div class="live-widget font-mono">
+              <div style="display:flex; justify-content:space-between;">
+                <span style="color:#93C5FD;">DESIGN-TO-CODE FIDELITY</span>
+                <span style="color:#34D399;">100%</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill"></div></div>
+              <div style="margin-top:0.6rem; font-size:0.68rem; color:var(--muted);">Pixel-accurate implementation directly by our engineers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PROJECTS: 3D Scroll-Stacking Depth Deck -->
+  <section class="projects-section" id="work">
+    <div class="sec-head">
+      <div>
+        <div class="font-mono" style="font-size:0.75rem; color:#60A5FA; margin-bottom:0.6rem;">[02 // SELECTED DEPLOYMENTS — SCROLL TO STACK]</div>
+        <h2 class="font-display">SYSTEMS IN PRODUCTION</h2>
+      </div>
+      <span class="font-mono" style="font-size:0.78rem; color:var(--muted);">MAVERIQODE ARCHIVE</span>
+    </div>
+
+    <div class="stack-container" id="stackContainer">
+      <!-- Project Card 1 -->
+      <article class="project-card" data-cursor="INSPECT PLATFORM &nearr;">
+        <div>
+          <div class="proj-meta font-mono">CASE 01 // INSTITUTIONAL ERP &amp; WEB</div>
+          <h3 class="proj-title font-display">Campus Management &amp; Digital Portal</h3>
+          <p class="proj-desc">
+            Unified academic administration system featuring automated student records, role-based faculty dashboards, attendance tracking, and a modern high-speed institutional web portal.
+          </p>
+          <div class="proj-stats font-mono">
+            <div><strong>5,000+</strong><span>ACTIVE USER CAPACITY</span></div>
+            <div><strong>0.4s</strong><span>PORTAL LOAD TIME</span></div>
+          </div>
+        </div>
+        <div class="proj-stage">
+          <div class="proj-stage-grid"></div>
+          <div class="stage-ui-box font-mono">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#34D399;">
+              <span>● SYSTEM LIVE</span><span>RBAC_VERIFIED</span>
+            </div>
+            <div style="font-size:1.3rem; font-weight:700; margin:0.6rem 0;">Unified Campus Core v2</div>
+            <div style="font-size:0.72rem; color:var(--muted);">Admissions &bull; Fee Ledger &bull; Notice &amp; Exam Automation</div>
+          </div>
+          <div class="stage-ui-box font-mono" style="font-size:0.72rem; color:#C4B5FD;">
+            STACK: React &bull; Node.js &bull; PostgreSQL &bull; Hardened Auth
+          </div>
+        </div>
+      </article>
+
+      <!-- Project Card 2 -->
+      <article class="project-card" data-cursor="INSPECT SAAS &nearr;">
+        <div>
+          <div class="proj-meta font-mono">CASE 02 // CREATOR &amp; AGENCY OPS SAAS</div>
+          <h3 class="proj-title font-display">Editor Command Center</h3>
+          <p class="proj-desc">
+            Real-time production workspace built for media agencies—integrating Kanban delivery pipelines, automated revision logs, asset vaults, and bitrate calculators in a single 60fps dashboard.
+          </p>
+          <div class="proj-stats font-mono">
+            <div><strong>3.2x</strong><span>TURNAROUND SPEED</span></div>
+            <div><strong>100%</strong><span>REVISION TRACEABILITY</span></div>
+          </div>
+        </div>
+        <div class="proj-stage" style="background: radial-gradient(circle at 70% 30%, rgba(37, 99, 235, 0.26), rgba(15, 23, 42, 0.92));">
+          <div class="proj-stage-grid"></div>
+          <div class="stage-ui-box font-mono">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#60A5FA;">
+              <span>● PIPELINE SYNCED</span><span>ZERO_MISSED_DEADLINES</span>
+            </div>
+            <div style="font-size:1.3rem; font-weight:700; margin:0.6rem 0;">Agency Production Hub</div>
+            <div style="font-size:0.72rem; color:var(--muted);">Kanban Workflows &bull; QC Checklists &bull; Instant Asset Vault</div>
+          </div>
+          <div class="stage-ui-box font-mono" style="font-size:0.72rem; color:#93C5FD;">
+            STACK: React &bull; Tailwind CSS &bull; Real-Time State Engine
+          </div>
+        </div>
+      </article>
+
+      <!-- Project Card 3 -->
+      <article class="project-card" data-cursor="INSPECT AI &amp; SMART CITY &nearr;">
+        <div>
+          <div class="proj-meta font-mono">CASE 03 // AI COMPUTER VISION &amp; TELEMETRY</div>
+          <h3 class="proj-title font-display">AI Urban Traffic Command Center</h3>
+          <p class="proj-desc">
+            Intelligent traffic signal optimization and real-time congestion telemetry platform designed to dynamically balance intersection flow and reduce urban idle emissions.
+          </p>
+          <div class="proj-stats font-mono">
+            <div><strong>-34%</strong><span>CONGESTION DELAY</span></div>
+            <div><strong>REAL-TIME</strong><span>SENSOR TELEMETRY</span></div>
+          </div>
+        </div>
+        <div class="proj-stage" style="background: radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.28), rgba(10, 12, 20, 0.94));">
+          <div class="proj-stage-grid"></div>
+          <div class="stage-ui-box font-mono">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#A78BFA;">
+              <span>● AI INFERENCE ACTIVE</span><span>MULTI-NODE_GRID</span>
+            </div>
+            <div style="font-size:1.3rem; font-weight:700; margin:0.6rem 0;">Adaptive Signal Routing</div>
+            <div style="font-size:0.72rem; color:var(--muted);">Live density scoring &bull; Emergency corridor override</div>
+          </div>
+          <div class="stage-ui-box font-mono" style="font-size:0.72rem; color:#C4B5FD;">
+            STACK: Python &bull; AI Vision &bull; WebSockets &bull; Live Map HUD
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 3. Execution Process -->
+  <section class="process-section" id="process">
+    <div class="step-card">
+      <span class="font-mono">STEP 01 // ARCHITECTURE</span>
+      <h3>24-Hour Technical Blueprint</h3>
+      <p>Share your requirements. We map out the exact system architecture, tech stack, timeline, and fixed milestone pricing within 24 hours.</p>
+    </div>
+    <div class="step-card">
+      <span class="font-mono">STEP 02 // VELOCITY SPRINT</span>
+      <h3>Live Staging &amp; Weekly Releases</h3>
+      <p>Track real progress from day one on a private live staging URL with transparent milestone deliveries and zero black-box delays.</p>
+    </div>
+    <div class="step-card">
+      <span class="font-mono">STEP 03 // HARDENED LAUNCH</span>
+      <h3>Security Audit &amp; Production Scale</h3>
+      <p>Every deployment undergoes OWASP security checks, performance tuning, and full source-code handover with post-launch support.</p>
+    </div>
+  </section>
+
+  <!-- Footer & Direct Lead Form -->
+  <footer id="contact">
+    <h2 class="font-display">READY TO SHIP<br>SOMETHING <span class="grad-text">ICONIC?</span></h2>
+
+    <div class="lead-grid">
+      <form class="contact-form" id="leadForm">
+        <div class="form-row">
+          <input type="text" id="leadName" required placeholder="Your Name / Company" />
+          <input type="email" id="leadEmail" required placeholder="Work Email" />
+        </div>
+        <select id="leadService">
+          <option value="Web & App Development">Web &amp; App Development</option>
+          <option value="AI Automation & Agents">AI Automation &amp; Agents</option>
+          <option value="AI & Web Security Audit">AI &amp; Web Security Audit</option>
+          <option value="Brand & UI/UX Design">Brand &amp; UI/UX Design</option>
+        </select>
+        <button type="submit">Initiate Project Brief &rarr;</button>
+        <div id="formFeedback" class="font-mono" style="font-size:0.78rem; color:#34D399; display:none;"></div>
+      </form>
+
+      <div class="direct-channels font-mono">
+        <div style="color:#A78BFA; font-size:0.75rem; letter-spacing:0.1em;">DIRECT CHANNELS</div>
+        <a href="mailto:hello@maveriqode.tech">hello@maveriqode.tech &nearr;</a>
+        <a href="https://maveriqode.tech" target="_blank">maveriqode.tech &nearr;</a>
+        <span style="font-size:0.75rem; color:var(--muted); margin-top:0.4rem;">
+          Response SLA: Under 4 hours during business days.
+        </span>
+      </div>
+    </div>
+
+    <div class="footer-bottom font-mono">
+      <span>&copy; 2026 MAVERIQODE DIGITAL ENGINEERING. ALL RIGHTS RESERVED.</span>
+      <span>BUILT WITHOUT COMPROMISE</span>
+    </div>
+  </footer>
+
+  <script>
+    // 1. Physics Workbench Canvas
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+    function resize() {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const nodeDefs = [
+      { title: 'MAVERIQODE', sub: 'Core Engine', r: 54, primary: true },
+      { title: 'AI AGENTS', sub: 'Automation', r: 44, primary: false },
+      { title: 'WEB & APPS', sub: '60fps Stack', r: 44, primary: false },
+      { title: 'SEC AUDIT', sub: 'Zero-Trust', r: 44, primary: false },
+      { title: 'UI SYSTEMS', sub: 'Brand Craft', r: 40, primary: false }
+    ];
+    const nodes = nodeDefs.map((n, i) => {
+      const a = (i / nodeDefs.length) * Math.PI * 2;
+      const d = i === 0 ? 0 : 190;
+      return {
+        ...n,
+        x: canvas.width * 0.68 + Math.cos(a) * d,
+        y: canvas.height * 0.46 + Math.sin(a) * d,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2
+      };
+    });
+
+    let dragged = null, lastM = { x: 0, y: 0 };
+    canvas.addEventListener('mousedown', (e) => {
+      const r = canvas.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        if (Math.hypot(mx - nodes[i].x, my - nodes[i].y) <= nodes[i].r + 8) {
+          dragged = nodes[i]; lastM = { x: mx, y: my }; break;
+        }
+      }
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragged) return;
+      const r = canvas.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      dragged.vx = (mx - lastM.x) * 0.35; dragged.vy = (my - lastM.y) * 0.35;
+      dragged.x = mx; dragged.y = my; lastM = { x: mx, y: my };
+    });
+    window.addEventListener('mouseup', () => { dragged = null; });
+
+    function tickPhysics() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const c = nodes[0];
+      for (let i = 1; i < nodes.length; i++) {
+        const n = nodes[i];
+        const dx = n.x - c.x, dy = n.y - c.y;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const f = (dist - 205) * 0.0025;
+        if (n !== dragged) { n.vx -= (dx / dist) * f; n.vy -= (dy / dist) * f; }
+        if (c !== dragged) { c.vx += (dx / dist) * f * 0.3; c.vy += (dy / dist) * f * 0.3; }
+      }
+      nodes.forEach((n) => {
+        if (n !== dragged) {
+          n.x += n.vx; n.y += n.vy; n.vx *= 0.96; n.vy *= 0.96;
+          if (n.x < n.r + 20) { n.x = n.r + 20; n.vx *= -0.7; }
+          if (n.x > canvas.width - n.r - 20) { n.x = canvas.width - n.r - 20; n.vx *= -0.7; }
+          if (n.y < n.r + 90) { n.y = n.r + 90; n.vy *= -0.7; }
+          if (n.y > canvas.height - n.r - 90) { n.y = canvas.height - n.r - 90; n.vy *= -0.7; }
+        }
+      });
+      for (let i = 1; i < nodes.length; i++) {
+        const n = nodes[i];
+        const g = ctx.createLinearGradient(c.x, c.y, n.x, n.y);
+        g.addColorStop(0, 'rgba(124, 58, 237, 0.75)');
+        g.addColorStop(1, 'rgba(37, 99, 235, 0.75)');
+        ctx.strokeStyle = g; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(n.x, n.y); ctx.stroke();
+      }
+      nodes.forEach((n) => {
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = n.primary ? '#161326' : '#0F0F15'; ctx.fill();
+        ctx.lineWidth = n.primary ? 2 : 1.2;
+        ctx.strokeStyle = n.primary ? '#8B5CF6' : 'rgba(255,255,255,0.22)'; ctx.stroke();
+        ctx.fillStyle = '#FFF'; ctx.font = '600 11px Inter, sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(n.title, n.x, n.y - 2);
+        ctx.fillStyle = '#A78BFA'; ctx.font = '400 9px "JetBrains Mono", monospace';
+        ctx.fillText(n.sub, n.x, n.y + 13);
+      });
+      requestAnimationFrame(tickPhysics);
+    }
+    tickPhysics();
+
+    // 2. Services: Interactive Accordion + Cursor Spotlight
+    const serviceItems = document.querySelectorAll('.service-item');
+    serviceItems.forEach((item) => {
+      item.addEventListener('mousemove', (e) => {
+        const r = item.getBoundingClientRect();
+        item.style.setProperty('--sx', (e.clientX - r.left) + 'px');
+        item.style.setProperty('--sy', (e.clientY - r.top) + 'px');
+      });
+      item.addEventListener('click', () => {
+        const wasActive = item.classList.contains('active');
+        serviceItems.forEach(s => s.classList.remove('active'));
+        if (!wasActive) item.classList.add('active');
+      });
+    });
+
+    // 3. Projects: 3D Scroll-Stacking Depth Scale + Magnetic Cursor Pill
+    const cards = document.querySelectorAll('.project-card');
+    const pill = document.getElementById('cursorPill');
+
+    window.addEventListener('scroll', () => {
+      cards.forEach((card, i) => {
+        const nextCard = cards[i + 1];
+        if (!nextCard) return;
+        const rect = card.getBoundingClientRect();
+        const nextRect = nextCard.getBoundingClientRect();
+        const overlap = Math.max(0, (rect.bottom - nextRect.top) / rect.height);
+        const clamped = Math.min(1, overlap);
+        const scale = 1 - clamped * 0.06;
+        const brightness = 1 - clamped * 0.35;
+        card.style.transform = `scale(${scale.toFixed(3)})`;
+        card.style.filter = `brightness(${brightness.toFixed(2)})`;
+      });
+    });
+
+    cards.forEach((card) => {
+      card.addEventListener('mouseenter', () => {
+        pill.textContent = card.dataset.cursor || 'VIEW CASE ↗';
+        pill.classList.add('visible');
+      });
+      card.addEventListener('mouseleave', () => pill.classList.remove('visible'));
+      card.addEventListener('mousemove', (e) => {
+        pill.style.left = e.clientX + 'px';
+        pill.style.top = e.clientY + 'px';
+      });
+    });
+
+    // 4. Lead Form Submission (Opens pre-filled mailto + shows confirmation)
+    document.getElementById('leadForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('leadName').value;
+      const email = document.getElementById('leadEmail').value;
+      const service = document.getElementById('leadService').value;
+      const fb = document.getElementById('formFeedback');
+
+      fb.textContent = `✓ Brief logged for ${name} (${service}). Opening mail client...`;
+      fb.style.display = 'block';
+
+      const subject = encodeURIComponent(`Project Inquiry: ${service} — ${name}`);
+      const body = encodeURIComponent(`Hi MAVERIQODE Team,\n\nName/Company: ${name}\nEmail: ${email}\nInterested In: ${service}\n\nLet's discuss our project scope.`);
+      window.location.href = `mailto:hello@maveriqode.tech?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
+</html>
