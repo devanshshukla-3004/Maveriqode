@@ -35,7 +35,7 @@ export default function AdminApp() {
   const [search,setSearch]=useState(''),[filter,setFilter]=useState('all');
   const [selected,setSelected]=useState<Enquiry|null>(null),[draftStatus,setDraftStatus]=useState<Enquiry['status']>('new'),[draftNotes,setDraftNotes]=useState('');
   const [editing,setEditing]=useState<Content|null>(null),[json,setJson]=useState('{}'),[jsonError,setJsonError]=useState('');
-  const [saving,setSaving]=useState(false);
+  const [saving,setSaving]=useState(false),[seoTitle,setSeoTitle]=useState(''),[seoDescription,setSeoDescription]=useState('');
 
   const verify=useCallback(async(s:Session|null)=>{
     if(!s){setSession(null);setProfile(null);setAuthBusy(false);return;}
@@ -59,7 +59,7 @@ export default function AdminApp() {
       supabase.from('website_audit_logs').select('*').order('created_at',{ascending:false}).limit(100),
     ]);
     const issue=e.error||c.error||a.error;if(issue)setDataError(issue.message);
-    if(e.data)setEnquiries(e.data as Enquiry[]);if(c.data)setContents(c.data as Content[]);if(a.data)setAudit(a.data as Audit[]);
+    if(e.data)setEnquiries(e.data as Enquiry[]);if(c.data){setContents(c.data as Content[]);const seo=(c.data as Content[]).find(x=>x.slug==='site-seo');if(seo){setSeoTitle(seo.seo_title||'');setSeoDescription(seo.seo_description||'');}}if(a.data)setAudit(a.data as Audit[]);
     setBusy(false);
   },[session]);
   useEffect(()=>{void refresh();},[refresh]);
@@ -86,6 +86,8 @@ export default function AdminApp() {
   const createContent=async()=>{const slug=window.prompt('New content slug (lowercase, hyphens only):');if(!slug)return;if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)){setToast('Use lowercase letters, numbers and hyphens only.');return;}
     const {error:e}=await supabase.from('website_content').insert({slug,title:slug.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' '),content:{},status:'draft',updated_by:session?.user.id});
     if(e)setToast('Create failed: '+e.message);else{await log('content.created','website_content',slug);setToast('Draft created');await refresh();}};
+
+  const saveSeo=async()=>{const row=contents.find(x=>x.slug==='site-seo');if(!row){setToast('SEO record is missing. Refresh and try again.');return;}setSaving(true);const {error:e}=await supabase.from('website_content').update({seo_title:seoTitle.trim(),seo_description:seoDescription.trim(),status:'published',updated_by:session?.user.id,updated_at:new Date().toISOString()}).eq('slug','site-seo');if(e)setToast('SEO save failed: '+e.message);else{await log('seo.updated','website_content','site-seo');setToast('SEO metadata published');await refresh();}setSaving(false);};
 
   if(authBusy)return <div className="admin-loading"><span className="admin-mark">M</span><p>Verifying secure workspace…</p></div>;
   if(!session||!profile)return <main className="admin-auth"><div className="admin-auth-glow"/><section className="admin-auth-card">
