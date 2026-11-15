@@ -6,23 +6,58 @@
   --font-mono: "JetBrains Mono", monospace;
 }
 
+:root {
+  --mq-bg: #070709;
+  --mq-bg-elevated: #0A0A0E;
+  --mq-surface: #0E0E13;
+  --mq-surface-card: #0D0D13;
+  --mq-surface-inset: #07070B;
+  --mq-surface-widget: #0A0A0F;
+  --mq-border: rgba(255, 255, 255, 0.1);
+  --mq-border-strong: rgba(255, 255, 255, 0.14);
+  --mq-text: #F5F5F7;
+  --mq-text-secondary: #D4D4D8;
+  --mq-muted: #9494A0;
+}
+
+:root[data-theme="slate"] {
+  --mq-bg: #151923;
+  --mq-bg-elevated: #1A202C;
+  --mq-surface: #1E2533;
+  --mq-surface-card: #1B2230;
+  --mq-surface-inset: #131822;
+  --mq-surface-widget: #161C28;
+  --mq-border: rgba(226, 232, 240, 0.14);
+  --mq-border-strong: rgba(226, 232, 240, 0.22);
+  --mq-text: #F8FAFC;
+  --mq-text-secondary: #E2E8F0;
+  --mq-muted: #A8B3C5;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     font-family: var(--font-sans);
-    background-color: #070709;
-    color: #F5F5F7;
+    background-color: var(--mq-bg);
+    color: var(--mq-text);
   }
 
   body {
+    background-color: var(--mq-bg);
+    color: var(--mq-text);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 240ms ease, color 240ms ease;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  body {
+    transition: none;
   }
 }

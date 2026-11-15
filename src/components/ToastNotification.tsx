@@ -42,7 +42,7 @@ export function ToastNotification({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="pointer-events-auto rounded-xl bg-[#0E0E13]/95 backdrop-blur-xl border border-[#34D399]/35 p-4 shadow-[0_16px_40px_rgba(0,0,0,0.6)] flex items-start gap-3"
+            className="pointer-events-auto rounded-xl bg-[var(--mq-surface)]/95 backdrop-blur-xl border border-[#34D399]/35 p-4 shadow-[0_16px_40px_rgba(0,0,0,0.55)] flex items-start gap-3"
           >
             <CheckCircle2
               className="w-5 h-5 text-[#34D399] shrink-0 mt-0.5"
@@ -52,7 +52,7 @@ export function ToastNotification({
               <p className="text-sm font-semibold text-white leading-snug">
                 {toast.title}
               </p>
-              <p className="text-xs text-[#A1A1AA] mt-1 leading-relaxed">
+              <p className="text-xs text-[var(--mq-muted)] mt-1 leading-relaxed">
                 {toast.description}
               </p>
             </div>

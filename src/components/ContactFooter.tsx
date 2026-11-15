@@ -106,7 +106,7 @@ export function ContactFooter({
   return (
     <footer
       id="contact"
-      className="scroll-mt-20 pt-24 pb-12 px-5 sm:px-8 lg:px-12 bg-[#070709]"
+      className="scroll-mt-20 pt-24 pb-12 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
     >
       <ScrollReveal className="max-w-[1440px] mx-auto flex flex-col gap-12">
         <div>
@@ -136,7 +136,7 @@ export function ContactFooter({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your Name / Company"
-                  className="w-full px-4 py-3.5 rounded-[10px] bg-[#0E0E13] border border-white/10 text-white placeholder-[#71717A] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                  className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-white placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
                 />
               </div>
 
@@ -151,7 +151,7 @@ export function ContactFooter({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Work Email"
-                  className="w-full px-4 py-3.5 rounded-[10px] bg-[#0E0E13] border border-white/10 text-white placeholder-[#71717A] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                  className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-white placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
                 />
               </div>
             </div>
@@ -164,10 +164,10 @@ export function ContactFooter({
                 id="leadService"
                 value={selectedService}
                 onChange={(e) => onServiceChange(e.target.value as ServiceOption)}
-                className="w-full px-4 py-3.5 rounded-[10px] bg-[#0E0E13] border border-white/10 text-white text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-white text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
               >
                 {SERVICE_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt} className="bg-[#0E0E13] text-white">
+                  <option key={opt} value={opt} className="bg-[#151923] text-white">
                     {opt}
                   </option>
                 ))}
@@ -184,7 +184,7 @@ export function ContactFooter({
                 value={contextNote}
                 onChange={(e) => onContextNoteChange(e.target.value)}
                 placeholder="Project scope, target timeline, or architecture goals (optional)"
-                className="w-full px-4 py-3.5 rounded-[10px] bg-[#0E0E13] border border-white/10 text-white placeholder-[#71717A] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-white placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
               />
             </div>
 
@@ -204,7 +204,7 @@ export function ContactFooter({
             {submittedBrief && (
               <div
                 role="status"
-                className="mt-1 p-4 rounded-xl bg-[#0E0E13] border border-[#34D399]/35 font-mono text-xs text-[#D4D4D8] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                className="mt-1 p-4 rounded-xl bg-[var(--mq-surface)] border border-[#34D399]/35 font-mono text-xs text-[var(--mq-text-secondary)] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
                 <div className="flex items-start gap-2 text-[#34D399]">
                   <Check className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
@@ -253,13 +253,13 @@ export function ContactFooter({
               <span>maveriqode.tech</span>
               <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
             </a>
-            <p className="text-xs text-[#8E8E98] mt-1">
+            <p className="text-xs text-[var(--mq-muted)] mt-1">
               Response SLA: Under 4 hours during business days.
             </p>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-[#71717A]">
+        <div className="pt-8 border-t border-[var(--mq-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-[var(--mq-muted)]">
           <span>&copy; 2026 MAVERIQODE Digital Engineering. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-5">
             {PRIMARY_NAV_ITEMS.map((item) => (

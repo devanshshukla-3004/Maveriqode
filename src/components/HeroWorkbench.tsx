@@ -7,9 +7,11 @@ import {
   useTransform,
 } from 'motion/react';
 import { NavSectionId } from '../data/maveriqodeData';
+import { ThemeTone } from './ThemeToggle';
 
 interface HeroWorkbenchProps {
   onNavigate: (id: NavSectionId) => void;
+  theme: ThemeTone;
 }
 
 interface PhysicsNode {
@@ -31,10 +33,19 @@ const NODE_DEFS = [
   { title: 'UI SYSTEMS', sub: 'Brand Craft', r: 40, primary: false },
 ];
 
-export function HeroWorkbench({ onNavigate }: HeroWorkbenchProps) {
+export function HeroWorkbench({ onNavigate, theme }: HeroWorkbenchProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const themeRef = useRef<ThemeTone>(theme);
+  const redrawRef = useRef<(() => void) | null>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    themeRef.current = theme;
+    if (shouldReduceMotion) {
+      redrawRef.current?.();
+    }
+  }, [theme, shouldReduceMotion]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -215,13 +226,24 @@ export function HeroWorkbench({ onNavigate }: HeroWorkbenchProps) {
       }
 
       // Draw architecture nodes
+      const isSlate = themeRef.current === 'slate';
       nodes.forEach((n) => {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = n.primary ? '#161326' : '#0F0F15';
+        ctx.fillStyle = n.primary
+          ? isSlate
+            ? '#232942'
+            : '#161326'
+          : isSlate
+          ? '#1D2434'
+          : '#0F0F15';
         ctx.fill();
         ctx.lineWidth = n.primary ? 2 : 1.2;
-        ctx.strokeStyle = n.primary ? '#8B5CF6' : 'rgba(255, 255, 255, 0.22)';
+        ctx.strokeStyle = n.primary
+          ? '#8B5CF6'
+          : isSlate
+          ? 'rgba(226, 232, 240, 0.28)'
+          : 'rgba(255, 255, 255, 0.22)';
         ctx.stroke();
 
         ctx.fillStyle = '#F5F5F7';
@@ -239,9 +261,11 @@ export function HeroWorkbench({ onNavigate }: HeroWorkbenchProps) {
       }
     };
 
+    redrawRef.current = drawFrame;
     drawFrame();
 
     return () => {
+      redrawRef.current = null;
       cancelAnimationFrame(animationId);
       canvas.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('pointermove', handlePointerMove);
@@ -311,7 +335,11 @@ export function HeroWorkbench({ onNavigate }: HeroWorkbenchProps) {
       {/* Subtle radial readability scrim on the left where copy sits */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 w-full md:w-2/3 z-[2] bg-gradient-to-r from-[#070709]/85 via-[#070709]/45 to-transparent"
+        className="pointer-events-none absolute inset-y-0 left-0 w-full md:w-2/3 z-[2]"
+        style={{
+          background:
+            'linear-gradient(to right, color-mix(in srgb, var(--mq-bg) 88%, transparent), color-mix(in srgb, var(--mq-bg) 45%, transparent), transparent)',
+        }}
       />
 
       <motion.div
@@ -333,7 +361,7 @@ export function HeroWorkbench({ onNavigate }: HeroWorkbenchProps) {
           Digital Systems.
         </h1>
 
-        <p className="inline-flex items-center gap-2 mt-6 font-mono text-xs text-[#8E8E98]">
+        <p className="inline-flex items-center gap-2 mt-6 font-mono text-xs text-[var(--mq-muted)]">
           <Move className="w-3.5 h-3.5 text-[#A78BFA]" aria-hidden="true" />
           <span>Interactive Architecture — Drag &amp; throw the live nodes</span>
         </p>
@@ -343,9 +371,9 @@ export function HeroWorkbench({ onNavigate }: HeroWorkbenchProps) {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 max-w-[1440px] w-full mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row md:items-end justify-between gap-6 pointer-events-none"
+        className="relative z-10 max-w-[1440px] w-full mx-auto pt-8 border-t border-[var(--mq-border)] flex flex-col md:flex-row md:items-end justify-between gap-6 pointer-events-none"
       >
-        <p className="max-w-[500px] text-[#A1A1AA] text-base leading-relaxed">
+        <p className="max-w-[500px] text-[var(--mq-text-secondary)] text-base leading-relaxed">
           MAVERIQODE partners with founders and institutions to build high-velocity web &amp; mobile platforms, autonomous AI workflows, and hardened security infrastructure.
         </p>
 
@@ -362,7 +390,7 @@ export function HeroWorkbench({ onNavigate }: HeroWorkbenchProps) {
           <button
             type="button"
             onClick={() => onNavigate('work')}
-            className="inline-flex items-center px-5 py-3.5 rounded-[10px] bg-white/[0.04] border border-white/10 text-white font-medium text-sm hover:border-[#8B5CF6]/60 transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
+            className="inline-flex items-center px-5 py-3.5 rounded-[10px] bg-white/[0.05] border border-[var(--mq-border)] text-white font-medium text-sm hover:border-[#8B5CF6]/60 transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
           >
             View Deployments
           </button>

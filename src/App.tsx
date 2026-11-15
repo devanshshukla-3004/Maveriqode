@@ -12,11 +12,13 @@ import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ToastMessage, ToastNotification } from './components/ToastNotification';
 import { SectionDivider } from './components/SectionDivider';
+import { ThemeToggle, ThemeTone } from './components/ThemeToggle';
 import {
   NavSectionId,
   PRIMARY_NAV_ITEMS,
   ServiceOption,
 } from './data/maveriqodeData';
+import { useSectionMeta } from './utils/seoMeta';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<NavSectionId>('home');
@@ -25,7 +27,31 @@ export default function App() {
   );
   const [contextNote, setContextNote] = useState('');
   const [toast, setToast] = useState<ToastMessage | null>(null);
+  const [theme, setTheme] = useState<ThemeTone>(() => {
+    if (typeof window === 'undefined') return 'obsidian';
+    return window.localStorage.getItem('mq-theme') === 'slate' ? 'slate' : 'obsidian';
+  });
   const nameInputRef = useRef<HTMLInputElement>(null);
+
+  useSectionMeta(activeSection);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'slate') {
+      root.setAttribute('data-theme', 'slate');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+    try {
+      window.localStorage.setItem('mq-theme', theme);
+    } catch {
+      // Ignore storage errors in restricted contexts
+    }
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === 'obsidian' ? 'slate' : 'obsidian'));
+  }, []);
 
   const showToast = useCallback((title: string, description: string) => {
     setToast({ id: Date.now(), title, description });
@@ -55,40 +81,48 @@ export default function App() {
   );
 
   useEffect(() => {
-    const sectionElements = PRIMARY_NAV_ITEMS.map((item) =>
-      document.getElementById(item.id)
-    ).filter((el): el is HTMLElement => el !== null);
+    const updateActiveSection = () => {
+      const scrollBottom = window.innerHeight + window.scrollY;
+      const docHeight = document.documentElement.scrollHeight;
 
-    if (sectionElements.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-        if (visible.length > 0) {
-          setActiveSection(visible[0].target.id as NavSectionId);
-        }
-      },
-      {
-        rootMargin: '-25% 0px -55% 0px',
-        threshold: [0.1, 0.25, 0.5],
+      if (scrollBottom >= docHeight - 60) {
+        setActiveSection('contact');
+        return;
       }
-    );
 
-    sectionElements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+      const anchorY = window.innerHeight * 0.32;
+      let current: NavSectionId = 'home';
+
+      for (const item of PRIMARY_NAV_ITEMS) {
+        const el = document.getElementById(item.id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= anchorY) {
+          current = item.id;
+        }
+      }
+
+      setActiveSection(current);
+    };
+
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', updateActiveSection, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+      window.removeEventListener('resize', updateActiveSection);
+    };
   }, []);
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="min-h-screen bg-[#070709] text-[#F5F5F7]">
+      <div className="min-h-screen bg-[var(--mq-bg)] text-[var(--mq-text)] transition-colors duration-200">
         <ScrollProgressBar />
         <Navbar activeSection={activeSection} onNavigate={navigateToSection} />
 
         <main>
-          <HeroWorkbench onNavigate={navigateToSection} />
+          <HeroWorkbench onNavigate={navigateToSection} theme={theme} />
           <SectionDivider />
           <CompanySection />
           <SectionDivider />
@@ -111,6 +145,7 @@ export default function App() {
           onNotify={showToast}
         />
 
+        <ThemeToggle theme={theme} onToggle={toggleTheme} />
         <BackToTopButton onScrollTop={() => setActiveSection('home')} />
         <ToastNotification toast={toast} onDismiss={dismissToast} />
         <CustomCursor />

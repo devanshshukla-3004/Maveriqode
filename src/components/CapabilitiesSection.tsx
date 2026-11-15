@@ -19,7 +19,7 @@ export function CapabilitiesSection({ onRequestService }: CapabilitiesSectionPro
   return (
     <section
       id="capabilities"
-      className="scroll-mt-20 py-24 px-5 sm:px-8 lg:px-12 bg-[#070709]"
+      className="scroll-mt-20 py-24 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
     >
       <div className="max-w-[1440px] mx-auto">
         <ScrollReveal className="flex flex-wrap items-end justify-between gap-4 mb-12">
@@ -31,12 +31,12 @@ export function CapabilitiesSection({ onRequestService }: CapabilitiesSectionPro
               What We Engineer
             </h2>
           </div>
-          <span className="font-mono text-xs text-[#8E8E98]">End-to-End Ownership</span>
+          <span className="font-mono text-xs text-[var(--mq-muted)]">End-to-End Ownership</span>
         </ScrollReveal>
 
         <ScrollReveal delay={0.08}>
           <div
-            className="flex flex-col border-t border-white/10"
+            className="flex flex-col border-t border-[var(--mq-border)]"
             onMouseLeave={() => setHoveredId(null)}
           >
           {CAPABILITIES.map((cap) => {
@@ -67,7 +67,7 @@ export function CapabilitiesSection({ onRequestService }: CapabilitiesSectionPro
                       }
                     : undefined
                 }
-                className={`border-b border-white/10 overflow-hidden transition-opacity duration-300 ${
+                className={`border-b border-[var(--mq-border)] overflow-hidden transition-opacity duration-300 ${
                   isDimmed ? 'opacity-50' : 'opacity-100'
                 }`}
               >
@@ -85,12 +85,12 @@ export function CapabilitiesSection({ onRequestService }: CapabilitiesSectionPro
                     {cap.title}
                   </h3>
 
-                  <p className="text-sm text-[#8E8E98] leading-relaxed">{cap.brief}</p>
+                  <p className="text-sm text-[var(--mq-muted)] leading-relaxed">{cap.brief}</p>
 
                   <span
                     aria-hidden="true"
                     className={`hidden md:flex items-center justify-end transition-transform duration-300 ${
-                      isActive ? 'rotate-45 text-[#60A5FA]' : 'text-[#8E8E98]'
+                      isActive ? 'rotate-45 text-[#60A5FA]' : 'text-[var(--mq-muted)]'
                     }`}
                   >
                     <Plus className="w-5 h-5" />
@@ -105,15 +105,15 @@ export function CapabilitiesSection({ onRequestService }: CapabilitiesSectionPro
                   <div className="overflow-hidden">
                     <div className="px-2 sm:px-4 pb-8 md:pl-[calc(115px+2.5rem)] grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-6 lg:gap-10 items-center">
                       <div>
-                        <p className="text-sm sm:text-[15px] text-[#D4D4D8] leading-relaxed">
+                        <p className="text-sm sm:text-[15px] text-[var(--mq-text-secondary)] leading-relaxed">
                           {cap.description}
                         </p>
-                        <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs text-[#A1A1AA]">
+                        <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs text-[var(--mq-muted)]">
                           {cap.stack.map((tech, idx) => (
                             <span key={tech} className="inline-flex items-center gap-2.5">
                               <span>{tech}</span>
                               {idx < cap.stack.length - 1 && (
-                                <span aria-hidden="true" className="text-[#52525B]">
+                                <span aria-hidden="true" className="text-[#64748B]">
                                   ·
                                 </span>
                               )}
@@ -135,7 +135,7 @@ export function CapabilitiesSection({ onRequestService }: CapabilitiesSectionPro
                         </button>
                       </div>
 
-                      <div className="p-5 rounded-xl bg-[#0A0A0F] border border-[#8B5CF6]/35 font-mono">
+                      <div className="p-5 rounded-xl bg-[var(--mq-surface-widget)] border border-[#8B5CF6]/35 font-mono transition-colors duration-200">
                         <div className="flex items-center justify-between text-xs gap-2">
                           <span className="text-[#93C5FD]">{cap.metricLabel}</span>
                           <span className="text-[#34D399] font-semibold tabular-nums">
@@ -148,7 +148,7 @@ export function CapabilitiesSection({ onRequestService }: CapabilitiesSectionPro
                             style={{ width: isActive ? `${cap.targetWidth}%` : '0%' }}
                           />
                         </div>
-                        <p className="mt-2.5 text-[11px] text-[#8E8E98] leading-snug">
+                        <p className="mt-2.5 text-[11px] text-[var(--mq-muted)] leading-snug">
                           {cap.metricCaption}
                         </p>
                       </div>

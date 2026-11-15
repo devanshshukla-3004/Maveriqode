@@ -298,3 +298,42 @@ export const EXECUTION_STEPS = [
       'Every deployment undergoes OWASP security checks, performance tuning, and full source-code handover with post-launch support.',
   },
 ];
+
+export interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export const COMPANY_FAQS: FaqItem[] = [
+  {
+    id: 'blueprint-timeline',
+    question: 'How quickly do we receive a technical blueprint and fixed quote?',
+    answer:
+      'Within 24 hours of your project brief, our lead engineers review your goals and deliver a structured architecture plan covering the recommended stack, sprint milestones, timeline, and fixed milestone pricing.',
+  },
+  {
+    id: 'code-ownership',
+    question: 'Who writes the code, and do we own 100% of the repository?',
+    answer:
+      'Every line of code is written directly by MAVERIQODE senior engineers—we never outsource or hand projects off to junior subcontractors. You retain 100% ownership of the source repository, infrastructure accounts, and IP from day one.',
+  },
+  {
+    id: 'sprint-visibility',
+    question: 'How do we track progress during active engineering sprints?',
+    answer:
+      'You receive access to a private live staging environment from the first week. We ship verifiable weekly releases alongside concise changelog notes so you can test real features rather than reading slide decks.',
+  },
+  {
+    id: 'security-hardening',
+    question: 'What security checks are included before production launch?',
+    answer:
+      'Every build undergoes OWASP Top 10 validation, strict role-based access control (RBAC) verification, API rate-limiting and input hardening, plus prompt-injection red-teaming on any LLM or agentic endpoints.',
+  },
+  {
+    id: 'stack-integration',
+    question: 'Can MAVERIQODE integrate with our existing codebase and team?',
+    answer:
+      'Yes. We regularly embed into existing GitHub or GitLab workflows to modernize React/Next.js frontends, harden Node.js or Python APIs, and wire autonomous AI pipelines alongside your internal engineers.',
+  },
+];
