@@ -1,7 +1,6 @@
-type SupabaseClient = ReturnType<typeof window.supabase.createClient>;
 declare global {
   interface Window {
-    supabase: { createClient: (url: string, key: string, options?: Record<string, unknown>) => SupabaseClient };
+    supabase: { createClient: (url: string, key: string, options?: Record<string, unknown>) => any };
   }
 }
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://brqkeetjoluhtlwjcqen.supabase.co';
