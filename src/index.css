@@ -1,37 +1,48 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Syne", sans-serif;
-  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-display: "Archivo", sans-serif;
+  --font-sans: "Archivo", sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
 :root {
-  --mq-bg: #070709;
-  --mq-bg-elevated: #0A0A0E;
-  --mq-surface: #0E0E13;
-  --mq-surface-card: #0D0D13;
-  --mq-surface-inset: #07070B;
-  --mq-surface-widget: #0A0A0F;
-  --mq-border: rgba(255, 255, 255, 0.1);
-  --mq-border-strong: rgba(255, 255, 255, 0.14);
-  --mq-text: #F5F5F7;
-  --mq-text-secondary: #D4D4D8;
-  --mq-muted: #9494A0;
+  --mq-bg: #050507;
+  --mq-bg-elevated: #0b0b0e;
+  --mq-surface: #15161a;
+  --mq-surface-card: #15161a;
+  --mq-surface-inset: #0a0a0d;
+  --mq-surface-widget: #0f1014;
+  --mq-border: #2a2b31;
+  --mq-border-strong: #373941;
+  --mq-text: #ecebe6;
+  --mq-text-secondary: #d4d5da;
+  --mq-muted: #b4b7bf;
+  --mq-violet: #a100ff;
+  --mq-blue: #2a00c8;
+  --mq-accent-soft: #d28cff;
+  --mq-serif-shadow: 0 1px 2px rgba(0, 0, 0, 0.72);
+  --mq-grid-line: rgba(236, 235, 230, 0.028);
 }
 
 :root[data-theme="slate"] {
-  --mq-bg: #151923;
-  --mq-bg-elevated: #1A202C;
-  --mq-surface: #1E2533;
-  --mq-surface-card: #1B2230;
-  --mq-surface-inset: #131822;
-  --mq-surface-widget: #161C28;
-  --mq-border: rgba(226, 232, 240, 0.14);
-  --mq-border-strong: rgba(226, 232, 240, 0.22);
-  --mq-text: #F8FAFC;
-  --mq-text-secondary: #E2E8F0;
-  --mq-muted: #A8B3C5;
+  --mq-bg: #151821;
+  --mq-bg-elevated: #1a1e29;
+  --mq-surface: #1e2330;
+  --mq-surface-card: #1d222e;
+  --mq-surface-inset: #11141c;
+  --mq-surface-widget: #171b26;
+  --mq-border: #313747;
+  --mq-border-strong: #41495d;
+  --mq-text: #ecebe6;
+  --mq-text-secondary: #d8dbe2;
+  --mq-muted: #b4b7bf;
+  --mq-violet: #a100ff;
+  --mq-blue: #2a00c8;
+  --mq-accent-soft: #d9a1ff;
+  --mq-serif-shadow: 0 1px 2px rgba(0, 0, 0, 0.72);
+  --mq-grid-line: rgba(236, 235, 230, 0.036);
 }
 
 @layer base {
@@ -52,6 +63,66 @@
   }
 }
 
+@layer components {
+  .mq-serif-accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-optical-sizing: auto;
+    font-synthesis-weight: none;
+    text-shadow: var(--mq-serif-shadow);
+  }
+
+  .mq-hero-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 160px 160px;
+    opacity: 0.045;
+    mix-blend-mode: overlay;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    animation: mq-grain-shift 0.72s steps(6, end) infinite;
+  }
+
+  :root[data-theme="slate"] .mq-hero-grain {
+    opacity: 0.05;
+  }
+
+  [data-hero-visible="false"] .mq-hero-grain {
+    animation-play-state: paused;
+  }
+
+  .mq-blueprint-grid {
+    background-image:
+      linear-gradient(to right, var(--mq-grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--mq-grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+}
+
+@keyframes mq-grain-shift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-2.5%, 1.8%, 0);
+  }
+  40% {
+    transform: translate3d(2%, -2.2%, 0);
+  }
+  60% {
+    transform: translate3d(-1.5%, -2.5%, 0);
+  }
+  80% {
+    transform: translate3d(2.5%, 1.5%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -59,5 +130,11 @@
 
   body {
     transition: none;
+  }
+
+  .mq-hero-grain {
+    animation: none !important;
+    transform: none;
+    will-change: auto;
   }
 }

@@ -42,6 +42,12 @@ export function CustomCursor() {
     let isInteractive = false;
     let rafId = 0;
 
+    const scheduleTick = () => {
+      if (!rafId) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
     const updateVisualState = () => {
       if (!isVisible || isOverPill) {
         el.style.opacity = '0';
@@ -51,20 +57,22 @@ export function CustomCursor() {
       el.style.opacity = '1';
 
       if (isPressed) {
-        targetScale = isInteractive ? 1.45 : 0.85;
+        targetScale = isInteractive ? 1.4 : 0.85;
       } else if (isInteractive) {
-        targetScale = 1.85;
+        targetScale = 1.75;
       } else {
         targetScale = 1;
       }
 
       if (isInteractive) {
-        el.style.borderColor = 'rgba(139, 92, 246, 0.85)';
-        el.style.backgroundColor = 'rgba(124, 58, 237, 0.14)';
+        el.style.borderColor = 'rgba(161, 0, 255, 0.82)';
+        el.style.backgroundColor = 'rgba(161, 0, 255, 0.12)';
       } else {
-        el.style.borderColor = 'rgba(255, 255, 255, 0.32)';
-        el.style.backgroundColor = 'rgba(124, 58, 237, 0.04)';
+        el.style.borderColor = 'rgba(236, 235, 230, 0.34)';
+        el.style.backgroundColor = 'rgba(42, 0, 200, 0.05)';
       }
+
+      scheduleTick();
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -99,12 +107,21 @@ export function CustomCursor() {
     };
 
     const tick = () => {
-      currentX += (targetX - currentX) * 0.22;
-      currentY += (targetY - currentY) * 0.22;
-      currentScale += (targetScale - currentScale) * 0.2;
+      rafId = 0;
+      currentX += (targetX - currentX) * 0.24;
+      currentY += (targetY - currentY) * 0.24;
+      currentScale += (targetScale - currentScale) * 0.22;
 
       el.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%) scale(${currentScale.toFixed(3)})`;
-      rafId = requestAnimationFrame(tick);
+
+      const settled =
+        Math.abs(targetX - currentX) < 0.08 &&
+        Math.abs(targetY - currentY) < 0.08 &&
+        Math.abs(targetScale - currentScale) < 0.004;
+
+      if (!settled && isVisible) {
+        rafId = requestAnimationFrame(tick);
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -113,10 +130,8 @@ export function CustomCursor() {
     document.documentElement.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('blur', handleMouseLeave);
 
-    rafId = requestAnimationFrame(tick);
-
     return () => {
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);

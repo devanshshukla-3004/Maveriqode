@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { NavSectionId } from '../data/maveriqodeData';
+import { NavSectionId, OFFICIAL_CONTACT_EMAIL } from '../data/maveriqodeData';
 
 export interface SectionMeta {
   title: string;
@@ -8,34 +8,33 @@ export interface SectionMeta {
 
 export const SECTION_META_MAP: Record<NavSectionId, SectionMeta> = {
   home: {
-    title: 'MAVERIQODE — Digital Engineering, AI Systems & Security',
+    title: 'MAVERIQODE — Digital Engineering, AI Systems & Infrastructure',
     description:
-      'MAVERIQODE builds high-velocity web & mobile platforms, autonomous AI automation, and hardened security architectures for ambitious startups and enterprises.',
+      'MAVERIQODE is a digital engineering and technology company building software products, AI systems, automation, cybersecurity solutions, and digital infrastructure.',
   },
   company: {
-    title: 'Company & Delivery Model — MAVERIQODE',
+    title: 'Company & Engineering Approach — MAVERIQODE',
     description:
-      'Senior engineering teams with zero outsourced handoffs, 24-hour technical blueprints, weekly live staging releases, and 100% source-code ownership.',
+      'Learn how MAVERIQODE approaches software architecture, technical accountability, security controls, and direct engineering collaboration.',
   },
   capabilities: {
-    title: 'Capabilities — Web, AI, Security & Design | MAVERIQODE',
+    title: 'Capabilities — Software, AI, Automation, SaaS, Security & Infrastructure | MAVERIQODE',
     description:
-      'Full-stack web and cross-platform app engineering, autonomous AI agents, OWASP and LLM security auditing, and high-conversion product design systems.',
+      'Explore MAVERIQODE engineering capabilities across Software Engineering, AI & Intelligent Systems, Automation & Integration, SaaS & Product Development, Cybersecurity, and Digital Infrastructure.',
   },
   solutions: {
-    title: 'Solutions for Startups, Institutions & AI Teams | MAVERIQODE',
+    title: 'Solutions — Digital Product, AI Operations & Security Engineering | MAVERIQODE',
     description:
-      'Tailored engineering delivery tracks for venture-backed startups, unified campus ERPs, and pre-scale API and AI security hardening.',
+      'Practical engineering solutions across Digital Product Development, Intelligent Business Systems, Enterprise Workflows, AI-Powered Operations, and Security & Infrastructure Engineering.',
   },
   work: {
-    title: 'Production Systems & Case Studies — MAVERIQODE',
+    title: 'Selected Work & Technical Archive — MAVERIQODE',
     description:
-      'Explore deployed systems in production including campus management portals, real-time creator agency workspaces, and AI urban traffic telemetry.',
+      'MAVERIQODE publishes verified client work only with explicit authorization. Request a private technical walkthrough of our engineering approach.',
   },
   contact: {
-    title: 'Contact & Project Brief — MAVERIQODE',
-    description:
-      'Initiate a project brief with MAVERIQODE. Get a 24-hour technical blueprint and sub-4-hour business day response SLA at hello@maveriqode.tech.',
+    title: 'Bring Us The Problem — Contact MAVERIQODE',
+    description: `Start an engineering conversation with MAVERIQODE via ${OFFICIAL_CONTACT_EMAIL} or prepare a structured project inquiry.`,
   },
 };
 

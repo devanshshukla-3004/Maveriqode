@@ -1,11 +1,20 @@
 import { FormEvent, useEffect, useState, RefObject } from 'react';
 import { ArrowUpRight, Check, Copy, Mail } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
+  CAPABILITIES,
   NavSectionId,
+  OFFICIAL_CONTACT_EMAIL,
   PRIMARY_NAV_ITEMS,
   ServiceOption,
 } from '../data/maveriqodeData';
-import { ScrollReveal } from './ScrollReveal';
+import { EditorialSerifAccent } from './EditorialSerifAccent';
+import { AmbientSoundToggle } from './AmbientSoundToggle';
+import {
+  SECTION_VIEWPORT,
+  STAGGER_CONTAINER_VARIANTS,
+  TEXT_REVEAL_VARIANTS,
+} from '../utils/motionVariants';
 
 interface ContactFooterProps {
   selectedService: ServiceOption;
@@ -17,12 +26,7 @@ interface ContactFooterProps {
   onNotify: (title: string, description: string) => void;
 }
 
-const SERVICE_OPTIONS: ServiceOption[] = [
-  'Web & App Development',
-  'AI Automation & Agents',
-  'AI & Web Security Audit',
-  'Brand & UI/UX Design',
-];
+const SERVICE_OPTIONS: ServiceOption[] = CAPABILITIES.map((cap) => cap.title);
 
 export function ContactFooter({
   selectedService,
@@ -36,13 +40,14 @@ export function ContactFooter({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [submittedBrief, setSubmittedBrief] = useState<{
+  const [preparedInquiry, setPreparedInquiry] = useState<{
     name: string;
     email: string;
     service: ServiceOption;
     note: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (!copied) return;
@@ -50,54 +55,69 @@ export function ContactFooter({
     return () => window.clearTimeout(timer);
   }, [copied]);
 
+  const buildMailtoHref = (inquiry: {
+    name: string;
+    email: string;
+    service: ServiceOption;
+    note: string;
+  }) => {
+    const subject = encodeURIComponent(
+      `Engineering Inquiry: ${inquiry.service} — ${inquiry.name}`
+    );
+    const body = encodeURIComponent(
+      `Hello MAVERIQODE,\n\nName / Organization: ${inquiry.name}\nReply Email: ${inquiry.email}\nCapability Area: ${inquiry.service}${
+        inquiry.note ? `\nProblem / Scope Notes: ${inquiry.note}` : ''
+      }\n\nLet's discuss next steps.`
+    );
+    return `mailto:${OFFICIAL_CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
 
     if (trimmedName.length < 2) {
-      setErrorMessage('Please enter your name or company name.');
+      setErrorMessage('Please enter your name or organization.');
       return;
     }
 
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
     if (!emailValid) {
-      setErrorMessage('Please enter a valid work email address.');
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
 
     setErrorMessage('');
-    const brief = {
+    const inquiry = {
       name: trimmedName,
       email: trimmedEmail,
       service: selectedService,
       note: contextNote.trim(),
     };
-    setSubmittedBrief(brief);
+    setPreparedInquiry(inquiry);
+
     onNotify(
-      'Project brief submitted',
-      `Prepared for ${brief.name} (${brief.service}). Response SLA is under 4 hours.`
+      'Email application prepared',
+      `Opening your email client with a prepared message to ${OFFICIAL_CONTACT_EMAIL}. Nothing is stored on this site.`
     );
 
-    const subject = encodeURIComponent(`Project Inquiry: ${brief.service} — ${brief.name}`);
-    const body = encodeURIComponent(
-      `Hi MAVERIQODE Team,\n\nName/Company: ${brief.name}\nEmail: ${brief.email}\nInterested In: ${brief.service}${
-        brief.note ? `\nScope Context: ${brief.note}` : ''
-      }\n\nLet's discuss our project scope.`
-    );
-    window.location.href = `mailto:hello@maveriqode.tech?subject=${subject}&body=${body}`;
+    window.location.href = buildMailtoHref(inquiry);
   };
 
   const handleCopyBrief = async () => {
-    if (!submittedBrief) return;
-    const text = `MAVERIQODE Project Brief\nName/Company: ${submittedBrief.name}\nEmail: ${submittedBrief.email}\nTrack: ${submittedBrief.service}${
-      submittedBrief.note ? `\nScope: ${submittedBrief.note}` : ''
-    }\nDirect Contact: hello@maveriqode.tech`;
+    if (!preparedInquiry) return;
+    const text = `MAVERIQODE Engineering Inquiry\nTo: ${OFFICIAL_CONTACT_EMAIL}\nName / Organization: ${preparedInquiry.name}\nReply Email: ${preparedInquiry.email}\nCapability Area: ${preparedInquiry.service}${
+      preparedInquiry.note ? `\nScope Notes: ${preparedInquiry.note}` : ''
+    }`;
 
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      onNotify('Brief copied to clipboard', 'Ready to paste into your email or Slack.');
+      onNotify(
+        'Prepared message copied',
+        `Paste directly into an email addressed to ${OFFICIAL_CONTACT_EMAIL}.`
+      );
     } catch {
       setCopied(false);
     }
@@ -108,25 +128,37 @@ export function ContactFooter({
       id="contact"
       className="scroll-mt-20 pt-24 pb-12 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
     >
-      <ScrollReveal className="max-w-[1440px] mx-auto flex flex-col gap-12">
+      <motion.div
+        variants={shouldReduceMotion ? undefined : STAGGER_CONTAINER_VARIANTS}
+        initial={shouldReduceMotion ? false : 'hidden'}
+        whileInView={shouldReduceMotion ? undefined : 'visible'}
+        viewport={shouldReduceMotion ? undefined : SECTION_VIEWPORT}
+        className="max-w-[1440px] mx-auto flex flex-col gap-12"
+      >
         <div>
-          <p className="font-mono text-xs text-[#A78BFA] mb-4">05 · Contact</p>
-          <h2 className="font-display font-extrabold text-[clamp(2.2rem,5vw,4.5rem)] leading-[0.98] tracking-[-0.03em] text-white text-balance">
-            Ready to ship
-            <br />
-            something{' '}
-            <span className="bg-gradient-to-br from-[#A855F7] to-[#3B82F6] bg-clip-text text-transparent">
-              iconic?
-            </span>
-          </h2>
+          <motion.p
+            variants={shouldReduceMotion ? undefined : TEXT_REVEAL_VARIANTS}
+            className="font-mono text-xs text-[var(--mq-accent-soft)] mb-4"
+          >
+            05 · Contact
+          </motion.p>
+          <motion.h2
+            variants={shouldReduceMotion ? undefined : TEXT_REVEAL_VARIANTS}
+            className="font-display font-extrabold text-[clamp(2.2rem,5vw,4.5rem)] leading-[0.98] tracking-[-0.03em] text-[var(--mq-text)] text-balance"
+          >
+            Bring us the{' '}
+            <EditorialSerifAccent targetTracking="-0.015em">
+              problem.
+            </EditorialSerifAccent>
+          </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-10 lg:gap-16 items-end">
-          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3.5 max-w-[560px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-10 lg:gap-16 items-start">
+          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3.5 max-w-[580px]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
                 <label htmlFor="leadName" className="sr-only">
-                  Your Name or Company
+                  Your Name or Organization
                 </label>
                 <input
                   ref={nameInputRef}
@@ -135,14 +167,14 @@ export function ContactFooter({
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Your Name / Company"
-                  className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-white placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                  placeholder="Your Name / Organization"
+                  className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
                 />
               </div>
 
               <div>
                 <label htmlFor="leadEmail" className="sr-only">
-                  Work Email
+                  Email Address
                 </label>
                 <input
                   id="leadEmail"
@@ -150,8 +182,8 @@ export function ContactFooter({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Work Email"
-                  className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-white placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                  placeholder="Email Address"
+                  className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
                 />
               </div>
             </div>
@@ -164,10 +196,10 @@ export function ContactFooter({
                 id="leadService"
                 value={selectedService}
                 onChange={(e) => onServiceChange(e.target.value as ServiceOption)}
-                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-white text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
               >
                 {SERVICE_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt} className="bg-[#151923] text-white">
+                  <option key={opt} value={opt} className="bg-[#15161a] text-[#ecebe6]">
                     {opt}
                   </option>
                 ))}
@@ -176,91 +208,138 @@ export function ContactFooter({
 
             <div>
               <label htmlFor="leadContext" className="sr-only">
-                Project Scope or Goals (Optional)
+                Problem Summary or Technical Context (Optional)
               </label>
               <input
                 id="leadContext"
                 type="text"
                 value={contextNote}
                 onChange={(e) => onContextNoteChange(e.target.value)}
-                placeholder="Project scope, target timeline, or architecture goals (optional)"
-                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-white placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#7C3AED] transition-colors"
+                placeholder="Problem summary, system context, or technical goals (optional)"
+                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
               />
             </div>
 
-            {errorMessage && (
-              <p role="alert" className="font-mono text-xs text-rose-400">
-                {errorMessage}
-              </p>
-            )}
+            <AnimatePresence initial={false}>
+              {errorMessage && (
+                <motion.p
+                  key="form-error"
+                  role="alert"
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={shouldReduceMotion ? undefined : { opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-mono text-xs text-rose-400"
+                >
+                  {errorMessage}
+                </motion.p>
+              )}
+            </AnimatePresence>
 
-            <button
+            <motion.button
               type="submit"
-              className="py-4 px-6 rounded-[10px] bg-gradient-to-br from-[#7C3AED] to-[#2563EB] text-white font-semibold text-sm hover:opacity-95 transition-opacity cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              whileHover={shouldReduceMotion ? undefined : { y: -1.5 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.985 }}
+              className="py-4 px-6 rounded-[10px] bg-gradient-to-br from-[#a100ff] to-[#2a00c8] text-[#ecebe6] font-semibold text-sm hover:opacity-95 transition-opacity cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ecebe6]"
             >
-              Send Project Brief
-            </button>
+              Open Prepared Email
+            </motion.button>
 
-            {submittedBrief && (
-              <div
-                role="status"
-                className="mt-1 p-4 rounded-xl bg-[var(--mq-surface)] border border-[#34D399]/35 font-mono text-xs text-[var(--mq-text-secondary)] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-              >
-                <div className="flex items-start gap-2 text-[#34D399]">
-                  <Check className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
-                  <span>
-                    Brief prepared for {submittedBrief.name} ({submittedBrief.service}).
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <button
-                    type="button"
-                    onClick={handleCopyBrief}
-                    className="inline-flex items-center gap-1.5 text-white hover:text-[#A78BFA] transition-colors cursor-pointer"
-                  >
-                    <Copy className="w-3.5 h-3.5" aria-hidden="true" />
-                    <span>{copied ? 'Copied' : 'Copy Brief'}</span>
-                  </button>
-                  <a
-                    href={`mailto:hello@maveriqode.tech?subject=${encodeURIComponent(
-                      `Project Inquiry: ${submittedBrief.service} — ${submittedBrief.name}`
-                    )}`}
-                    className="inline-flex items-center gap-1 text-[#93C5FD] hover:text-white transition-colors"
-                  >
-                    <Mail className="w-3.5 h-3.5" aria-hidden="true" />
-                    <span>Email</span>
-                  </a>
-                </div>
-              </div>
-            )}
+            <p className="text-xs text-[var(--mq-muted)] leading-relaxed">
+              Submitting opens your default email application with a message addressed to{' '}
+              <span className="font-mono text-[var(--mq-text-secondary)]">
+                {OFFICIAL_CONTACT_EMAIL}
+              </span>
+              . No form data is stored or transmitted by this website.
+            </p>
+
+            <AnimatePresence initial={false}>
+              {preparedInquiry && (
+                <motion.div
+                  key="prepared-status"
+                  role="status"
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 8, scale: 0.99 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={shouldReduceMotion ? undefined : { opacity: 0, y: 4 }}
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  className="mt-1 p-4 rounded-xl bg-[var(--mq-surface)] border border-[var(--mq-border-strong)] font-mono text-xs text-[var(--mq-text-secondary)] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                >
+                  <div className="flex items-start gap-2 text-[var(--mq-text)]">
+                    <Check
+                      className="w-4 h-4 text-[var(--mq-accent-soft)] shrink-0 mt-0.5"
+                      aria-hidden="true"
+                    />
+                    <span>
+                      Email draft prepared for {preparedInquiry.name} ({preparedInquiry.service}). Send from your mail client or copy below.
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-4 shrink-0">
+                    <button
+                      type="button"
+                      onClick={handleCopyBrief}
+                      className="inline-flex items-center gap-1.5 text-[var(--mq-text)] hover:text-[var(--mq-accent-soft)] transition-colors cursor-pointer"
+                    >
+                      <Copy className="w-3.5 h-3.5" aria-hidden="true" />
+                      <span>{copied ? 'Copied' : 'Copy Message'}</span>
+                    </button>
+                    <a
+                      href={buildMailtoHref(preparedInquiry)}
+                      className="inline-flex items-center gap-1 text-[#93c5fd] hover:text-[var(--mq-text)] transition-colors"
+                    >
+                      <Mail className="w-3.5 h-3.5" aria-hidden="true" />
+                      <span>Open Mail</span>
+                    </a>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </form>
 
-          <div className="flex flex-col gap-3 font-mono text-sm">
-            <span className="text-xs text-[#A78BFA] tracking-wider">Direct Channels</span>
-            <a
-              href="mailto:hello@maveriqode.tech"
-              className="inline-flex items-center gap-1.5 text-white hover:text-[#A78BFA] transition-colors w-fit"
+          <div className="flex flex-col gap-3 font-mono text-sm lg:pt-1">
+            <motion.div
+              whileHover={
+                shouldReduceMotion
+                  ? undefined
+                  : { y: -2, scale: 1.02, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }
+              }
+              className="w-24 h-24 rounded-2xl overflow-hidden border border-[var(--mq-border)] hover:border-[#a100ff]/55 bg-black p-2 mb-1 transition-colors duration-200"
             >
-              <span>hello@maveriqode.tech</span>
-              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-            </a>
+              <img
+                src="/assets/aistudio/WhatsApp_Image_2026-11-12_at_21.51.02__1__3fcdf05a.jpeg"
+                alt="MAVERIQODE official brand emblem"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-contain select-none"
+              />
+            </motion.div>
+            <span className="text-xs text-[var(--mq-accent-soft)] tracking-wider">
+              Direct Engineering Email
+            </span>
             <a
-              href="https://maveriqode.tech"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-white hover:text-[#A78BFA] transition-colors w-fit"
+              href={`mailto:${OFFICIAL_CONTACT_EMAIL}`}
+              className="group inline-flex items-center gap-1.5 text-[var(--mq-text)] hover:text-[var(--mq-accent-soft)] transition-colors w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a100ff] rounded"
             >
-              <span>maveriqode.tech</span>
-              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+              <span>{OFFICIAL_CONTACT_EMAIL}</span>
+              <ArrowUpRight
+                className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+              />
             </a>
-            <p className="text-xs text-[var(--mq-muted)] mt-1">
-              Response SLA: Under 4 hours during business days.
+            <p className="text-xs font-sans text-[var(--mq-muted)] leading-relaxed max-w-[40ch] mt-1">
+              Share your problem statement, constraints, or architecture questions directly by email.
             </p>
           </div>
         </div>
 
         <div className="pt-8 border-t border-[var(--mq-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-[var(--mq-muted)]">
-          <span>&copy; 2026 MAVERIQODE Digital Engineering. All rights reserved.</span>
+          <span className="inline-flex items-center gap-2.5">
+            <img
+              src="/assets/aistudio/MAVERIQODE_symbol_only_transparent_149367a9.png"
+              alt="MAVERIQODE symbol"
+              referrerPolicy="no-referrer"
+              className="h-4 w-auto object-contain shrink-0 select-none"
+            />
+            <span>&copy; 2026 MAVERIQODE. Digital Engineering &amp; Technology.</span>
+          </span>
           <div className="flex flex-wrap items-center gap-5">
             {PRIMARY_NAV_ITEMS.map((item) => (
               <a
@@ -270,14 +349,15 @@ export function ContactFooter({
                   e.preventDefault();
                   onNavigate(item.id);
                 }}
-                className="hover:text-white transition-colors whitespace-nowrap"
+                className="hover:text-[var(--mq-text)] transition-colors whitespace-nowrap"
               >
                 {item.label}
               </a>
             ))}
+            <AmbientSoundToggle />
           </div>
         </div>
-      </ScrollReveal>
+      </motion.div>
     </footer>
   );
 }

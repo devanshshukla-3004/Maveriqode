@@ -56,7 +56,7 @@ export function BackToTopButton({ onScrollTop }: BackToTopButtonProps) {
       title="Back to top"
       aria-hidden={!visible}
       tabIndex={visible ? 0 : -1}
-      className={`fixed bottom-6 right-5 sm:right-8 z-40 w-11 h-11 rounded-xl bg-[var(--mq-surface)]/92 backdrop-blur-md border border-[var(--mq-border-strong)] text-[var(--mq-muted)] hover:text-white hover:border-[#8B5CF6]/60 shadow-[0_8px_24px_rgba(0,0,0,0.45)] flex items-center justify-center transition-[opacity,transform,border-color,color,background-color] duration-200 ease-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] ${
+      className={`fixed bottom-6 right-5 sm:right-8 z-40 w-11 h-11 rounded-xl bg-[var(--mq-surface)]/95 backdrop-blur-md border border-[var(--mq-border-strong)] text-[var(--mq-muted)] hover:text-[var(--mq-text)] hover:border-[#a100ff]/65 shadow-[0_8px_24px_rgba(0,0,0,0.45)] flex items-center justify-center transition-[opacity,transform,border-color,color,background-color] duration-200 ease-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a100ff] ${
         visible
           ? 'opacity-100 translate-y-0 pointer-events-auto'
           : 'opacity-0 translate-y-3 pointer-events-none'

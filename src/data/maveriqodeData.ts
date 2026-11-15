@@ -20,91 +20,219 @@ export const PRIMARY_NAV_ITEMS: NavItem[] = [
   { id: 'contact', label: 'Contact' },
 ];
 
+export const OFFICIAL_CONTACT_EMAIL = 'maveriqode@gmail.com';
+
 export type ServiceOption =
-  | 'Web & App Development'
-  | 'AI Automation & Agents'
-  | 'AI & Web Security Audit'
-  | 'Brand & UI/UX Design';
+  | 'Software Engineering'
+  | 'AI & Intelligent Systems'
+  | 'Automation & Integration'
+  | 'SaaS & Product Development'
+  | 'Cybersecurity'
+  | 'Digital Infrastructure';
+
+export type CapabilityBlueprintVariant =
+  | 'software'
+  | 'ai'
+  | 'automation'
+  | 'saas'
+  | 'cybersecurity'
+  | 'infrastructure';
 
 export interface CapabilityItem {
   id: string;
   index: string;
   code: string;
-  title: string;
+  title: ServiceOption;
   brief: string;
   description: string;
+  focusAreas: string[];
   stack: string[];
-  metricLabel: string;
-  metricValue: string;
-  metricCaption: string;
-  targetWidth: number;
-  serviceOption: ServiceOption;
+  blueprintRef: string;
+  blueprintTitle: string;
+  blueprintNodes: string[];
+  visualVariant: CapabilityBlueprintVariant;
 }
 
 export const CAPABILITIES: CapabilityItem[] = [
   {
-    id: 'web',
+    id: 'software-engineering',
     index: '01',
-    code: 'Web & Mobile',
-    title: 'Web & Cross-Platform App Engineering',
+    code: 'Core Systems',
+    title: 'Software Engineering',
     brief:
-      '60fps SaaS platforms, institutional portals, and mobile apps engineered for speed, scale, and conversion.',
+      'Custom web applications, internal platforms, and APIs built for maintainability and clean system boundaries.',
     description:
-      'Custom full-stack applications built with Next.js, React, and TypeScript—featuring real-time dashboards, role-based portals, and zero bloated templates.',
-    stack: ['Next.js / React', 'TypeScript', 'Node / FastAPI', 'Mobile Apps'],
-    metricLabel: 'Performance & Vitals',
-    metricValue: '99 / 100',
-    metricCaption: 'Sub-second load times with edge caching & clean UI',
-    targetWidth: 98,
-    serviceOption: 'Web & App Development',
+      'We architect and deliver full-stack software systems with strongly typed interfaces, clear domain modeling, and tested service boundaries—structured so your engineering team can extend them without friction.',
+    focusAreas: [
+      'Full-stack web platforms and domain-driven backend services',
+      'Strongly typed REST and GraphQL API design and documentation',
+      'Relational database modeling, query optimization, and migrations',
+      'Automated testing, linting, and continuous integration workflows',
+    ],
+    stack: ['TypeScript', 'React', 'Node.js', 'Python', 'PostgreSQL'],
+    blueprintRef: 'SYS-01 · Application Core',
+    blueprintTitle: 'Modular Service & Domain Boundary',
+    blueprintNodes: ['Client Surface', 'API Gateway', 'Domain Services', 'Data Store'],
+    visualVariant: 'software',
   },
   {
-    id: 'ai',
+    id: 'ai-intelligent-systems',
     index: '02',
-    code: 'AI Systems',
-    title: 'AI Automation & Autonomous Agents',
+    code: 'Applied AI',
+    title: 'AI & Intelligent Systems',
     brief:
-      'Custom LLM pipelines, intelligent workflow bots, and predictive analytics wired directly into your operations.',
+      'Production-oriented AI workflows, retrieval architectures, and decision-support tools anchored to real business data.',
     description:
-      'Automate repetitive customer ops, lead qualification, and internal data pipelines with custom AI agents trained on your business logic.',
-    stack: ['Custom AI Agents', 'Python', 'RAG Knowledge Bases', 'API Workflows'],
-    metricLabel: 'Manual Workload Reduction',
-    metricValue: '96.4%',
-    metricCaption: '24/7 autonomous execution with human-in-the-loop controls',
-    targetWidth: 96,
-    serviceOption: 'AI Automation & Agents',
+      'We design and integrate intelligent systems around structured retrieval, validation guardrails, and human review checkpoints—treating models as components inside deterministic engineering pipelines.',
+    focusAreas: [
+      'Retrieval-augmented generation (RAG) over governed document corpora',
+      'Structured extraction, classification, and semantic search pipelines',
+      'Prompt evaluation harnesses, output schemas, and fallback routing',
+      'Human-in-the-loop review queues and audit logging',
+    ],
+    stack: ['Python', 'Vector Indexing', 'Structured Outputs', 'Evaluation Harnesses'],
+    blueprintRef: 'SYS-02 · Inference Pipeline',
+    blueprintTitle: 'Grounded Retrieval & Verification Flow',
+    blueprintNodes: ['Document Corpus', 'Retriever', 'Model Runtime', 'Schema Guard'],
+    visualVariant: 'ai',
   },
   {
-    id: 'security',
+    id: 'automation-integration',
     index: '03',
-    code: 'Security',
-    title: 'AI & Web Security Auditing',
+    code: 'Orchestration',
+    title: 'Automation & Integration',
     brief:
-      'Vulnerability assessments, OWASP penetration testing, and hardened API security before you scale.',
+      'Reliable system-to-system integrations and event-driven workflows that eliminate fragile manual handoffs.',
     description:
-      'Deep-dive security audits across web apps, REST/GraphQL endpoints, and AI prompt-injection surfaces—delivered with actionable remediation patches.',
-    stack: ['OWASP Top 10', 'API Hardening', 'LLM Red-Teaming', 'Auth & RBAC'],
-    metricLabel: 'Security Posture Verified',
-    metricValue: 'Hardened',
-    metricCaption: 'Full vulnerability report + patch verification included',
-    targetWidth: 95,
-    serviceOption: 'AI & Web Security Audit',
+      'We connect disparate internal tools, third-party APIs, and operational databases through idempotent pipelines with explicit retry handling, observability, and clear failure recovery.',
+    focusAreas: [
+      'Event-driven webhooks, message queues, and background job workers',
+      'Bi-directional synchronization across CRM, ERP, billing, and ops tools',
+      'Idempotent data ingestion, validation, and reconciliation jobs',
+      'Centralized alerting and dead-letter queue visibility',
+    ],
+    stack: ['Event Queues', 'Webhooks', 'ETL Pipelines', 'REST / GraphQL'],
+    blueprintRef: 'SYS-03 · Event Bus',
+    blueprintTitle: 'Idempotent Synchronization Fabric',
+    blueprintNodes: ['Source Hooks', 'Queue Broker', 'Transform Worker', 'Target APIs'],
+    visualVariant: 'automation',
   },
   {
-    id: 'design',
+    id: 'saas-product-development',
     index: '04',
-    code: 'Product Design',
-    title: 'Brand Systems & Product Design',
+    code: 'Product Craft',
+    title: 'SaaS & Product Development',
     brief:
-      'High-conversion landing pages, design systems, and visual brand identities built for modern tech companies.',
+      'Multi-tenant software products, customer portals, and design systems built from architecture through release.',
     description:
-      'Cohesive UI/UX design systems, interactive prototypes, and sharp brand visuals engineered to earn immediate user trust.',
-    stack: ['UI/UX Systems', 'Interactive Motion', 'Brand Identity', 'Conversion UX'],
-    metricLabel: 'Design-to-Code Fidelity',
-    metricValue: '100%',
-    metricCaption: 'Pixel-accurate implementation directly by our engineers',
-    targetWidth: 97,
-    serviceOption: 'Brand & UI/UX Design',
+      'From initial product architecture to multi-tenant access controls, billing hooks, and responsive interfaces, we build commercial software products engineered for clarity, usability, and long-term iteration.',
+    focusAreas: [
+      'Multi-tenant data isolation, permissions, and organization workspaces',
+      'Component design systems and accessible responsive user interfaces',
+      'Subscription billing, usage metering, and onboarding flows',
+      'Telemetry instrumentation and structured release pipelines',
+    ],
+    stack: ['React', 'Tailwind CSS', 'Multi-Tenancy', 'Design Systems', 'Stripe'],
+    blueprintRef: 'SYS-04 · Multi-Tenant SaaS',
+    blueprintTitle: 'Workspace & Tenant Isolation Topology',
+    blueprintNodes: ['Design System', 'Tenant Auth', 'Billing Engine', 'Admin Console'],
+    visualVariant: 'saas',
+  },
+  {
+    id: 'cybersecurity',
+    index: '05',
+    code: 'Security',
+    title: 'Cybersecurity',
+    brief:
+      'Application security reviews, access-control hardening, and threat-aware engineering across web and AI surfaces.',
+    description:
+      'We identify and remediate security weaknesses across application codebases, API endpoints, authentication flows, and AI integrations—embedding defensive engineering into the system rather than bolting it on afterward.',
+    focusAreas: [
+      'OWASP-aligned code and configuration security reviews',
+      'Authentication, session lifecycle, and role-based access control (RBAC)',
+      'Input validation, rate limiting, and API surface hardening',
+      'Prompt-injection defense and data-boundary checks for AI systems',
+    ],
+    stack: ['OWASP Controls', 'RBAC & Auth', 'API Hardening', 'Threat Modeling'],
+    blueprintRef: 'SYS-05 · Security Perimeter',
+    blueprintTitle: 'Defense-in-Depth Inspection Gate',
+    blueprintNodes: ['Edge Filter', 'Auth & RBAC', 'Policy Engine', 'Audit Trail'],
+    visualVariant: 'cybersecurity',
+  },
+  {
+    id: 'digital-infrastructure',
+    index: '06',
+    code: 'Foundations',
+    title: 'Digital Infrastructure',
+    brief:
+      'Cloud architecture, deployment automation, and observability foundations engineered for dependable operation.',
+    description:
+      'We structure cloud environments, containerized workloads, CI/CD pipelines, and backup/monitoring topologies so software teams can deploy predictably and diagnose production issues quickly.',
+    focusAreas: [
+      'Infrastructure-as-Code environments and reproducible deployments',
+      'CI/CD automation, containerization, and staging parity',
+      'Structured logging, health checks, and operational telemetry',
+      'Backup verification, secret management, and network segmentation',
+    ],
+    stack: ['Containers', 'CI/CD', 'Cloud Networking', 'Observability'],
+    blueprintRef: 'SYS-06 · Runtime Fabric',
+    blueprintTitle: 'Reproducible Build & Telemetry Mesh',
+    blueprintNodes: ['Source Repo', 'CI Runner', 'Isolated Runtime', 'Telemetry'],
+    visualVariant: 'infrastructure',
+  },
+];
+
+export interface CompanyPrinciple {
+  index: string;
+  title: string;
+  description: string;
+}
+
+export const COMPANY_PRINCIPLES: CompanyPrinciple[] = [
+  {
+    index: '01',
+    title: 'Architectural Clarity Before Code',
+    description:
+      'Every engagement begins by mapping system boundaries, data models, failure modes, and security requirements so implementation proceeds without guesswork.',
+  },
+  {
+    index: '02',
+    title: 'Direct Engineering Accountability',
+    description:
+      'You collaborate directly with the engineers designing and writing your system—keeping technical decisions close to the problem.',
+  },
+  {
+    index: '03',
+    title: 'Maintainability & Source Ownership',
+    description:
+      'Clean repositories, explicit documentation, and structured handovers ensure your organization controls every line of code and infrastructure.',
+  },
+];
+
+export interface ExecutionStep {
+  step: string;
+  title: string;
+  description: string;
+}
+
+export const EXECUTION_STEPS: ExecutionStep[] = [
+  {
+    step: '01 · Discovery & Architecture',
+    title: 'System & Scope Definition',
+    description:
+      'We analyze your technical constraints, existing stack, and operational goals to produce a structured architecture plan and phased implementation scope.',
+  },
+  {
+    step: '02 · Iterative Engineering',
+    title: 'Transparent Milestone Delivery',
+    description:
+      'Software is built in verifiable increments against a staging environment with regular technical walkthroughs and repository visibility.',
+  },
+  {
+    step: '03 · Hardening & Handover',
+    title: 'Security Review & Documentation',
+    description:
+      'Before production release, we verify access controls, environment configuration, and deployment documentation for seamless team ownership.',
   },
 ];
 
@@ -114,188 +242,107 @@ export interface SolutionItem {
   title: string;
   summary: string;
   outcomes: string[];
-  deliverableTimeframe: string;
+  architectureFocus: string;
   featured?: boolean;
   serviceOption: ServiceOption;
 }
 
 export const SOLUTIONS: SolutionItem[] = [
   {
-    id: 'startups',
-    kicker: 'Venture & SaaS Founders',
-    title: 'Zero-to-One Product & AI Platform Builds',
+    id: 'digital-product-development',
+    kicker: 'Product Engineering',
+    title: 'Digital Product Development',
     summary:
-      'Go from validated product architecture to a hardened production SaaS platform without managing fragmented freelancers or bloated agencies.',
+      'End-to-end engineering for commercial web platforms, SaaS applications, and custom internal software built around clear product requirements.',
     outcomes: [
-      'Production React, TypeScript & API backend with CI/CD pipelines',
-      'Integrated RAG workflows, agentic automation & Stripe billing',
-      'Clean technical documentation ready for investor due diligence',
+      'Modular frontend and backend architecture tailored to your domain',
+      'Role-based access control, tenant separation, and clean API contracts',
+      'Maintainable codebase structured for ongoing feature expansion',
     ],
-    deliverableTimeframe: '4–8 Week Sprint Delivery',
+    architectureFocus: 'SaaS & Web Platforms',
     featured: true,
-    serviceOption: 'Web & App Development',
+    serviceOption: 'SaaS & Product Development',
   },
   {
-    id: 'institutions',
-    kicker: 'Institutions & Campuses',
-    title: 'Unified ERP & Role-Based Digital Portals',
+    id: 'intelligent-business-systems',
+    kicker: 'Decision & Data Systems',
+    title: 'Intelligent Business Systems',
     summary:
-      'Replace legacy spreadsheets and disconnected portals with fast, access-controlled institutional infrastructure built for thousands of concurrent users.',
+      'Structured software systems that unify operational data, surface domain insights, and embed applied AI where it improves accuracy.',
     outcomes: [
-      'Student, faculty & administrative RBAC dashboards',
-      'Automated fee ledgers, admissions & attendance engines',
-      'Sub-second web performance across desktop and mobile',
+      'Unified operational dashboards backed by clean relational schemas',
+      'Grounded knowledge retrieval across internal technical and policy documents',
+      'Validation rules and auditability across automated recommendations',
     ],
-    deliverableTimeframe: 'Milestone-Locked Rollout',
-    serviceOption: 'Web & App Development',
+    architectureFocus: 'Software & Applied AI',
+    serviceOption: 'AI & Intelligent Systems',
   },
   {
-    id: 'security-ops',
-    kicker: 'Growing Teams & AI Products',
-    title: 'Pre-Scale Security Hardening & Workflow Ops',
+    id: 'enterprise-workflows',
+    kicker: 'Systems Connectivity',
+    title: 'Enterprise Workflows',
     summary:
-      'Eliminate API vulnerabilities, prompt-injection exposures, and manual operational bottlenecks before customer volume spikes.',
+      'Replace fragmented spreadsheets and manual data entry with synchronized, access-controlled pipelines connecting your core tools.',
     outcomes: [
-      'OWASP Top 10 & REST/GraphQL penetration testing with patches',
-      'LLM red-teaming & guardrails for customer-facing AI tools',
-      'Internal automation hubs connecting CRM, Slack & billing APIs',
+      'Reliable integration between ERP, CRM, billing, and internal portals',
+      'Event-driven processing with idempotency and error visibility',
+      'Role-specific operational views tailored to distinct teams',
     ],
-    deliverableTimeframe: '7–14 Day Audit & Patching',
-    serviceOption: 'AI & Web Security Audit',
+    architectureFocus: 'Integration & Portals',
+    serviceOption: 'Automation & Integration',
+  },
+  {
+    id: 'ai-powered-operations',
+    kicker: 'Operational Automation',
+    title: 'AI-Powered Operations',
+    summary:
+      'Automate high-volume triage, document processing, and internal routing with bounded AI pipelines and human oversight.',
+    outcomes: [
+      'Structured extraction and routing for inbound requests and documents',
+      'Explicit confidence thresholds and human approval workflows',
+      'Guardrails separating model reasoning from sensitive state mutations',
+    ],
+    architectureFocus: 'Workflows & Agents',
+    serviceOption: 'AI & Intelligent Systems',
+  },
+  {
+    id: 'security-infrastructure-engineering',
+    kicker: 'Resilience & Controls',
+    title: 'Security & Infrastructure Engineering',
+    summary:
+      'Harden web applications, APIs, AI endpoints, and cloud deployment pipelines against common attack vectors and operational fragility.',
+    outcomes: [
+      'OWASP-aligned vulnerability assessment and remediation engineering',
+      'Reproducible deployment pipelines, secrets hygiene, and logging',
+      'Hardened authentication, authorization, and rate-limiting boundaries',
+    ],
+    architectureFocus: 'Hardening & Cloud Ops',
+    featured: true,
+    serviceOption: 'Cybersecurity',
   },
 ];
 
-export interface CaseStudy {
-  id: string;
-  caseNumber: string;
-  category: string;
-  cursorLabel: string;
+export interface WorkEvaluationArea {
+  code: string;
   title: string;
   description: string;
-  stats: { value: string; label: string }[];
-  stageStatus: string;
-  stageBadge: string;
-  stageHeading: string;
-  stageSub: string;
-  stackSummary: string;
-  accentGradient: string;
-  challenge: string;
-  architecture: string;
-  outcomes: string[];
   serviceOption: ServiceOption;
 }
 
-export const CASE_STUDIES: CaseStudy[] = [
+export const WORK_EVALUATION_AREAS: WorkEvaluationArea[] = [
   {
-    id: 'campus-erp',
-    caseNumber: 'Case 01',
-    category: 'Institutional ERP & Web',
-    cursorLabel: 'Inspect Platform ↗',
-    title: 'Campus Management & Digital Portal',
+    code: 'ARCH-01',
+    title: 'Private Architecture Walkthroughs',
     description:
-      'Unified academic administration system featuring automated student records, role-based faculty dashboards, attendance tracking, and a modern high-speed institutional web portal.',
-    stats: [
-      { value: '5,000+', label: 'Active User Capacity' },
-      { value: '0.4s', label: 'Portal Load Time' },
-    ],
-    stageStatus: 'System Live',
-    stageBadge: 'RBAC Verified',
-    stageHeading: 'Unified Campus Core',
-    stageSub: 'Admissions · Fee Ledger · Notice & Exam Automation',
-    stackSummary: 'React · Node.js · PostgreSQL · Hardened Auth',
-    accentGradient:
-      'radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.22), rgba(15, 23, 42, 0.92))',
-    challenge:
-      'Fragmented legacy spreadsheets and slow portal logins created bottlenecks during peak admissions and exam result cycles for thousands of students and faculty.',
-    architecture:
-      'Engineered a unified PostgreSQL data core behind a hardened Node.js API layer with strict role-based access control (RBAC) and edge-cached React views.',
-    outcomes: [
-      'Reduced portal page load times to 0.4s under concurrent student load',
-      'Automated fee reconciliation, attendance logs, and exam notice publishing',
-      'Eliminated manual data reconciliation across admissions and finance teams',
-    ],
-    serviceOption: 'Web & App Development',
+      'Review system design patterns, repository standards, and engineering documentation tailored to your problem domain.',
+    serviceOption: 'Software Engineering',
   },
   {
-    id: 'editor-command',
-    caseNumber: 'Case 02',
-    category: 'Creator & Agency Ops SaaS',
-    cursorLabel: 'Inspect SaaS ↗',
-    title: 'Editor Command Center',
+    code: 'ARCH-02',
+    title: 'Technical Scope & Feasibility Brief',
     description:
-      'Real-time production workspace built for media agencies—integrating Kanban delivery pipelines, automated revision logs, asset vaults, and bitrate calculators in a single 60fps dashboard.',
-    stats: [
-      { value: '3.2x', label: 'Turnaround Speed' },
-      { value: '100%', label: 'Revision Traceability' },
-    ],
-    stageStatus: 'Pipeline Synced',
-    stageBadge: 'Zero Missed Deadlines',
-    stageHeading: 'Agency Production Hub',
-    stageSub: 'Kanban Workflows · QC Checklists · Instant Asset Vault',
-    stackSummary: 'React · Tailwind CSS · Real-Time State Engine',
-    accentGradient:
-      'radial-gradient(circle at 70% 30%, rgba(37, 99, 235, 0.26), rgba(15, 23, 42, 0.92))',
-    challenge:
-      'Post-production teams were losing hours every day switching between chat threads, cloud folders, and external spreadsheets to track video revisions and export specs.',
-    architecture:
-      'Built a 60fps single-workspace React state engine unifying interactive Kanban production lanes, structured QC checklists, asset indexing, and real-time bitrate tooling.',
-    outcomes: [
-      'Accelerated end-to-end agency asset turnaround by 3.2x',
-      'Enforced 100% timestamped revision traceability across editors and producers',
-      'Centralized export validation and client handoff checklists in one view',
-    ],
-    serviceOption: 'Web & App Development',
-  },
-  {
-    id: 'urban-traffic',
-    caseNumber: 'Case 03',
-    category: 'AI Computer Vision & Telemetry',
-    cursorLabel: 'Inspect AI & Smart City ↗',
-    title: 'AI Urban Traffic Command Center',
-    description:
-      'Intelligent traffic signal optimization and real-time congestion telemetry platform designed to dynamically balance intersection flow and reduce urban idle emissions.',
-    stats: [
-      { value: '-34%', label: 'Congestion Delay' },
-      { value: 'Real-Time', label: 'Sensor Telemetry' },
-    ],
-    stageStatus: 'AI Inference Active',
-    stageBadge: 'Multi-Node Grid',
-    stageHeading: 'Adaptive Signal Routing',
-    stageSub: 'Live Density Scoring · Emergency Corridor Override',
-    stackSummary: 'Python · AI Vision · WebSockets · Live Map HUD',
-    accentGradient:
-      'radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.28), rgba(10, 12, 20, 0.94))',
-    challenge:
-      'Static timed intersections fail to adapt to sudden arterial surges and emergency vehicle corridors, causing cascading gridlock across connected city blocks.',
-    architecture:
-      'Paired Python computer-vision density inference with low-latency WebSocket telemetry streams feeding a live operator HUD with manual emergency corridor overrides.',
-    outcomes: [
-      'Simulated 34% reduction in average intersection congestion delay',
-      'Sub-second WebSocket state propagation across multi-intersection nodes',
-      'Built instant operator override controls for emergency vehicle prioritization',
-    ],
-    serviceOption: 'AI Automation & Agents',
-  },
-];
-
-export const EXECUTION_STEPS = [
-  {
-    step: '01. Architecture',
-    title: '24-Hour Technical Blueprint',
-    description:
-      'Share your requirements. We map out the exact system architecture, tech stack, timeline, and fixed milestone pricing within 24 hours.',
-  },
-  {
-    step: '02. Velocity Sprint',
-    title: 'Live Staging & Weekly Releases',
-    description:
-      'Track real progress from day one on a private live staging URL with transparent milestone deliveries and zero black-box delays.',
-  },
-  {
-    step: '03. Hardened Launch',
-    title: 'Security Audit & Production Scale',
-    description:
-      'Every deployment undergoes OWASP security checks, performance tuning, and full source-code handover with post-launch support.',
+      'Discuss stack trade-offs, security boundaries, and integration requirements directly with our engineering team.',
+    serviceOption: 'Digital Infrastructure',
   },
 ];
 
@@ -307,33 +354,33 @@ export interface FaqItem {
 
 export const COMPANY_FAQS: FaqItem[] = [
   {
-    id: 'blueprint-timeline',
-    question: 'How quickly do we receive a technical blueprint and fixed quote?',
+    id: 'engagement-start',
+    question: 'How does an engineering engagement with MAVERIQODE begin?',
     answer:
-      'Within 24 hours of your project brief, our lead engineers review your goals and deliver a structured architecture plan covering the recommended stack, sprint milestones, timeline, and fixed milestone pricing.',
+      'We start with a technical discovery review of your objectives, existing systems, and constraints. From there, we outline a proposed architecture, capability scope, and phased delivery plan before implementation begins.',
   },
   {
     id: 'code-ownership',
-    question: 'Who writes the code, and do we own 100% of the repository?',
+    question: 'Who owns the codebase and intellectual property?',
     answer:
-      'Every line of code is written directly by MAVERIQODE senior engineers—we never outsource or hand projects off to junior subcontractors. You retain 100% ownership of the source repository, infrastructure accounts, and IP from day one.',
+      'You retain ownership of the custom source code, repository history, documentation, and cloud infrastructure configured for your engagement.',
   },
   {
     id: 'sprint-visibility',
-    question: 'How do we track progress during active engineering sprints?',
+    question: 'How is technical progress communicated during development?',
     answer:
-      'You receive access to a private live staging environment from the first week. We ship verifiable weekly releases alongside concise changelog notes so you can test real features rather than reading slide decks.',
+      'Work is organized into structured milestones with staging previews, changelog summaries, and direct repository access so your team can inspect real builds throughout the project.',
   },
   {
     id: 'security-hardening',
-    question: 'What security checks are included before production launch?',
+    question: 'How is security addressed across software and AI builds?',
     answer:
-      'Every build undergoes OWASP Top 10 validation, strict role-based access control (RBAC) verification, API rate-limiting and input hardening, plus prompt-injection red-teaming on any LLM or agentic endpoints.',
+      'Security controls are designed alongside the core architecture—covering authentication, role-based access control, input validation, API surface protection, and data boundaries for AI workflows.',
   },
   {
     id: 'stack-integration',
-    question: 'Can MAVERIQODE integrate with our existing codebase and team?',
+    question: 'Can MAVERIQODE work within our existing codebase and infrastructure?',
     answer:
-      'Yes. We regularly embed into existing GitHub or GitLab workflows to modernize React/Next.js frontends, harden Node.js or Python APIs, and wire autonomous AI pipelines alongside your internal engineers.',
+      'Yes. We regularly collaborate within existing Git repositories, cloud accounts, and engineering workflows to extend applications, refactor bottlenecks, or integrate automation and security improvements.',
   },
 ];

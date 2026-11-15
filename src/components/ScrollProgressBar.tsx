@@ -15,7 +15,7 @@ export function ScrollProgressBar() {
       className="fixed top-0 left-0 right-0 h-[2px] z-[60] pointer-events-none bg-transparent"
     >
       <motion.div
-        className="h-full w-full origin-left bg-gradient-to-r from-[#7C3AED] via-[#8B5CF6] to-[#2563EB]"
+        className="h-full w-full origin-left bg-gradient-to-r from-[#a100ff] to-[#2a00c8]"
         style={{
           scaleX: prefersReducedMotion ? scrollYProgress : smoothProgress,
         }}
