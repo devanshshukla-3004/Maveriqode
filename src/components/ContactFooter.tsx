@@ -74,7 +74,7 @@ export function ContactFooter({
     return `mailto:${OFFICIAL_CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting) return;
     const trimmedName = name.trim();
