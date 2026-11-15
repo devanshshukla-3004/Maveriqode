@@ -85,7 +85,7 @@ export function ContactFooter({
       return;
     }
 
-    const emailValid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(trimmedEmail);
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
     if (!emailValid) {
       setErrorMessage('Please enter a valid email address.');
       return;
@@ -256,6 +256,7 @@ export function ContactFooter({
 
             <motion.button
               type="submit"
+              disabled={isSubmitting}
               whileHover={shouldReduceMotion ? undefined : { y: -1.5 }}
               whileTap={shouldReduceMotion ? undefined : { scale: 0.985 }}
               className="py-4 px-6 rounded-[10px] bg-gradient-to-br from-[#a100ff] to-[#2a00c8] text-[#ecebe6] font-semibold text-sm hover:opacity-95 transition-opacity cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ecebe6]"
