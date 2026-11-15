@@ -29,6 +29,7 @@ export default function AdminApp() {
   const [session,setSession]=useState<Session|null>(null),[profile,setProfile]=useState<Profile|null>(null);
   const [authBusy,setAuthBusy]=useState(true),[email,setEmail]=useState('maveriqode@gmail.com'),[password,setPassword]=useState('');
   const [recovery,setRecovery]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
+  const [passwordReset,setPasswordReset]=useState(false),[newPassword,setNewPassword]=useState(''),[confirmPassword,setConfirmPassword]=useState('');
   const [page,setPage]=useState<Page>('overview'),[mobileOpen,setMobileOpen]=useState(false);
   const [enquiries,setEnquiries]=useState<Enquiry[]>([]),[contents,setContents]=useState<Content[]>([]),[audit,setAudit]=useState<Audit[]>([]);
   const [busy,setBusy]=useState(false),[dataError,setDataError]=useState(''),[toast,setToast]=useState('');
@@ -46,8 +47,9 @@ export default function AdminApp() {
   },[]);
   useEffect(()=>{
     document.title='MAVERIQODE Admin — Control Center';
+    if (window.location.hash.includes('type=recovery')) setPasswordReset(true);
     supabase.auth.getSession().then(({data})=>void verify(data.session as Session|null));
-    const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,s)=>{window.setTimeout(()=>void verify(s as Session|null),0);});
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((event,s)=>{if(event==='PASSWORD_RECOVERY')setPasswordReset(true);window.setTimeout(()=>void verify(s as Session|null),0);});
     return ()=>subscription.unsubscribe();
   },[verify]);
 
@@ -74,6 +76,7 @@ export default function AdminApp() {
 
   const login=async(e:FormEvent)=>{e.preventDefault();setError('');setNotice('');setAuthBusy(true);const {data,error:e2}=await supabase.auth.signInWithPassword({email:email.trim(),password});if(e2){setError(e2.message);setAuthBusy(false);}else await verify(data.session as Session|null);};
   const sendReset=async(e:FormEvent)=>{e.preventDefault();setError('');const {error:e2}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:window.location.origin+'/admin'});if(e2)setError(e2.message);else setNotice('Password reset link sent. Check your inbox.');};
+  const updatePassword=async(e:FormEvent)=>{e.preventDefault();setError('');if(newPassword.length<10){setError('Use at least 10 characters.');return;}if(newPassword!==confirmPassword){setError('Passwords do not match.');return;}const {error:e2}=await supabase.auth.updateUser({password:newPassword});if(e2)setError(e2.message);else{setPasswordReset(false);setNewPassword('');setConfirmPassword('');setToast('Password updated successfully.');window.history.replaceState({},document.title,window.location.pathname);}};
   const signOut=async()=>{await supabase.auth.signOut();setPage('overview');};
 
   const openEnquiry=(x:Enquiry)=>{setSelected(x);setDraftStatus(x.status);setDraftNotes(x.admin_notes||'');};
@@ -90,6 +93,7 @@ export default function AdminApp() {
   const saveSeo=async()=>{const row=contents.find(x=>x.slug==='site-seo');if(!row){setToast('SEO record is missing. Refresh and try again.');return;}setSaving(true);const {error:e}=await supabase.from('website_content').update({seo_title:seoTitle.trim(),seo_description:seoDescription.trim(),status:'published',updated_by:session?.user.id,updated_at:new Date().toISOString()}).eq('slug','site-seo');if(e)setToast('SEO save failed: '+e.message);else{await log('seo.updated','website_content','site-seo');setToast('SEO metadata published');await refresh();}setSaving(false);};
 
   if(authBusy)return <div className="admin-loading"><span className="admin-mark">M</span><p>Verifying secure workspace…</p></div>;
+  if(session&&profile&&passwordReset)return <main className="admin-auth"><div className="admin-auth-glow"/><section className="admin-auth-card"><a className="admin-brand" href="/"><span className="admin-mark">M</span><span>MAVERIQODE<small>CONTROL CENTER</small></span></a><div className="admin-eyebrow"><ShieldCheck size={14}/> ACCOUNT SECURITY</div><h1>Set a new password.</h1><p className="admin-subtitle">Choose a strong password to finish securing your administrator account.</p>{error&&<div className="admin-alert error">{error}</div>}<form className="admin-auth-form" onSubmit={updatePassword}><label>New password<input type="password" minLength={10} value={newPassword} onChange={e=>setNewPassword(e.target.value)} autoComplete="new-password" required/></label><label>Confirm password<input type="password" minLength={10} value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} autoComplete="new-password" required/></label><button className="admin-primary">Update password <ArrowUpRight size={16}/></button></form><div className="admin-auth-foot"><span>ENCRYPTED SESSION</span><span>SUPABASE AUTH</span></div></section></main>;
   if(!session||!profile)return <main className="admin-auth"><div className="admin-auth-glow"/><section className="admin-auth-card">
     <a className="admin-brand" href="/"><span className="admin-mark">M</span><span>MAVERIQODE<small>CONTROL CENTER</small></span></a>
     <div className="admin-eyebrow"><ShieldCheck size={14}/> PRIVATE ADMIN ACCESS</div><h1>{recovery?'Reset access.':'Welcome back.'}</h1><p className="admin-subtitle">A private workspace for the MAVERIQODE website. Only approved administrators can enter.</p>
