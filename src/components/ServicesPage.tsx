@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, ShieldCheck } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 
 type Service = { name: string; description: string; group: string };
 type Category = { id: string; number: string; title: string; intro: string; services: Service[] };
@@ -119,6 +119,8 @@ const fadeUp = { hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0 } };
 
 export default function ServicesPage() {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [selectedPlanId, setSelectedPlanId] = useState('business');
+  const selectedPlan = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
   const reduceMotion = useReducedMotion();
   const visibleCategories = useMemo(() => activeCategory === 'all' ? categories : categories.filter((category) => category.id === activeCategory), [activeCategory]);
 
@@ -166,30 +168,101 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section id="plans" className="scroll-mt-24 border-y border-[var(--mq-border)] bg-[var(--mq-bg-elevated)] px-5 py-20 sm:px-8 lg:px-12">
-          <div className="mx-auto max-w-[1440px]">
-            <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-              <div><p className="font-mono text-xs tracking-[.18em] text-[var(--mq-accent-soft)]">01 / COMMERCIAL PLANS</p><h2 className="mt-4 text-4xl font-bold tracking-[-.04em] sm:text-5xl">Clear plans. Defined scope.</h2></div>
-              <p className="max-w-lg text-sm leading-relaxed text-[var(--mq-muted)]">Choose a starting point. We confirm requirements, integrations and delivery milestones before work begins.</p>
+        <section id="plans" className="relative isolate scroll-mt-24 overflow-hidden border-y border-[var(--mq-border)] bg-[#08070d] px-5 py-24 sm:px-8 lg:px-12">
+          <div aria-hidden="true" className="mq-pricing-grid pointer-events-none absolute inset-0 opacity-70" />
+          <div aria-hidden="true" className="mq-pricing-aurora pointer-events-none absolute -left-40 top-10 h-[440px] w-[440px] rounded-full blur-[110px]" />
+          <div aria-hidden="true" className="mq-pricing-orbit pointer-events-none absolute -right-40 top-24 h-[620px] w-[620px] rounded-full" />
+          <div className="relative mx-auto max-w-[1440px]">
+            <div className="mb-14 flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
+              <div className="max-w-3xl">
+                <p className="mb-5 flex items-center gap-3 font-mono text-[10px] tracking-[.24em] text-[#d7a0ff]"><span className="h-px w-8 bg-[#b65cff]" /> 01 / INVESTMENT & ENGAGEMENT</p>
+                <h2 className="text-balance text-5xl font-bold leading-[.98] tracking-[-.065em] sm:text-6xl lg:text-7xl">Choose your next <span className="mq-serif-accent text-[#d7a0ff]">unfair advantage.</span></h2>
+              </div>
+              <p className="max-w-md text-sm leading-7 text-[#a6a0b2]">Five ways to move forward. Select a plan to explore what is included, how it is managed and what happens after launch.</p>
             </div>
-            <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
-              {plans.map((plan,index)=>(
-                <motion.article key={plan.id} initial={reduceMotion ? false : 'hidden'} whileInView="visible" viewport={{ once:true, amount:.12 }} variants={fadeUp} transition={{ duration:.45, delay:index*.05 }} className={`relative flex flex-col rounded-3xl border p-6 sm:p-7 ${plan.featured?'border-[#a100ff]/70 bg-[linear-gradient(155deg,rgba(87,24,132,.28),rgba(18,18,23,.98)_52%)] shadow-[0_18px_70px_rgba(92,20,145,.13)]':'border-[var(--mq-border)] bg-[var(--mq-surface)]'}`}>
-                  {plan.featured&&<span className="absolute right-5 top-5 rounded-full border border-[#c084fc]/40 bg-[#a100ff]/15 px-3 py-1 font-mono text-[9px] tracking-wider text-[#e9c7ff]">FLAGSHIP</span>}
-                  <p className="font-mono text-[10px] tracking-[.15em] text-[var(--mq-accent-soft)]">{String(index+1).padStart(2,'0')} / PLAN</p>
-                  <h3 className="mt-5 max-w-[80%] text-2xl font-bold tracking-tight">{plan.label}</h3>
-                  <p className="mt-3 min-h-12 text-sm leading-relaxed text-[var(--mq-muted)]">{plan.summary}</p>
-                  <div className="mt-6 border-y border-[var(--mq-border)] py-5">
-                    <div className="flex flex-wrap items-baseline gap-x-2"><span className="text-4xl font-bold tracking-tight">{plan.price}</span><span className="text-xs text-[var(--mq-muted)]">{plan.cadence}</span></div>
-                    {plan.monthly&&<p className="mt-2 text-sm font-semibold text-[var(--mq-accent-soft)]">{plan.monthly}</p>}
-                  </div>
-                  <ul className="mt-6 flex-1 space-y-3">{plan.features.map(feature=><li key={feature} className="flex gap-2.5 text-sm leading-relaxed text-[var(--mq-text-secondary)]"><Check size={16} className="mt-0.5 shrink-0 text-[var(--mq-accent-soft)]"/><span>{feature}</span></li>)}</ul>
-                  {plan.monthlyFeatures&&<div className="mt-6 rounded-2xl border border-[#a100ff]/25 bg-black/20 p-4"><p className="mb-3 text-xs font-semibold text-[#e9c7ff]">Monthly management includes</p><ul className="space-y-2">{plan.monthlyFeatures.map(feature=><li key={feature} className="flex gap-2 text-xs leading-relaxed text-[var(--mq-text-secondary)]"><Check size={14} className="mt-0.5 shrink-0 text-[#d28cff]"/>{feature}</li>)}</ul></div>}
-                  <p className="mt-6 border-t border-[var(--mq-border)] pt-4 text-xs leading-relaxed text-[var(--mq-muted)]">{plan.note}</p>
-                  <a href={`/#contact`} className="mt-6 inline-flex items-center justify-between rounded-xl border border-[var(--mq-border-strong)] px-4 py-3.5 text-sm font-semibold transition hover:border-[#c084fc] hover:bg-white/5">Discuss this plan <ArrowUpRight size={16}/></a>
-                </motion.article>
-              ))}
+
+            <div className="grid items-start gap-6 xl:grid-cols-[.72fr_1.28fr]">
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+                {plans.map((plan,index)=>(
+                  <motion.button
+                    key={plan.id}
+                    type="button"
+                    onClick={()=>setSelectedPlanId(plan.id)}
+                    whileHover={reduceMotion?undefined:{x:5}}
+                    whileTap={reduceMotion?undefined:{scale:.99}}
+                    className={`mq-plan-choice group relative w-full overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300 sm:p-6 ${selectedPlanId===plan.id?'mq-plan-active border-[#b65cff]/80 bg-[#24132f] shadow-[0_12px_45px_rgba(145,42,210,.17)]':'border-white/10 bg-white/[.025] hover:border-white/25 hover:bg-white/[.055]'}`}
+                    aria-pressed={selectedPlanId===plan.id}
+                  >
+                    {selectedPlanId===plan.id&&<motion.span layoutId="plan-active-rail" className="absolute inset-y-4 left-0 w-[3px] rounded-r-full bg-gradient-to-b from-[#f0c8ff] to-[#8b3dff]" />}
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className={`font-mono text-[9px] tracking-[.2em] ${selectedPlanId===plan.id?'text-[#e2baff]':'text-[#777181]'}`}>{String(index+1).padStart(2,'0')} / MAVERIQODE PLAN</p>
+                        <h3 className="mt-3 text-lg font-semibold tracking-tight text-white">{plan.label}</h3>
+                      </div>
+                      <span className={`mt-1 flex h-8 w-8 items-center justify-center rounded-full border transition ${selectedPlanId===plan.id?'border-[#d5a0ff]/60 bg-[#b65cff]/20 text-[#f0d8ff]':'border-white/10 text-[#7d7788] group-hover:text-white'}`}><ArrowUpRight size={15}/></span>
+                    </div>
+                    <div className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                      <span className="text-3xl font-bold tracking-[-.05em] text-white">{plan.price}</span>
+                      <span className="text-[10px] text-[#a7a0b2]">{plan.cadence}</span>
+                    </div>
+                    {plan.monthly&&<p className="mt-2 text-xs font-semibold text-[#d7a0ff]">{plan.monthly}</p>}
+                    {plan.featured&&<span className="mt-4 inline-flex rounded-full border border-[#c084fc]/30 bg-[#a100ff]/10 px-3 py-1 font-mono text-[9px] tracking-[.14em] text-[#e2baff]">MOST COMPLETE</span>}
+                  </motion.button>
+                ))}
+              </div>
+
+              <div className="relative min-h-[650px]">
+                <div aria-hidden="true" className="mq-plan-glow pointer-events-none absolute -inset-5 rounded-[38px] blur-2xl" />
+                <AnimatePresence mode="wait">
+                  <motion.article
+                    key={selectedPlan.id}
+                    initial={reduceMotion?false:{opacity:0,y:18,filter:'blur(8px)'}}
+                    animate={{opacity:1,y:0,filter:'blur(0px)'}}
+                    exit={reduceMotion?undefined:{opacity:0,y:-12,filter:'blur(6px)'}}
+                    transition={{duration:reduceMotion?0:.32,ease:'easeOut'}}
+                    className="relative h-full overflow-hidden rounded-[30px] border border-white/15 bg-[linear-gradient(145deg,rgba(41,22,55,.96),rgba(13,12,19,.98)_44%,rgba(12,13,23,.98))] p-6 shadow-[0_30px_100px_rgba(0,0,0,.38)] sm:p-9 lg:p-10"
+                  >
+                    <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-28 h-80 w-80 rounded-full border border-[#d5a0ff]/15 shadow-[0_0_0_28px_rgba(180,100,255,.025),0_0_0_64px_rgba(180,100,255,.018)]" />
+                    <div className="relative flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6">
+                      <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#d5a0ff]/25 bg-[#a100ff]/15 text-[#e2baff]"><Sparkles size={18}/></span><div><p className="font-mono text-[9px] tracking-[.2em] text-[#bda8ca]">YOUR SELECTED PLAN</p><p className="mt-1 text-xs text-white/60">MAVERIQODE / {selectedPlan.id.toUpperCase()}</p></div></div>
+                      {selectedPlan.featured&&<span className="rounded-full border border-[#d5a0ff]/35 bg-[#a100ff]/15 px-4 py-2 font-mono text-[9px] tracking-[.16em] text-[#e8caff]">RECOMMENDED</span>}
+                    </div>
+
+                    <div className="relative grid gap-7 border-b border-white/10 py-8 md:grid-cols-[1fr_auto] md:items-end">
+                      <div>
+                        <p className="text-sm text-[#bcb3c8]">A focused solution for your business.</p>
+                        <h3 className="mt-3 max-w-2xl text-3xl font-bold leading-tight tracking-[-.045em] text-white sm:text-4xl">{selectedPlan.label}</h3>
+                        <p className="mt-3 max-w-xl text-sm leading-6 text-[#a9a2b5]">{selectedPlan.summary}</p>
+                      </div>
+                      <div className="md:text-right">
+                        <p className="font-mono text-[9px] tracking-[.18em] text-[#9e91ad]">INVESTMENT</p>
+                        <p className="mt-2 whitespace-nowrap text-5xl font-bold tracking-[-.07em] text-white sm:text-6xl">{selectedPlan.price}</p>
+                        <p className="mt-2 text-xs text-[#bca9ca]">{selectedPlan.cadence}</p>
+                        {selectedPlan.monthly&&<p className="mt-2 text-sm font-semibold text-[#dfb5ff]">{selectedPlan.monthly}</p>}
+                      </div>
+                    </div>
+
+                    <div className="relative pt-7">
+                      <div className="mb-5 flex items-center justify-between gap-3"><h4 className="text-sm font-semibold text-white">What's included</h4><span className="font-mono text-[9px] tracking-[.14em] text-[#8e849a]">{String(selectedPlan.features.length).padStart(2,'0')} FEATURES</span></div>
+                      <ul className="grid gap-x-7 gap-y-3 sm:grid-cols-2">
+                        {selectedPlan.features.map((feature,index)=><motion.li key={feature} initial={reduceMotion?false:{opacity:0,x:8}} animate={{opacity:1,x:0}} transition={{duration:.24,delay:reduceMotion?0:index*.025}} className="flex gap-3 text-sm leading-6 text-[#d8d1e0]"><span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#b65cff]/15 text-[#dfb5ff]"><Check size={10}/></span><span>{feature}</span></motion.li>)}
+                      </ul>
+                    </div>
+
+                    {selectedPlan.monthlyFeatures&&<div className="relative mt-8 rounded-2xl border border-[#bd7bff]/25 bg-[linear-gradient(110deg,rgba(126,47,169,.18),rgba(255,255,255,.025))] p-5 sm:p-6">
+                      <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h4 className="text-sm font-semibold text-white">Ongoing management</h4><span className="rounded-full border border-[#d5a0ff]/25 px-3 py-1 font-mono text-[9px] tracking-[.12em] text-[#e1b9ff]">₹3,000 / MONTH</span></div>
+                      <ul className="grid gap-3 sm:grid-cols-2">{selectedPlan.monthlyFeatures.map(feature=><li key={feature} className="flex gap-2.5 text-xs leading-5 text-[#c9bfd3]"><Check size={14} className="mt-0.5 shrink-0 text-[#d7a0ff]"/>{feature}</li>)}</ul>
+                    </div>}
+
+                    <div className="relative mt-8 flex flex-col justify-between gap-5 border-t border-white/10 pt-6 sm:flex-row sm:items-end">
+                      <p className="max-w-xl text-[11px] leading-5 text-[#958da0]">{selectedPlan.note}</p>
+                      <a href="/#contact" className="inline-flex shrink-0 items-center justify-center gap-3 rounded-full bg-white px-6 py-3.5 text-xs font-bold text-[#100d16] transition hover:-translate-y-1 hover:bg-[#e7c9ff]">Discuss this plan <ArrowUpRight size={15}/></a>
+                    </div>
+                  </motion.article>
+                </AnimatePresence>
+              </div>
             </div>
+            <p className="mt-7 text-center font-mono text-[9px] tracking-[.14em] text-[#777080]">CLEAR SCOPE · SECURE DELIVERY · NO SURPRISES</p>
           </div>
         </section>
 
@@ -205,9 +278,9 @@ export default function ServicesPage() {
                     <p className="max-w-2xl text-sm leading-relaxed text-[var(--mq-muted)] md:pt-5">{category.intro}</p>
                   </div>
                   <div className="grid gap-px bg-[var(--mq-border)] sm:grid-cols-2 xl:grid-cols-4">
-                    {category.services.map((service,index)=><article key={service.name} className="bg-[var(--mq-surface)] p-5 sm:p-6">
+                    {category.services.map((service,index)=><article key={service.name} className="group bg-[var(--mq-surface)] p-5 transition duration-300 hover:-translate-y-1 hover:bg-[#1c1724] sm:p-6">
                       <p className="font-mono text-[9px] tracking-[.14em] text-[var(--mq-accent-soft)]">{category.number}.{String(index+1).padStart(2,'0')} · {service.group}</p>
-                      <h4 className="mt-3 text-base font-semibold">{service.name}</h4>
+                      <h4 className="mt-3 text-base font-semibold transition-colors group-hover:text-[#e2baff]">{service.name}</h4>
                       <p className="mt-2 text-xs leading-relaxed text-[var(--mq-muted)]">{service.description}</p>
                       <a href="/#contact" className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--mq-text-secondary)] transition hover:text-[#d8a9ff]">Discuss workflow <ArrowUpRight size={13}/></a>
                     </article>)}
