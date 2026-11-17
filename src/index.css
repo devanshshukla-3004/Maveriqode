@@ -26,24 +26,24 @@
   --mq-grid-line: rgba(236, 235, 230, 0.028);
 }
 
-:root[data-theme="opaline"] {
+:root[data-theme="titanium"] {
   color-scheme: light;
-  --mq-bg: #eeeaf5;
-  --mq-bg-elevated: #f7f3fb;
-  --mq-surface: #f9f6fc;
-  --mq-surface-card: #fbf8ff;
-  --mq-surface-inset: #e7e0f0;
-  --mq-surface-widget: #f3eef9;
-  --mq-border: #d8cfe5;
-  --mq-border-strong: #bfb1d2;
-  --mq-text: #21182f;
-  --mq-text-secondary: #51445f;
-  --mq-muted: #796b88;
-  --mq-violet: #7540c8;
-  --mq-blue: #4259b8;
-  --mq-accent-soft: #7441b8;
+  --mq-bg: #edf0f4;
+  --mq-bg-elevated: #f7f8fa;
+  --mq-surface: #ffffff;
+  --mq-surface-card: #f9fafc;
+  --mq-surface-inset: #e3e7ed;
+  --mq-surface-widget: #f2f4f7;
+  --mq-border: #d6dce5;
+  --mq-border-strong: #aeb8c7;
+  --mq-text: #151c29;
+  --mq-text-secondary: #354154;
+  --mq-muted: #586579;
+  --mq-violet: #7138d5;
+  --mq-blue: #3157b7;
+  --mq-accent-soft: #6335bd;
   --mq-serif-shadow: none;
-  --mq-grid-line: rgba(76, 52, 104, 0.075);
+  --mq-grid-line: rgba(38, 51, 72, 0.065);
 }
 
 @layer base {
@@ -85,7 +85,7 @@
     animation: mq-grain-shift 0.72s steps(6, end) infinite;
   }
 
-  :root[data-theme="opaline"] .mq-hero-grain {
+  :root[data-theme="titanium"] .mq-hero-grain {
     opacity: 0.05;
   }
 
@@ -428,86 +428,114 @@
 }
 
 
-/* Opaline signature tone — pearl-lilac canvas, ink-plum type, amethyst light. */
-:root[data-theme="opaline"] body {
+/* TITANIUM — precision silver surfaces, graphite ink, restrained violet-blue. */
+:root[data-theme="titanium"] body {
   background:
-    radial-gradient(ellipse at 82% 4%, rgba(169, 133, 221, .18), transparent 34%),
-    radial-gradient(ellipse at 8% 42%, rgba(122, 145, 222, .11), transparent 38%),
+    radial-gradient(ellipse at 84% 0%, rgba(112, 133, 171, .11), transparent 32%),
+    radial-gradient(ellipse at 4% 46%, rgba(113, 56, 213, .055), transparent 34%),
     var(--mq-bg);
 }
 
-:root[data-theme="opaline"] .mq-hero-grain {
-  opacity: .035;
+:root[data-theme="titanium"] .mq-hero-grain {
+  opacity: .018;
   mix-blend-mode: multiply;
 }
 
-:root[data-theme="opaline"] .mq-pricing-grid {
+:root[data-theme="titanium"] .mq-pricing-grid {
   background-image:
-    linear-gradient(rgba(105, 78, 145, .07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(105, 78, 145, .07) 1px, transparent 1px);
+    linear-gradient(rgba(55, 69, 91, .065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(55, 69, 91, .065) 1px, transparent 1px);
 }
 
-:root[data-theme="opaline"] .mq-pricing-aurora {
-  background: radial-gradient(circle, rgba(151, 96, 211, .2), rgba(110, 127, 205, .11) 42%, transparent 72%);
+:root[data-theme="titanium"] .mq-pricing-aurora {
+  background: radial-gradient(circle, rgba(113, 56, 213, .12), rgba(49, 87, 183, .075) 42%, transparent 72%);
 }
 
-:root[data-theme="opaline"] .mq-pricing-orbit {
-  border-color: rgba(111, 78, 151, .18);
-  box-shadow: 0 0 0 34px rgba(111, 78, 151, .035), 0 0 0 82px rgba(111, 78, 151, .02);
+:root[data-theme="titanium"] .mq-pricing-orbit {
+  border-color: rgba(75, 91, 117, .17);
+  box-shadow: 0 0 0 34px rgba(75, 91, 117, .035), 0 0 0 82px rgba(75, 91, 117, .018);
 }
 
-:root[data-theme="opaline"] .mq-plan-choice {
-  border-color: #d7cce4;
+:root[data-theme="titanium"] .mq-plan-choice {
+  border-color: #d4dbe5;
+  background: linear-gradient(125deg, #ffffff, #f5f7fa 58%, #e9edf3);
+  box-shadow: 0 18px 44px rgba(25, 37, 56, .10), inset 0 1px 0 #fff;
+}
+
+:root[data-theme="titanium"] .mq-plan-choice::before {
   background:
-    radial-gradient(ellipse at 92% 8%, rgba(164, 124, 211, .12), transparent 42%),
-    linear-gradient(120deg, #fbf8ff, #f2edf8 62%, #eee9f6);
-  box-shadow: 0 16px 38px rgba(67, 45, 91, .09), inset 0 1px 0 rgba(255,255,255,.9);
+    radial-gradient(ellipse at 92% 8%, rgba(113, 56, 213, .10), transparent 42%),
+    linear-gradient(120deg, transparent 35%, rgba(255,255,255,.78), transparent 70%);
 }
 
-:root[data-theme="opaline"] .mq-plan-choice::before {
-  background:
-    radial-gradient(ellipse at 92% 8%, rgba(145, 91, 198, .13), transparent 42%),
-    linear-gradient(120deg, transparent 35%, rgba(255,255,255,.52), transparent 70%);
+:root[data-theme="titanium"] .mq-plan-choice::after {
+  background: linear-gradient(90deg, transparent, rgba(113, 56, 213, .12), transparent);
 }
 
-:root[data-theme="opaline"] .mq-plan-choice::after {
-  background: linear-gradient(90deg, transparent, rgba(122, 77, 181, .13), transparent);
-}
-
-:root[data-theme="opaline"] .mq-plan-choice:hover,
-:root[data-theme="opaline"] .mq-plan-choice:focus-visible {
-  border-color: rgba(117, 64, 200, .48);
-  box-shadow: 0 22px 48px rgba(80, 53, 119, .15), inset 0 1px 0 #fff;
+:root[data-theme="titanium"] .mq-plan-choice:hover,
+:root[data-theme="titanium"] .mq-plan-choice:focus-visible {
+  border-color: rgba(99, 53, 189, .48);
+  box-shadow: 0 24px 54px rgba(31, 43, 65, .15), inset 0 1px 0 #fff;
   filter: none;
 }
 
-:root[data-theme="opaline"] .mq-plan-choice .mq-plan-sheen {
-  background: radial-gradient(ellipse at 85% 50%, rgba(137, 91, 194, .17), transparent 65%);
+:root[data-theme="titanium"] .mq-plan-choice .mq-plan-sheen {
+  background: radial-gradient(ellipse at 85% 50%, rgba(113, 56, 213, .13), transparent 65%);
 }
 
-:root[data-theme="opaline"] .mq-plan-active {
-  border-color: rgba(117, 64, 200, .58) !important;
+:root[data-theme="titanium"] .mq-plan-active {
+  border-color: rgba(99, 53, 189, .62) !important;
   background:
-    radial-gradient(ellipse at 95% 5%, rgba(174, 132, 225, .24), transparent 52%),
-    linear-gradient(115deg, #e9def7, #f8f3fc 66%, #e9e8f8) !important;
-  box-shadow: 0 22px 52px rgba(93, 58, 140, .17), inset 0 1px 0 #fff, 0 0 0 1px rgba(117,64,200,.1) !important;
+    radial-gradient(ellipse at 95% 5%, rgba(113, 56, 213, .16), transparent 52%),
+    linear-gradient(120deg, #e4e9f3, #ffffff 62%, #eee9fa) !important;
+  box-shadow: 0 24px 56px rgba(48, 55, 83, .17), inset 0 1px 0 #fff, 0 0 0 1px rgba(99,53,189,.10) !important;
 }
 
-:root[data-theme="opaline"] .mq-category-active {
+:root[data-theme="titanium"] .mq-category-active {
+  background: linear-gradient(120deg, #e5eaf4, #fff 62%, #eee9fa) !important;
+}
+
+/* The plans carousel keeps its cinematic layout, but now belongs to the same silver system. */
+:root[data-theme="titanium"] #solutions {
   background:
-    radial-gradient(ellipse at 95% 5%, rgba(174,132,225,.2), transparent 54%),
-    linear-gradient(115deg, #e9def7, #f8f3fc 68%, #e9e8f8) !important;
+    radial-gradient(ellipse at 50% 0%, rgba(113,56,213,.075), transparent 38%),
+    linear-gradient(180deg, #e9edf3, #f4f6f9 52%, #e8edf3) !important;
+}
+:root[data-theme="titanium"] #solutions .mq-blueprint-grid { opacity: .52 !important; }
+:root[data-theme="titanium"] #solutions h2,
+:root[data-theme="titanium"] #solutions h3 { color: #151c29 !important; }
+:root[data-theme="titanium"] #solutions p { color: #536075; }
+:root[data-theme="titanium"] #solutions .text-white { color: #151c29 !important; }
+:root[data-theme="titanium"] #solutions .text-\[\#aaa1b4\],
+:root[data-theme="titanium"] #solutions .text-\[\#aaa4b5\] { color: #657186 !important; }
+:root[data-theme="titanium"] #solutions .text-\[\#d2ccda\] { color: #3e4a5d !important; }
+:root[data-theme="titanium"] #solutions .text-\[\#91899f\] { color: #687489 !important; }
+:root[data-theme="titanium"] #solutions .border-white\/10,
+:root[data-theme="titanium"] #solutions .border-white\/15,
+:root[data-theme="titanium"] #solutions .border-white\/50 { border-color: #d4dbe5 !important; }
+:root[data-theme="titanium"] #solutions .bg-white\/\[\.035\],
+:root[data-theme="titanium"] #solutions .bg-white\/\[\.07\],
+:root[data-theme="titanium"] #solutions .bg-white\/\[\.08\] { background-color: rgba(255,255,255,.72) !important; }
+:root[data-theme="titanium"] #solutions .bg-\[linear-gradient\(155deg\,\#17151f\,\#111018_58\%\,\#141321\)\] {
+  background: linear-gradient(145deg, #ffffff, #f0f3f7 62%, #e7ebf2) !important;
+}
+:root[data-theme="titanium"] #solutions article {
+  border-color: #cbd3df !important;
+  box-shadow: 0 34px 90px rgba(27, 39, 59, .20) !important;
+}
+:root[data-theme="titanium"] #solutions article > div:first-child {
+  background-image: linear-gradient(130deg, #202b3d, #303b55 58%, #3c3470) !important;
+}
+:root[data-theme="titanium"] #solutions article > div:first-child p { color: #f5f7fb !important; }
+:root[data-theme="titanium"] #solutions article > div:first-child > div:first-child {
+  opacity: .12 !important;
+}
+:root[data-theme="titanium"] #solutions article .text-\[\#b77aff\] { color: #7138d5 !important; }
+:root[data-theme="titanium"] #solutions article .bg-gradient-to-r.from-\[\#7627bd\] {
+  color: #fff !important;
 }
 
-/* Bring dark-only showcase surfaces into the Opaline palette without changing layout. */
-:root[data-theme="opaline"] .bg-\[var\(--mq-bg\)\] { background-color: var(--mq-bg); }
-:root[data-theme="opaline"] .text-white { color: var(--mq-text); }
-:root[data-theme="opaline"] .text-\[\#f4f0fa\] { color: var(--mq-text); }
-:root[data-theme="opaline"] .text-\[\#d2ccda\] { color: var(--mq-text-secondary); }
-:root[data-theme="opaline"] .text-\[\#aaa4b5\],
-:root[data-theme="opaline"] .text-\[\#aaa1b4\] { color: var(--mq-muted); }
-:root[data-theme="opaline"] .border-white\/10 { border-color: var(--mq-border); }
-:root[data-theme="opaline"] .bg-white\/\[\.035\] { background-color: rgba(255,255,255,.55); }
-:root[data-theme="opaline"] .bg-\[linear-gradient\(155deg\,\#17151f\,\#111018_58\%\,\#141321\)\] {
-  background: linear-gradient(155deg, #fbf8ff, #f0eaf7 58%, #e9e7f4);
-}
+/* Light surfaces retain crisp contrast across the rest of the site. */
+:root[data-theme="titanium"] .bg-\[var\(--mq-bg\)\] { background-color: var(--mq-bg); }
+:root[data-theme="titanium"] .text-white { color: var(--mq-text); }
+:root[data-theme="titanium"] .border-white\/10 { border-color: var(--mq-border); }
