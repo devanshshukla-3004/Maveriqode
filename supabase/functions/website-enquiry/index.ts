@@ -47,7 +47,7 @@ Deno.serve(async (req: Request) => {
 
   if (name.length < 2 || name.length > 120) return json(400, { error: "Enter a name between 2 and 120 characters." });
   if (email.length < 6 || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json(400, { error: "Enter a valid email address." });
-  if (!/^\\+?[0-9][0-9\\s().-]{6,18}$/.test(phone)) return json(400, { error: "Enter a valid phone number." });
+  if (phone && !/^\\+?[0-9][0-9\\s().-]{6,18}$/.test(phone)) return json(400, { error: "Enter a valid phone number." });
   if (service.length < 2 || service.length > 120) return json(400, { error: "Select a valid service." });
   if (message.length > 5000) return json(400, { error: "Message is too long." });
 
@@ -67,7 +67,7 @@ Deno.serve(async (req: Request) => {
     if (Number(attempts) > 5) return json(429, { error: "Too many requests. Please try again later or email us directly." });
 
     const { error: insertError } = await supabase.from("website_enquiries").insert({
-      name, email, phone, service, message, status: "new", admin_notes: "",
+      name, email, phone: phone || "", service, message, status: "new", admin_notes: "",
     });
     if (insertError) throw insertError;
 
