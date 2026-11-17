@@ -10,6 +10,7 @@ import { ToastMessage, ToastNotification } from './components/ToastNotification'
 import { SectionDivider } from './components/SectionDivider';
 import { ThemeToggle, ThemeTone } from './components/ThemeToggle';
 import { LazySection } from './components/LazySection';
+import { ManagedPageSection } from './components/ManagedPageSection';
 import {
   NavSectionId,
   PRIMARY_NAV_ITEMS,
@@ -250,7 +251,7 @@ export default function App() {
             minHeightPx={760}
           >
             <GlobalSectionReveal>
-              <CompanySection onNotify={showToast} />
+              <ManagedPageSection slug="company"><CompanySection onNotify={showToast} /></ManagedPageSection>
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
@@ -260,7 +261,7 @@ export default function App() {
             minHeightPx={780}
           >
             <GlobalSectionReveal>
-              <CapabilitiesSection onRequestService={handleRequestWithService} />
+              <ManagedPageSection slug="capabilities"><CapabilitiesSection onRequestService={handleRequestWithService} /></ManagedPageSection>
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />

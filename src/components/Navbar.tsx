@@ -70,8 +70,9 @@ export function Navbar({ activeSection, onNavigate }: NavbarProps) {
             return (
               <a
                 key={item.id}
-                href={`#${item.id}`}
+                href={item.id === 'solutions' ? '/services' : `#${item.id}`}
                 onClick={(e) => {
+                  if (item.id === 'solutions') { setMobileOpen(false); return; }
                   e.preventDefault();
                   handleSelect(item.id);
                 }}
@@ -143,7 +144,7 @@ export function Navbar({ activeSection, onNavigate }: NavbarProps) {
                 return (
                   <motion.a
                     key={item.id}
-                    href={`#${item.id}`}
+                    href={item.id === 'solutions' ? '/services' : `#${item.id}`}
                     initial={shouldReduceMotion ? false : { opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={
@@ -152,6 +153,7 @@ export function Navbar({ activeSection, onNavigate }: NavbarProps) {
                         : { duration: 0.2, delay: idx * 0.035, ease: [0.16, 1, 0.3, 1] }
                     }
                     onClick={(e) => {
+                      if (item.id === 'solutions') { setMobileOpen(false); return; }
                       e.preventDefault();
                       handleSelect(item.id);
                     }}
