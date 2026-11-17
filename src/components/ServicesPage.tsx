@@ -124,6 +124,7 @@ export default function ServicesPage() {
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [enquiryName, setEnquiryName] = useState('');
   const [enquiryEmail, setEnquiryEmail] = useState('');
+  const [enquiryPhone, setEnquiryPhone] = useState('');
   const [enquiryOrganization, setEnquiryOrganization] = useState('');
   const [enquiryDetails, setEnquiryDetails] = useState('');
   const [selectedWorkflow, setSelectedWorkflow] = useState('');
@@ -155,8 +156,9 @@ export default function ServicesPage() {
     if (enquirySubmitting) return;
     const name = enquiryName.trim();
     const email = enquiryEmail.trim();
+    const phone = enquiryPhone.trim();
     if (name.length < 2) { setEnquiryError('Please enter your name or organization.'); return; }
-    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) { setEnquiryError('Please enter a valid email address.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setEnquiryError('Please enter a valid email address.'); return; }
     setEnquirySubmitting(true);
     setEnquiryError('');
     const selected = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
@@ -168,14 +170,14 @@ export default function ServicesPage() {
       selectedWorkflow ? `Selected automation workflow: ${selectedWorkflow}` : '',
       enquiryOrganization.trim() ? `Business / organization: ${enquiryOrganization.trim()}` : '',
       enquiryDetails.trim() ? `Project details: ${enquiryDetails.trim()}` : '',
-    ].filter(Boolean).join('\\n');
+    ].filter(Boolean).join('\n');
     const { error } = await supabase.functions.invoke('website-enquiry', {
-      body: { name, email, service: selected.label, message, website: '' },
+      body: { name, email, phone, service: selected.label, message, website: '' },
     });
     setEnquirySubmitting(false);
     if (error) { setEnquiryError('We could not submit your enquiry right now. Please try again or email maveriqode@gmail.com.'); return; }
     setEnquirySuccess(true);
-    setEnquiryName(''); setEnquiryEmail(''); setEnquiryOrganization(''); setEnquiryDetails('');
+    setEnquiryName(''); setEnquiryEmail(''); setEnquiryPhone(''); setEnquiryOrganization(''); setEnquiryDetails('');
   };
 
 
@@ -486,12 +488,13 @@ export default function ServicesPage() {
                   <button type="button" onClick={()=>setEnquiryOpen(false)} disabled={enquirySubmitting} aria-label="Close enquiry form" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:border-white/30 hover:text-white">×</button>
                 </div>
                 {enquirySuccess ? (
-                  <div role="status" className="py-12 text-center"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-400/10 text-emerald-300"><Check size={24}/></span><h3 className="mt-5 text-2xl font-semibold text-white">Enquiry received.</h3><p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#aaa1b4]">Thanks for considering MAVERIQODE. Your selected plan and project details have been sent to our team. We’ll get in touch using your email.</p><button type="button" onClick={()=>setEnquiryOpen(false)} className="mt-7 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#100d16] transition hover:bg-[#e7c9ff]">Done</button></div>
+                  <div role="status" className="py-12 text-center"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-400/10 text-emerald-300"><Check size={24}/></span><h3 className="mt-5 text-2xl font-semibold text-white">Enquiry received.</h3><p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#aaa1b4]">Thanks for considering MAVERIQODE. Your selected plan and project details have been sent to our team. We’ll get in touch using your email or phone.</p><button type="button" onClick={()=>setEnquiryOpen(false)} className="mt-7 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#100d16] transition hover:bg-[#e7c9ff]">Done</button></div>
                 ) : (
                   <form onSubmit={handleEnquirySubmit} className="relative mt-7 grid gap-4">
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Name / contact person<input required minLength={2} maxLength={120} value={enquiryName} onChange={e=>setEnquiryName(e.target.value)} placeholder="Your name" className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#b65cff]"/></label>
                       <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Email address<input required type="email" maxLength={254} value={enquiryEmail} onChange={e=>setEnquiryEmail(e.target.value)} placeholder="you@company.com" className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#b65cff]"/></label>
+                      <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Phone number<input required type="tel" inputMode="tel" autoComplete="tel" minLength={7} maxLength={20} value={enquiryPhone} onChange={e=>setEnquiryPhone(e.target.value)} placeholder="98765 43210" className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#b65cff]"/></label>
                     </div>
                     <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Business / organization <span className="font-normal text-[#82788f]">Optional</span><input maxLength={180} value={enquiryOrganization} onChange={e=>setEnquiryOrganization(e.target.value)} placeholder="Company or organization name" className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#b65cff]"/></label>
                     <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Selected plan<select value={selectedPlanId} onChange={e=>{setSelectedPlanId(e.target.value);if(e.target.value!=='automation')setSelectedWorkflow('');}} className="w-full rounded-xl border border-[#b65cff]/35 bg-[#17111f] px-4 py-3.5 text-sm text-white outline-none focus:border-[#d7a0ff]">{plans.map(plan=><option key={plan.id} value={plan.id}>{plan.label} — {plan.price} ({plan.cadence})</option>)}</select></label>
