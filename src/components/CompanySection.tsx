@@ -98,7 +98,7 @@ export function CompanySection({ onNotify }: CompanySectionProps) {
               variants={shouldReduceMotion ? undefined : TEXT_REVEAL_VARIANTS}
               className="font-mono text-xs text-[var(--mq-accent-soft)] mb-3"
             >
-              01 · Company
+              05 · Company
             </motion.p>
             <motion.h2
               variants={shouldReduceMotion ? undefined : TEXT_REVEAL_VARIANTS}
