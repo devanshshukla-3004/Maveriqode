@@ -174,11 +174,11 @@ export function HeroWorkbench({ onNavigate, theme }: HeroWorkbenchProps) {
         });
       }
 
-      const isSlate = themeRef.current === 'slate';
+      const isOpaline = themeRef.current === 'opaline';
 
       // Architectural radial coordinate rings anchored around core node
       ctx.save();
-      ctx.strokeStyle = isSlate ? 'rgba(180, 183, 191, 0.10)' : 'rgba(42, 43, 49, 0.75)';
+      ctx.strokeStyle = isOpaline ? 'rgba(91, 67, 122, 0.16)' : 'rgba(42, 43, 49, 0.75)';
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 5]);
       ctx.beginPath();
@@ -216,27 +216,27 @@ export function HeroWorkbench({ onNavigate, theme }: HeroWorkbenchProps) {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
         ctx.fillStyle = n.primary
-          ? isSlate
-            ? '#212638'
+          ? isOpaline
+            ? '#e4d9f0'
             : '#171522'
-          : isSlate
-          ? '#1a1f2d'
+          : isOpaline
+          ? '#f5effa'
           : '#15161a';
         ctx.fill();
         ctx.lineWidth = n.primary ? 1.8 : 1.1;
         ctx.strokeStyle = n.primary
           ? '#a100ff'
-          : isSlate
-          ? '#41495d'
+          : isOpaline
+          ? '#c7b5d9'
           : '#2a2b31';
         ctx.stroke();
 
-        ctx.fillStyle = '#ecebe6';
+        ctx.fillStyle = isOpaline ? '#2a2039' : '#ecebe6';
         ctx.font = `600 ${width < 768 ? 9 : 10.5}px "Archivo", sans-serif`;
         ctx.textAlign = 'center';
         ctx.fillText(n.title, n.x, n.y - 2);
 
-        ctx.fillStyle = n.primary ? '#d28cff' : '#b4b7bf';
+        ctx.fillStyle = n.primary ? (isOpaline ? '#7540c8' : '#d28cff') : (isOpaline ? '#766987' : '#b4b7bf');
         ctx.font = `400 ${width < 768 ? 7.5 : 9}px "JetBrains Mono", monospace`;
         ctx.fillText(n.sub, n.x, n.y + 13);
       });
@@ -385,7 +385,7 @@ export function HeroWorkbench({ onNavigate, theme }: HeroWorkbenchProps) {
         aria-hidden="true"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(236, 235, 230, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 235, 230, 0.03) 1px, transparent 1px)',
+            theme === 'opaline' ? 'linear-gradient(rgba(76, 52, 104, 0.075) 1px, transparent 1px), linear-gradient(90deg, rgba(76, 52, 104, 0.075) 1px, transparent 1px)' : 'linear-gradient(rgba(236, 235, 230, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 235, 230, 0.03) 1px, transparent 1px)',
           backgroundSize: '48px 48px',
           ...(shouldReduceMotion ? {} : { y: gridY, opacity: gridOpacity }),
         }}
