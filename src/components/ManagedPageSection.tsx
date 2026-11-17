@@ -43,7 +43,7 @@ export function ManagedPageSection({ slug, children }: { slug: 'company' | 'capa
   useEffect(() => {
     let active = true;
     void supabase.from('website_content').select('title,content').eq('slug', slug).eq('status', 'published').maybeSingle()
-      .then(({ data, error }) => {
+      .then(({ data, error }: { data: any; error: any }) => {
         if (!active) return;
         if (!error && data && data.content && typeof data.content === 'object' && !Array.isArray(data.content)) {
           const content = data.content as PageContent;
