@@ -156,7 +156,7 @@ export default function ServicesPage() {
     const name = enquiryName.trim();
     const email = enquiryEmail.trim();
     if (name.length < 2) { setEnquiryError('Please enter your name or organization.'); return; }
-    if (!/^[^\s@]+@[^\s@]+\\.[^\s@]+$/.test(email)) { setEnquiryError('Please enter a valid email address.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setEnquiryError('Please enter a valid email address.'); return; }
     setEnquirySubmitting(true);
     setEnquiryError('');
     const selected = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
