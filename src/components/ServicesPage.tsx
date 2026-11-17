@@ -80,7 +80,7 @@ const categories: Category[] = [
   },
 ];
 
-const fallbackPlans: Plan[] = [
+export const fallbackPlans: Plan[] = [
   {
     id: 'website', label: 'Website Development', price: '₹5,000', cadence: 'one-time',
     summary: 'A complete business website, ready to represent your brand online.',
@@ -325,7 +325,7 @@ export default function ServicesPage() {
                     </div>
 
                     {selectedPlan.monthlyFeatures&&<div className="relative mt-8 rounded-2xl border border-[#bd7bff]/25 bg-[linear-gradient(110deg,rgba(126,47,169,.18),rgba(255,255,255,.025))] p-5 sm:p-6">
-                      <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h4 className="text-sm font-semibold text-white">Ongoing management</h4><span className="rounded-full border border-[#d5a0ff]/25 px-3 py-1 font-mono text-[9px] tracking-[.12em] text-[#e1b9ff]">₹3,000 / MONTH</span></div>
+                      <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h4 className="text-sm font-semibold text-white">Ongoing management</h4><span className="rounded-full border border-[#d5a0ff]/25 px-3 py-1 font-mono text-[9px] tracking-[.12em] text-[#e1b9ff]">{selectedPlan.monthly || 'Ongoing management'}</span></div>
                       <ul className="grid gap-3 sm:grid-cols-2">{selectedPlan.monthlyFeatures.map(feature=><li key={feature} className="flex gap-2.5 text-xs leading-5 text-[#c9bfd3]"><Check size={14} className="mt-0.5 shrink-0 text-[#d7a0ff]"/>{feature}</li>)}</ul>
                     </div>}
 
