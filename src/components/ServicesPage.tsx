@@ -181,9 +181,12 @@ export default function ServicesPage() {
               <p className="max-w-md text-sm leading-7 text-[#a6a0b2]">Five ways to move forward. Select a plan to explore what is included, how it is managed and what happens after launch.</p>
             </div>
 
-            <div className="grid items-start gap-6 xl:grid-cols-[.72fr_1.28fr]">
+            <div className="grid items-start gap-8 xl:grid-cols-[.82fr_1.18fr]">
+              <div className="relative">
+                <div className="mb-5 flex items-center justify-between px-1"><span className="font-mono text-[9px] tracking-[.22em] text-[#9d91ac]">SELECT YOUR PACKAGE</span><span className="font-mono text-[9px] tracking-[.18em] text-[#b65cff]">05 OPTIONS / 01 CHOICE</span></div>
+                <div aria-hidden="true" className="pointer-events-none absolute -left-3 top-16 bottom-4 w-px bg-gradient-to-b from-transparent via-[#9b4cce]/50 to-transparent" />
               <motion.div
-                className="mq-plan-stack grid gap-3 sm:grid-cols-2 xl:grid-cols-1"
+                className="mq-plan-stack grid gap-4 sm:grid-cols-2 xl:grid-cols-1"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.18 }}
@@ -199,20 +202,20 @@ export default function ServicesPage() {
                     whileHover={reduceMotion?undefined:{x:8,y:-5,rotateY:2,scale:1.015}}
                     whileTap={reduceMotion?undefined:{scale:.985}}
                     style={{ transformStyle: 'preserve-3d', perspective: 900, zIndex: selectedPlanId === plan.id ? 2 : 1 }}
-                    className={`mq-plan-choice group relative w-full overflow-hidden rounded-2xl border p-5 text-left transition-colors duration-300 sm:p-6 ${selectedPlanId===plan.id?'mq-plan-active border-[#b65cff]/80 bg-[#24132f] shadow-[0_12px_45px_rgba(145,42,210,.17)]':'border-white/10 bg-white/[.025] hover:border-white/25 hover:bg-white/[.055]'}`}
+                    className={`mq-plan-choice group relative w-full overflow-hidden rounded-[22px] border p-5 text-left transition-colors duration-300 sm:p-6 ${selectedPlanId===plan.id?'mq-plan-active border-[#b65cff]/80 bg-[#24132f] shadow-[0_12px_45px_rgba(145,42,210,.17)]':'border-white/10 bg-white/[.025] hover:border-white/25 hover:bg-white/[.055]'}`}
                     aria-pressed={selectedPlanId===plan.id}
                   >
                     <span aria-hidden="true" className="mq-plan-sheen pointer-events-none absolute inset-0" />
                     {selectedPlanId===plan.id&&<motion.span layoutId="plan-active-rail" className="absolute inset-y-4 left-0 w-[3px] rounded-r-full bg-gradient-to-b from-[#f0c8ff] to-[#8b3dff]" />}
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0">
                         <p className={`font-mono text-[9px] tracking-[.2em] ${selectedPlanId===plan.id?'text-[#e2baff]':'text-[#777181]'}`}>{String(index+1).padStart(2,'0')} / MAVERIQODE PLAN</p>
-                        <h3 className="mt-3 text-lg font-semibold tracking-tight text-white">{plan.label}</h3>
+                        <h3 className="mt-2 text-lg font-semibold tracking-tight text-white sm:text-xl">{plan.label}</h3>
                       </div>
                       <span className={`mt-1 flex h-8 w-8 items-center justify-center rounded-full border transition ${selectedPlanId===plan.id?'border-[#d5a0ff]/60 bg-[#b65cff]/20 text-[#f0d8ff]':'border-white/10 text-[#7d7788] group-hover:text-white'}`}><ArrowUpRight size={15}/></span>
                     </div>
-                    <div className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                      <span className="text-3xl font-bold tracking-[-.05em] text-white">{plan.price}</span>
+                    <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                      <span className="text-3xl font-bold tracking-[-.06em] text-white sm:text-[2.15rem]">{plan.price}</span>
                       <span className="text-[10px] text-[#a7a0b2]">{plan.cadence}</span>
                     </div>
                     {plan.monthly&&<p className="mt-2 text-xs font-semibold text-[#d7a0ff]">{plan.monthly}</p>}
@@ -220,6 +223,8 @@ export default function ServicesPage() {
                   </motion.button>
                 ))}
               </motion.div>
+              <div className="mt-5 flex items-center gap-3 px-1 text-[10px] tracking-[.08em] text-[#82788f]"><span className="h-px flex-1 bg-white/10" /> TAP A PLAN TO PREVIEW <span className="h-px flex-1 bg-white/10" /></div>
+              </div>
 
               <div className="relative min-h-[650px]">
                 <div aria-hidden="true" className="mq-plan-glow pointer-events-none absolute -inset-5 rounded-[38px] blur-2xl" />
