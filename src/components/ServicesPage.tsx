@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, ShieldCheck } from 'lucide-react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 type Service = { name: string; description: string; group: string };
 type Category = { id: string; number: string; title: string; intro: string; services: Service[] };
@@ -119,7 +119,6 @@ const fadeUp = { hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0 } };
 
 export default function ServicesPage() {
   const [activeCategory, setActiveCategory] = useState('all');
-  const [expanded, setExpanded] = useState<string | null>('business');
   const reduceMotion = useReducedMotion();
   const visibleCategories = useMemo(() => activeCategory === 'all' ? categories : categories.filter((category) => category.id === activeCategory), [activeCategory]);
 
