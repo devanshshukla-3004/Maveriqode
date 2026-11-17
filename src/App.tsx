@@ -10,6 +10,7 @@ import { ToastMessage, ToastNotification } from './components/ToastNotification'
 import { SectionDivider } from './components/SectionDivider';
 import { ThemeToggle, ThemeTone } from './components/ThemeToggle';
 import { LazySection } from './components/LazySection';
+import { ManagedPageSection } from './components/ManagedPageSection';
 import {
   NavSectionId,
   PRIMARY_NAV_ITEMS,
