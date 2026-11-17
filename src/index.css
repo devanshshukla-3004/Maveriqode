@@ -646,11 +646,3 @@
 }
 
 
-/* MAVERIQODE contact footer — orbiting engineering network */
-.mq-footer-orbit { transform-origin: 260px 210px; animation: mq-footer-orbit 32s linear infinite; }
-.mq-footer-orbit-line { stroke-dasharray: 7 9; animation: mq-footer-line 8s linear infinite; }
-.mq-footer-orbit-node { transform-box: fill-box; transform-origin: center; transition: filter .35s ease; }
-.mq-footer-orbit-node:hover { filter: drop-shadow(0 0 9px rgba(161,0,255,.32)); }
-@keyframes mq-footer-orbit { to { transform: rotate(360deg); } }
-@keyframes mq-footer-line { to { stroke-dashoffset: -64; } }
-@media (prefers-reduced-motion: reduce) { .mq-footer-orbit, .mq-footer-orbit-line { animation: none !important; } }
