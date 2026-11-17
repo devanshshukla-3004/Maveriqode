@@ -85,7 +85,7 @@ export default function App() {
   const [theme, setTheme] = useState<ThemeTone>(() => {
     if (typeof window === 'undefined') return 'obsidian';
     const savedTheme = window.localStorage.getItem('mq-theme');
-    return savedTheme === 'white' || savedTheme === 'slate' || savedTheme === 'opaline' ? 'opaline' : 'obsidian';
+    return savedTheme === 'white' || savedTheme === 'slate' || savedTheme === 'titanium' || savedTheme === 'titanium' ? 'titanium' : 'obsidian';
   });
   const nameInputRef = useRef<HTMLInputElement>(null);
   const activeSectionRef = useRef<NavSectionId>(activeSection);
@@ -98,8 +98,8 @@ export default function App() {
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === 'opaline') {
-      root.setAttribute('data-theme', 'opaline');
+    if (theme === 'titanium') {
+      root.setAttribute('data-theme', 'titanium');
     } else {
       root.removeAttribute('data-theme');
     }
@@ -111,7 +111,7 @@ export default function App() {
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'obsidian' ? 'opaline' : 'obsidian'));
+    setTheme((prev) => (prev === 'obsidian' ? 'titanium' : 'obsidian'));
   }, []);
 
   const showToast = useCallback((title: string, description: string) => {
