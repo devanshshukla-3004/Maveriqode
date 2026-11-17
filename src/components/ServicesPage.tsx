@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 
 type Service = { name: string; description: string; group: string };
 type Category = { id: string; number: string; title: string; intro: string; services: Service[] };
-type Plan = { id: string; label: string; price: string; cadence: string; summary: string; features: string[]; note?: string; monthly?: string; monthlyFeatures?: string[]; featured?: boolean; published?: boolean };
+type Plan = { id: string; label: string; price: string; originalPrice?: string; cadence: string; summary: string; features: string[]; note?: string; monthly?: string; monthlyFeatures?: string[]; featured?: boolean; published?: boolean };
 
 const categories: Category[] = [
   {
@@ -82,13 +82,13 @@ const categories: Category[] = [
 
 export const fallbackPlans: Plan[] = [
   {
-    id: 'website', label: 'Website Development', price: '₹5,000', cadence: 'one-time',
+    id: 'website', label: 'Website Development', price: '₹5,000', originalPrice: '₹7,500', cadence: 'one-time',
     summary: 'A complete business website, ready to represent your brand online.',
     features: ['Unlimited content pages', 'Responsive desktop, tablet and mobile design', 'SEO foundation and metadata setup', 'Domain and hosting configuration', 'Custom admin panel for supported content', 'Contact and enquiry forms', 'Performance optimization', 'HTTPS, SSL and security hardening'],
     note: 'Domain registration/renewal and premium third-party services are billed at actual cost where applicable.',
   },
   {
-    id: 'business', label: 'Complete Business System', price: '₹10,000', cadence: 'one-time setup',
+    id: 'business', label: 'Complete Business System', price: '₹10,000', originalPrice: '₹15,000', cadence: 'one-time setup',
     monthly: '₹3,000/month',
     summary: 'A connected digital operating system for your day-to-day business.',
     featured: true,
@@ -97,25 +97,27 @@ export const fallbackPlans: Plan[] = [
     note: 'The ₹3,000 monthly plan covers ongoing management. New modules, major redesigns, paid integrations and external usage charges are quoted separately.',
   },
   {
-    id: 'starter', label: 'Website + SEO Starter', price: '₹1,000', cadence: 'per month',
+    id: 'starter', label: 'Website + SEO Starter', price: '₹1,000', originalPrice: '₹1,500', cadence: 'per month',
     summary: 'A simple managed online presence for businesses getting started.',
     features: ['Business website setup', 'Hosting configuration', 'Basic on-page SEO', 'Search metadata and indexing setup', 'Routine website upkeep', 'Basic security updates'],
     note: 'Final scope, page structure, domain and hosting limits are confirmed before onboarding.',
   },
   {
-    id: 'automation', label: 'Business Automation', price: '₹2,000', cadence: 'per automation / month',
+    id: 'automation', label: 'Business Automation', price: '₹2,000', originalPrice: '₹2,500', cadence: 'per automation / month',
     summary: 'Automate one clearly defined repetitive business workflow.',
     features: ['One selected automation workflow', 'Workflow mapping and configuration', 'Supported app/API integrations', 'Testing and deployment', 'Error notifications and basic monitoring', 'Ongoing workflow maintenance'],
     note: 'Third-party platform subscriptions, API credits and AI usage are separate unless explicitly included in the proposal.',
   },
   {
-    id: 'app', label: 'Mobile App Development', price: '₹5,000', cadence: 'one-time development',
+    id: 'app', label: 'Mobile App Development', price: '₹5,000', originalPrice: '₹7,500', cadence: 'one-time development',
     monthly: '₹1,000/month after 3 free months',
     summary: 'A custom mobile app delivered against an agreed feature scope.',
     features: ['Custom app UI and user flows', 'Frontend and backend implementation', 'Database and API integration', 'Admin panel where required by scope', 'Testing and deployment assistance', 'Security-conscious authentication and data handling', 'First 3 months of management included'],
     note: 'After the first 3 months, optional ongoing management is ₹1,000/month. Store accounts, paid services and third-party charges are separate.',
   },
 ];
+
+const discountPercent = (original?: string, current?: string) => { const amount = (value?: string) => Number(String(value || '').replace(/[^0-9.]/g, '')); const was = amount(original); const now = amount(current); return was > now && now > 0 ? Math.round((1 - now / was) * 100) : 0; };
 
 const fadeUp = { hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0 } };
 
@@ -168,7 +170,8 @@ export default function ServicesPage() {
     const message = [
       'Service enquiry from the MAVERIQODE Services page.',
       `Selected plan: ${selected.label}`,
-      `Displayed pricing: ${selected.price} (${selected.cadence})`,
+      `Discounted pricing: ${selected.price} (${selected.cadence})`,
+      selected.originalPrice ? `Standard price: ${selected.originalPrice}` : '',
       selected.monthly ? `Additional management: ${selected.monthly}` : '',
       selectedWorkflow ? `Selected automation workflow: ${selectedWorkflow}` : '',
       enquiryOrganization.trim() ? `Business / organization: ${enquiryOrganization.trim()}` : '',
@@ -275,8 +278,10 @@ export default function ServicesPage() {
                       <span className={`mt-1 flex h-8 w-8 items-center justify-center rounded-full border transition ${selectedPlanId===plan.id?'border-[#d5a0ff]/60 bg-[#b65cff]/20 text-[#f0d8ff]':'border-white/10 text-[#7d7788] group-hover:text-white'}`}><ArrowUpRight size={15}/></span>
                     </div>
                     <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                      <span className="text-sm text-[#898194] line-through decoration-[#d7a0ff]/70">{plan.originalPrice || ''}</span>
                       <span className="text-3xl font-bold tracking-[-.06em] text-white sm:text-[2.15rem]">{plan.price}</span>
                       <span className="text-[10px] text-[#a7a0b2]">{plan.cadence}</span>
+                      {discountPercent(plan.originalPrice,plan.price)>0&&<span className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-2.5 py-1 font-mono text-[9px] font-bold tracking-[.1em] text-emerald-200">{discountPercent(plan.originalPrice,plan.price)}% OFF</span>}
                     </div>
                     {plan.monthly&&<p className="mt-2 text-xs font-semibold text-[#d7a0ff]">{plan.monthly}</p>}
                     {plan.featured&&<span className="mt-4 inline-flex rounded-full border border-[#c084fc]/30 bg-[#a100ff]/10 px-3 py-1 font-mono text-[9px] tracking-[.14em] text-[#e2baff]">MOST COMPLETE</span>}
@@ -311,7 +316,8 @@ export default function ServicesPage() {
                       </div>
                       <div className="md:text-right">
                         <p className="font-mono text-[9px] tracking-[.18em] text-[#9e91ad]">INVESTMENT</p>
-                        <p className="mt-2 whitespace-nowrap text-5xl font-bold tracking-[-.07em] text-white sm:text-6xl">{selectedPlan.price}</p>
+                        <div className="mt-2 flex flex-wrap items-center gap-3 md:justify-end"><span className="text-base text-[#a49aad] line-through decoration-[#d7a0ff]/70">{selectedPlan.originalPrice || ''}</span>{discountPercent(selectedPlan.originalPrice,selectedPlan.price)>0&&<span className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 py-1 font-mono text-[9px] font-bold tracking-[.1em] text-emerald-200">{discountPercent(selectedPlan.originalPrice,selectedPlan.price)}% OFF</span>}</div>
+                        <p className="whitespace-nowrap text-5xl font-bold tracking-[-.07em] text-white sm:text-6xl">{selectedPlan.price}</p>
                         <p className="mt-2 text-xs text-[#bca9ca]">{selectedPlan.cadence}</p>
                         {selectedPlan.monthly&&<p className="mt-2 text-sm font-semibold text-[#dfb5ff]">{selectedPlan.monthly}</p>}
                       </div>
