@@ -474,6 +474,7 @@ export function ContactFooter({
                 {item.label}
               </a>
             ))}
+            <a href="/admin" className="hover:text-[var(--mq-text)] transition-colors whitespace-nowrap">Admin</a>
             <AmbientSoundToggle />
           </div>
         </div>
