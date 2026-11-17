@@ -3,7 +3,6 @@ import { motion, MotionConfig, useReducedMotion } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { HeroWorkbench } from './components/HeroWorkbench';
 import { ContactFooter } from './components/ContactFooter';
-import { ManagedPageSection } from './components/ManagedPageSection';
 import { BackToTopButton } from './components/BackToTopButton';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
@@ -281,7 +280,7 @@ export default function App() {
             minHeightPx={520}
           >
             <GlobalSectionReveal>
-              <ManagedPageSection slug="work"><WorkSection onRequestSimilar={handleRequestWithService} /></ManagedPageSection>
+              <WorkSection onRequestSimilar={handleRequestWithService} />
             </GlobalSectionReveal>
           </LazySection>
         </main>
