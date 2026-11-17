@@ -186,8 +186,11 @@ export function ContactFooter({
   return (
     <footer
       id="contact"
-      className="scroll-mt-20 pt-24 pb-12 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
+      className="relative isolate scroll-mt-20 overflow-hidden pt-24 pb-10 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
     >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#a100ff]/70 to-transparent" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-12 h-[560px] w-[560px] rounded-full bg-[#7026d9]/10 blur-[150px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -left-48 bottom-0 h-[420px] w-[420px] rounded-full bg-[#3158d8]/[0.07] blur-[150px]" />
       <motion.div
         variants={shouldReduceMotion ? undefined : STAGGER_CONTAINER_VARIANTS}
         initial={shouldReduceMotion ? false : 'hidden'}
@@ -384,7 +387,7 @@ export function ContactFooter({
                       aria-hidden="true"
                     />
                     <span>
-                      Your enquiry has been received. Our team will review your project requirements and contact you. The MAVERIQODE team can now review it.
+                      Your enquiry is in. Our team will review the details and reach out using your preferred contact information.
                     </span>
                   </div>
                   <div className="flex items-center gap-4 shrink-0">
@@ -409,7 +412,45 @@ export function ContactFooter({
             </AnimatePresence>
           </form>
 
-          <div className="flex flex-col gap-3 font-mono text-sm lg:pt-1">
+          <div className="flex flex-col gap-5 font-mono text-sm lg:pt-1">
+            <div className="relative overflow-hidden rounded-[28px] border border-[var(--mq-border)] bg-[linear-gradient(145deg,rgba(25,20,42,.92),rgba(10,12,24,.96))] p-4 sm:p-6 shadow-[0_28px_90px_rgba(0,0,0,.28)]">
+              <div aria-hidden="true" className="absolute inset-0 mq-blueprint-grid opacity-35" />
+              <div className="relative z-10 mb-1 flex items-center justify-between gap-3">
+                <span className="font-mono text-[9px] tracking-[.22em] text-[#c5a3ff]">MAVERIQODE / CORE ATELIER</span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/20 bg-emerald-300/[0.07] px-2.5 py-1 font-mono text-[9px] text-emerald-200"><i className="h-1.5 w-1.5 rounded-full bg-emerald-300" /> SYSTEMS THINKING</span>
+              </div>
+              <svg viewBox="0 0 520 420" role="img" aria-label="MAVERIQODE core atelier connecting software engineering, AI systems, automation, security and infrastructure" className="relative z-10 mx-auto block w-full max-w-[520px] overflow-visible">
+                <defs>
+                  <radialGradient id="mqCoreGlow"><stop offset="0%" stopColor="#8b35ef" stopOpacity=".25"/><stop offset="100%" stopColor="#8b35ef" stopOpacity="0"/></radialGradient>
+                  <linearGradient id="mqCoreLine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#a100ff"/><stop offset="100%" stopColor="#4b68ff"/></linearGradient>
+                </defs>
+                <circle cx="260" cy="210" r="188" fill="none" stroke="rgba(190,160,255,.12)" strokeDasharray="2 8" className="mq-footer-orbit"/>
+                <circle cx="260" cy="210" r="150" fill="url(#mqCoreGlow)"/>
+                <g fill="none" stroke="url(#mqCoreLine)" strokeWidth="1.6" opacity=".9">
+                  <path className="mq-footer-orbit-line" d="M260 210 L115 92"/><path className="mq-footer-orbit-line" d="M260 210 L350 55"/><path className="mq-footer-orbit-line" d="M260 210 L438 246"/><path className="mq-footer-orbit-line" d="M260 210 L290 365"/><path className="mq-footer-orbit-line" d="M260 210 L78 310"/>
+                </g>
+                <g fill="#a88aff"><circle cx="187" cy="150" r="2.6"/><circle cx="307" cy="130" r="2.6"/><circle cx="350" cy="226" r="2.6"/><circle cx="275" cy="286" r="2.6"/><circle cx="168" cy="260" r="2.6"/></g>
+                <g className="mq-footer-orbit-node">
+                  <circle cx="260" cy="210" r="55" fill="#f0eef8" stroke="#a100ff" strokeWidth="2.2"/>
+                  <text x="260" y="205" textAnchor="middle" fill="#202437" fontSize="11" fontWeight="700">MAVERIQODE</text>
+                  <text x="260" y="224" textAnchor="middle" fill="#8051c9" fontSize="9" fontFamily="monospace">Core Atelier</text>
+                </g>
+                {[
+                  {x:115,y:92,title:'INFRA',sub:'Cloud Fabric'},
+                  {x:350,y:55,title:'SOFTWARE',sub:'Engineering'},
+                  {x:438,y:246,title:'AI SYSTEMS',sub:'Intelligence'},
+                  {x:290,y:365,title:'AUTOMATION',sub:'Integration'},
+                  {x:78,y:310,title:'SECURITY',sub:'Hardening'}
+                ].map((node) => (
+                  <g key={node.title} className="mq-footer-orbit-node">
+                    <circle cx={node.x} cy={node.y} r="39" fill="#f1f2f7" stroke="#cbd0df" strokeWidth="1"/>
+                    <text x={node.x} y={node.y-2} textAnchor="middle" fill="#273044" fontSize="10" fontWeight="700">{node.title}</text>
+                    <text x={node.x} y={node.y+13} textAnchor="middle" fill="#657086" fontSize="8.5" fontFamily="monospace">{node.sub}</text>
+                  </g>
+                ))}
+              </svg>
+              <p className="relative z-10 mx-auto max-w-[38ch] text-center font-sans text-xs leading-6 text-[var(--mq-muted)]">One connected engineering practice. From infrastructure and security to intelligent systems and automation.</p>
+            </div>
             <motion.div
               whileHover={
                 shouldReduceMotion
@@ -444,7 +485,7 @@ export function ContactFooter({
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[var(--mq-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-[var(--mq-muted)]">
+        <div className="relative pt-8 border-t border-[var(--mq-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-[var(--mq-muted)]">
           <span className="inline-flex items-center gap-2.5">
             <img
               src="/assets/aistudio/MAVERIQODE_symbol_only_transparent_149367a9.png"
