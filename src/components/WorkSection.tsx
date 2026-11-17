@@ -63,6 +63,40 @@ const visualStyles: Record<string, string> = {
   health: 'from-[#153632] via-[#1b3544] to-[#171b2d]',
 };
 
+function ProjectThumbnail({ visual }: { visual: string }) {
+  const palettes: Record<string, { accent: string; soft: string; title: string; subtitle: string }> = {
+    education: { accent: '#b99aff', soft: '#eee8ff', title: 'Learn. Grow. Achieve.', subtitle: 'Your learning journey starts here.' },
+    institute: { accent: '#83c8ff', soft: '#e5f4ff', title: 'Shape your future.', subtitle: 'Explore programmes and campus life.' },
+    fitness: { accent: '#ffad70', soft: '#fff0e4', title: 'TRAIN WITH PURPOSE', subtitle: 'Your fitness journey, managed.' },
+    health: { accent: '#82dfc2', soft: '#e5fff6', title: 'A healthier smile.', subtitle: 'Care designed around you.' },
+  };
+  const p = palettes[visual] ?? palettes.education;
+  return (
+    <div className="absolute inset-x-[7%] bottom-[-24%] top-[24%] rotate-[-2deg] overflow-hidden rounded-t-[15px] border border-white/30 bg-[#f8f7fb] shadow-[0_24px_65px_rgba(0,0,0,.42)] transition-transform duration-700 group-hover:rotate-0 group-hover:scale-[1.025]">
+      <div className="flex h-7 items-center gap-1.5 border-b border-black/5 bg-white px-3">
+        <i className="h-1.5 w-1.5 rounded-full bg-[#ff7777]" /><i className="h-1.5 w-1.5 rounded-full bg-[#f3c45e]" /><i className="h-1.5 w-1.5 rounded-full bg-[#65c98b]" />
+        <span className="ml-2 h-1.5 w-24 rounded-full bg-[#e9e7ef]" />
+        <span className="ml-auto h-1.5 w-9 rounded-full bg-[#e9e7ef]" />
+      </div>
+      {visual === 'fitness' ? (
+        <div className="grid h-full grid-cols-[30%_1fr]">
+          <div className="space-y-3 bg-[#171522] p-3"><div className="h-3 w-16 rounded bg-white/80"/><div className="mt-6 h-2 w-full rounded bg-white/20"/><div className="h-2 w-4/5 rounded bg-white/15"/><div className="h-2 w-5/6 rounded bg-white/15"/><div className="mt-8 h-7 rounded-md bg-[#ff9c5c]"/></div>
+          <div className="p-4"><div className="h-3 w-2/5 rounded bg-[#242235]"/><div className="mt-3 grid grid-cols-3 gap-2">{['Active','Plans','Visits'].map((x,i)=><div key={x} className="rounded-lg bg-white p-2 shadow-sm"><div className="h-1.5 w-8 rounded bg-[#d8d5e0]"/><div className="mt-2 text-sm font-bold text-[#262337]">{['128','06','42'][i]}</div></div>)}</div><div className="mt-3 h-20 rounded-lg bg-gradient-to-r from-[#ffe2cc] to-[#fff4eb] p-3"><div className="h-2 w-20 rounded bg-[#eaa16e]"/><div className="mt-4 flex h-7 items-end gap-1">{[30,55,42,75,58,90,66,82].map((v,i)=><i key={i} className="flex-1 rounded-t bg-[#ee9a62]" style={{height:v+'%'}}/>)}</div></div></div>
+        </div>
+      ) : (
+        <div className="h-full p-4 sm:p-5">
+          <div className="flex items-center justify-between"><div className="h-2.5 w-16 rounded bg-[#292638]"/><div className="flex gap-2"><i className="h-1.5 w-7 rounded bg-[#d9d6e1]"/><i className="h-1.5 w-7 rounded bg-[#d9d6e1]"/><i className="h-1.5 w-7 rounded bg-[#d9d6e1]"/></div></div>
+          <div className="mt-4 grid grid-cols-[1.1fr_.9fr] gap-3">
+            <div className="flex min-h-[115px] flex-col justify-center rounded-lg p-3 sm:p-4" style={{background:p.soft}}><div className="text-[8px] font-bold tracking-[.16em]" style={{color:p.accent}}>WELCOME</div><div className="mt-2 max-w-[180px] text-sm font-extrabold leading-tight text-[#242033] sm:text-lg">{p.title}</div><div className="mt-2 h-1.5 w-4/5 rounded bg-black/10"/><div className="mt-1.5 h-1.5 w-3/5 rounded bg-black/10"/><div className="mt-3 h-5 w-16 rounded-full" style={{background:p.accent}}/></div>
+            <div className="rounded-lg bg-white p-2 shadow-sm"><div className="h-16 rounded-md" style={{background:'linear-gradient(135deg,'+p.accent+',#d7d4ef)'}}/><div className="mt-2 h-2 w-4/5 rounded bg-[#d9d6e1]"/><div className="mt-1.5 h-1.5 w-3/5 rounded bg-[#eceaf0]"/><div className="mt-3 grid grid-cols-2 gap-1.5"><i className="h-7 rounded bg-[#f0eef5]"/><i className="h-7 rounded bg-[#f0eef5]"/></div></div>
+          </div>
+          <div className="mt-3 grid grid-cols-3 gap-2">{[0,1,2].map(i=><div key={i} className="rounded-md bg-white p-2 shadow-sm"><div className="h-7 rounded" style={{background:p.soft}}/><div className="mt-2 h-1.5 w-4/5 rounded bg-[#d9d6e1]"/><div className="mt-1 h-1.5 w-3/5 rounded bg-[#eceaf0]"/></div>)}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function WorkSection({ onRequestSimilar }: WorkSectionProps) {
   const reduceMotion = useReducedMotion();
 
@@ -108,21 +142,22 @@ export function WorkSection({ onRequestSimilar }: WorkSectionProps) {
               whileHover={reduceMotion ? undefined : { y: -6 }}
               className="group relative overflow-hidden rounded-[24px] border border-[var(--mq-border)] bg-[var(--mq-surface-card)]"
             >
-              <div className={`relative h-[230px] overflow-hidden bg-gradient-to-br sm:h-[270px] ${visualStyles[build.visual]}`}>
+              <div className={`relative h-[250px] overflow-hidden bg-gradient-to-br sm:h-[300px] ${visualStyles[build.visual]}`}>
                 <div aria-hidden="true" className="absolute inset-0 opacity-[.18]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.24) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.24) 1px,transparent 1px)', backgroundSize: '34px 34px' }} />
                 <div aria-hidden="true" className="absolute -right-14 -top-28 h-80 w-80 rounded-full border border-white/15 shadow-[0_0_0_28px_rgba(255,255,255,.025),0_0_0_58px_rgba(255,255,255,.02)] transition-transform duration-700 group-hover:rotate-12 group-hover:scale-105" />
-                <div className="absolute left-6 top-6 flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-3 py-1.5 backdrop-blur-md">
+                <ProjectThumbnail visual={build.visual} />
+                <div className="absolute left-6 top-5 z-10 flex items-center gap-2 rounded-full border border-white/15 bg-black/30 px-3 py-1.5 backdrop-blur-md">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#c18aff]" />
                   <span className="font-mono text-[8px] tracking-[.16em] text-white/80">DEMONSTRATION BUILD</span>
                 </div>
-                <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                <div className="absolute bottom-5 left-6 right-6 z-10 flex items-end justify-between">
                   <div className="max-w-[75%]">
-                    <p className="font-mono text-[9px] tracking-[.18em] text-white/55">MAVERIQODE / BUILD {build.number}</p>
-                    <p className="mt-2 text-2xl font-bold leading-tight tracking-[-.045em] text-white sm:text-3xl">{build.name}</p>
+                    <p className="font-mono text-[9px] tracking-[.18em] text-white/65">MAVERIQODE / BUILD {build.number}</p>
+                    <p className="mt-1 text-xl font-bold leading-tight tracking-[-.045em] text-white drop-shadow sm:text-2xl">{build.name}</p>
                   </div>
-                  <span className="font-mono text-4xl font-light tracking-[-.08em] text-white/35">{build.number}</span>
+                  <span className="font-mono text-3xl font-light tracking-[-.08em] text-white/50">{build.number}</span>
                 </div>
-                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 z-[1] h-24 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
               </div>
               <div className="p-6 sm:p-7">
                 <p className="font-mono text-[9px] uppercase tracking-[.16em] text-[var(--mq-accent-soft)]">{build.type}</p>
