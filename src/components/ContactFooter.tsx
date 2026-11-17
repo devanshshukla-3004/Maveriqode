@@ -39,12 +39,18 @@ export function ContactFooter({
   onNotify,
 }: ContactFooterProps) {
   const [name, setName] = useState('');
+  const [company, setCompany] = useState('');
+  const [phone, setPhone] = useState('');
+  const [plan, setPlan] = useState('');
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [preparedInquiry, setPreparedInquiry] = useState<{
     name: string;
+    company: string;
+    phone: string;
     email: string;
     service: ServiceOption;
+    plan: string;
     note: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -64,7 +70,7 @@ export function ContactFooter({
     note: string;
   }) => {
     const subject = encodeURIComponent(
-      `Engineering Inquiry: ${inquiry.service} — ${inquiry.name}`
+      `Project Enquiry: ${inquiry.plan || inquiry.service} — ${inquiry.name}`
     );
     const body = encodeURIComponent(
       `Hello MAVERIQODE,\n\nName / Organization: ${inquiry.name}\nReply Email: ${inquiry.email}\nCapability Area: ${inquiry.service}${
@@ -79,6 +85,7 @@ export function ContactFooter({
     if (isSubmitting) return;
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
+    const trimmedPhone = phone.trim();
     const website = (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
 
     if (trimmedName.length < 2) {
@@ -96,8 +103,11 @@ export function ContactFooter({
     setIsSubmitting(true);
     const inquiry = {
       name: trimmedName,
+      company: company.trim(),
+      phone: trimmedPhone,
       email: trimmedEmail,
       service: selectedService,
+      plan,
       note: contextNote.trim(),
     };
 
@@ -105,8 +115,13 @@ export function ContactFooter({
       body: {
         name: inquiry.name,
         email: inquiry.email,
+        phone: inquiry.phone,
         service: inquiry.service,
-        message: inquiry.note || '',
+        message: [
+          inquiry.company ? `Business / Organization: ${inquiry.company}` : '',
+          inquiry.plan ? `Interested Plan: ${inquiry.plan}` : '',
+          inquiry.note ? `Project Details: ${inquiry.note}` : '',
+        ].filter(Boolean).join('\n\n'),
         website,
       },
     });
@@ -121,13 +136,16 @@ export function ContactFooter({
     setPreparedInquiry(inquiry);
     onNotify('Enquiry received', 'Your request has been securely submitted to MAVERIQODE.');
     setName('');
+    setCompany('');
+    setPhone('');
+    setPlan('');
     setEmail('');
     onContextNoteChange('');
   };
 
   const handleCopyBrief = async () => {
     if (!preparedInquiry) return;
-    const text = `MAVERIQODE Engineering Inquiry\nTo: ${OFFICIAL_CONTACT_EMAIL}\nName / Organization: ${preparedInquiry.name}\nReply Email: ${preparedInquiry.email}\nCapability Area: ${preparedInquiry.service}${
+    const text = `MAVERIQODE Project Enquiry\nTo: ${OFFICIAL_CONTACT_EMAIL}\nName / Organization: ${preparedInquiry.name}\nReply Email: ${preparedInquiry.email}\nCapability Area: ${preparedInquiry.service}${
       preparedInquiry.note ? `\nScope Notes: ${preparedInquiry.note}` : ''
     }`;
 
@@ -192,11 +210,23 @@ export function ContactFooter({
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Your Name / Organization"
+                  placeholder="Contact Person / Your Name"
                   className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
                 />
               </div>
 
+              <div>
+                <label htmlFor="leadCompany" className="sr-only">Business / Organization (Optional)</label>
+                <input
+                  id="leadCompany"
+                  type="text"
+                  maxLength={160}
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  placeholder="Business / Organization (Optional)"
+                  className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
+                />
+              </div>
               <div>
                 <label htmlFor="leadEmail" className="sr-only">
                   Email Address
@@ -215,8 +245,24 @@ export function ContactFooter({
             </div>
 
             <div>
+              <label htmlFor="leadPhone" className="sr-only">Phone Number</label>
+              <input
+                id="leadPhone"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                maxLength={24}
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Phone Number (with country code)"
+                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
+              />
+            </div>
+
+            <div>
               <label htmlFor="leadService" className="sr-only">
-                Select Engineering Capability
+                Select Required Service
               </label>
               <select
                 id="leadService"
@@ -233,8 +279,26 @@ export function ContactFooter({
             </div>
 
             <div>
+              <label htmlFor="leadPlan" className="sr-only">Interested Plan (Optional)</label>
+              <select
+                id="leadPlan"
+                value={plan}
+                onChange={(e) => setPlan(e.target.value)}
+                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
+              >
+                <option value="" className="bg-[#15161a] text-[#ecebe6]">Interested Plan (Optional)</option>
+                <option value="Website Development" className="bg-[#15161a] text-[#ecebe6]">Website Development</option>
+                <option value="Complete Business System" className="bg-[#15161a] text-[#ecebe6]">Complete Business System</option>
+                <option value="Website + SEO Starter" className="bg-[#15161a] text-[#ecebe6]">Website + SEO Starter</option>
+                <option value="Business Automation" className="bg-[#15161a] text-[#ecebe6]">Business Automation</option>
+                <option value="Mobile App Development" className="bg-[#15161a] text-[#ecebe6]">Mobile App Development</option>
+                <option value="Not sure — need guidance" className="bg-[#15161a] text-[#ecebe6]">Not sure — need guidance</option>
+              </select>
+            </div>
+
+            <div>
               <label htmlFor="leadContext" className="sr-only">
-                Problem Summary or Technical Context (Optional)
+                Project Details / What do you need? (Optional)
               </label>
               <input
                 id="leadContext"
@@ -242,7 +306,7 @@ export function ContactFooter({
                 maxLength={5000}
                 value={contextNote}
                 onChange={(e) => onContextNoteChange(e.target.value)}
-                placeholder="Problem summary, system context, or technical goals (optional)"
+                placeholder="Briefly describe your business, project requirements, goals, or timeline (optional)"
                 className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
               />
             </div>
@@ -298,7 +362,7 @@ export function ContactFooter({
                       aria-hidden="true"
                     />
                     <span>
-                      Your enquiry has been received for {preparedInquiry.name} ({preparedInquiry.service}). The MAVERIQODE team can now review it.
+                      Your enquiry has been received. Our team will review your project requirements and contact you. The MAVERIQODE team can now review it.
                     </span>
                   </div>
                   <div className="flex items-center gap-4 shrink-0">
@@ -340,7 +404,7 @@ export function ContactFooter({
               />
             </motion.div>
             <span className="text-xs text-[var(--mq-accent-soft)] tracking-wider">
-              Direct Engineering Email
+              Business Enquiries
             </span>
             <a
               href={`mailto:${OFFICIAL_CONTACT_EMAIL}`}
@@ -353,7 +417,7 @@ export function ContactFooter({
               />
             </a>
             <p className="text-xs font-sans text-[var(--mq-muted)] leading-relaxed max-w-[40ch] mt-1">
-              Share your problem statement, constraints, or architecture questions directly by email.
+              Tell us about your business goals, required service, and project scope. Our team will get back to you.
             </p>
           </div>
         </div>
