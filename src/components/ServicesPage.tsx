@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, ShieldCheck } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight, Check, ShieldCheck, Sparkles } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 
 type Service = { name: string; description: string; group: string };
