@@ -65,18 +65,27 @@ export function ContactFooter({
 
   const buildMailtoHref = (inquiry: {
     name: string;
+    company: string;
+    phone: string;
     email: string;
     service: ServiceOption;
+    plan: string;
     note: string;
   }) => {
-    const subject = encodeURIComponent(
-      `Project Enquiry: ${inquiry.plan || inquiry.service} — ${inquiry.name}`
-    );
-    const body = encodeURIComponent(
-      `Hello MAVERIQODE,\n\nName / Organization: ${inquiry.name}\nReply Email: ${inquiry.email}\nCapability Area: ${inquiry.service}${
-        inquiry.note ? `\nProblem / Scope Notes: ${inquiry.note}` : ''
-      }\n\nLet's discuss next steps.`
-    );
+    const subject = encodeURIComponent(`Project Enquiry: ${inquiry.plan || inquiry.service} — ${inquiry.name}`);
+    const body = encodeURIComponent([
+      'Hello MAVERIQODE,',
+      '',
+      `Contact Person: ${inquiry.name}`,
+      `Business / Organization: ${inquiry.company || 'Not provided'}`,
+      `Phone: ${inquiry.phone}`,
+      `Reply Email: ${inquiry.email}`,
+      `Required Service: ${inquiry.service}`,
+      `Interested Plan: ${inquiry.plan || 'Not selected'}`,
+      inquiry.note ? `Project Details: ${inquiry.note}` : '',
+      '',
+      'Please contact me to discuss the next steps.',
+    ].filter(Boolean).join('\n'));
     return `mailto:${OFFICIAL_CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   };
 
@@ -90,6 +99,11 @@ export function ContactFooter({
 
     if (trimmedName.length < 2) {
       setErrorMessage('Please enter your name or organization.');
+      return;
+    }
+
+    if (!/^\+?[0-9][0-9\s().-]{6,18}$/.test(trimmedPhone)) {
+      setErrorMessage('Please enter a valid phone number with country code.');
       return;
     }
 
@@ -145,9 +159,17 @@ export function ContactFooter({
 
   const handleCopyBrief = async () => {
     if (!preparedInquiry) return;
-    const text = `MAVERIQODE Project Enquiry\nTo: ${OFFICIAL_CONTACT_EMAIL}\nName / Organization: ${preparedInquiry.name}\nReply Email: ${preparedInquiry.email}\nCapability Area: ${preparedInquiry.service}${
-      preparedInquiry.note ? `\nScope Notes: ${preparedInquiry.note}` : ''
-    }`;
+    const text = [
+      'MAVERIQODE Project Enquiry',
+      `To: ${OFFICIAL_CONTACT_EMAIL}`,
+      `Contact Person: ${preparedInquiry.name}`,
+      `Business / Organization: ${preparedInquiry.company || 'Not provided'}`,
+      `Phone: ${preparedInquiry.phone}`,
+      `Reply Email: ${preparedInquiry.email}`,
+      `Required Service: ${preparedInquiry.service}`,
+      `Interested Plan: ${preparedInquiry.plan || 'Not selected'}`,
+      preparedInquiry.note ? `Project Details: ${preparedInquiry.note}` : '',
+    ].filter(Boolean).join('\n');
 
     try {
       await navigator.clipboard.writeText(text);
@@ -300,9 +322,9 @@ export function ContactFooter({
               <label htmlFor="leadContext" className="sr-only">
                 Project Details / What do you need? (Optional)
               </label>
-              <input
+              <textarea
                 id="leadContext"
-                type="text"
+                rows={4}
                 maxLength={5000}
                 value={contextNote}
                 onChange={(e) => onContextNoteChange(e.target.value)}
