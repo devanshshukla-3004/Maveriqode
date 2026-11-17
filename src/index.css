@@ -249,7 +249,7 @@
   }
 
   .mq-plan-active {
-    animation: mq-plan-selected 4.8s ease-in-out infinite;
+    animation: none;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 18px 54px rgba(145, 42, 210, .22), 0 0 0 1px rgba(190, 112, 255, .12);
   }
 
@@ -309,7 +309,7 @@
       linear-gradient(115deg, rgba(255,255,255,.065), rgba(255,255,255,.018) 56%, rgba(120,70,160,.045)),
       rgba(12,10,19,.88);
     box-shadow: 0 16px 42px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.045);
-    transition: border-color .45s ease, background .45s ease, box-shadow .55s ease, filter .45s ease;
+    transition: border-color .55s cubic-bezier(.22,1,.36,1), background .55s cubic-bezier(.22,1,.36,1), box-shadow .65s cubic-bezier(.22,1,.36,1), filter .55s ease, transform .55s cubic-bezier(.22,1,.36,1);
   }
 
   .mq-plan-choice:nth-child(2) { margin-left: 3%; width: 97%; }
@@ -406,4 +406,22 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mq-plan-choice::after { animation: none !important; }
+}
+
+
+/* Category selector inherits the pricing stack language with calmer motion. */
+@layer components {
+  .mq-category-choice:nth-child(2) { margin-left: 3%; width: 97%; }
+  .mq-category-choice:nth-child(3) { margin-left: 6%; width: 94%; }
+  .mq-category-choice:nth-child(4) { margin-left: 3%; width: 97%; }
+  .mq-category-choice:nth-child(5) { margin-left: 0; width: 100%; }
+  .mq-category-active {
+    background: radial-gradient(ellipse at 95% 5%, rgba(171,75,255,.24), transparent 54%), linear-gradient(115deg, rgba(65,30,83,.92), rgba(24,15,34,.96) 62%, rgba(17,13,28,.98)) !important;
+  }
+}
+@media (max-width: 639px) {
+  .mq-category-choice:nth-child(n) { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mq-category-choice, .mq-plan-choice { transition: none !important; }
 }
