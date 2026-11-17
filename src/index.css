@@ -26,23 +26,23 @@
   --mq-grid-line: rgba(236, 235, 230, 0.028);
 }
 
-:root[data-theme="slate"] {
-  --mq-bg: #151821;
-  --mq-bg-elevated: #1a1e29;
-  --mq-surface: #1e2330;
-  --mq-surface-card: #1d222e;
-  --mq-surface-inset: #11141c;
-  --mq-surface-widget: #171b26;
-  --mq-border: #313747;
-  --mq-border-strong: #41495d;
-  --mq-text: #ecebe6;
-  --mq-text-secondary: #d8dbe2;
-  --mq-muted: #b4b7bf;
-  --mq-violet: #a100ff;
-  --mq-blue: #2a00c8;
-  --mq-accent-soft: #d9a1ff;
-  --mq-serif-shadow: 0 1px 2px rgba(0, 0, 0, 0.72);
-  --mq-grid-line: rgba(236, 235, 230, 0.036);
+:root[data-theme="white"] {
+  --mq-bg: #f6f7fb;
+  --mq-bg-elevated: #ffffff;
+  --mq-surface: #ffffff;
+  --mq-surface-card: #ffffff;
+  --mq-surface-inset: #f0f2f7;
+  --mq-surface-widget: #fbfcff;
+  --mq-border: #e4e7ef;
+  --mq-border-strong: #cfd5e2;
+  --mq-text: #171b2b;
+  --mq-text-secondary: #343a4d;
+  --mq-muted: #687086;
+  --mq-violet: #8425d8;
+  --mq-blue: #3932bd;
+  --mq-accent-soft: #8425d8;
+  --mq-serif-shadow: none;
+  --mq-grid-line: rgba(31, 41, 66, 0.045);
 }
 
 @layer base {
@@ -84,7 +84,7 @@
     animation: mq-grain-shift 0.72s steps(6, end) infinite;
   }
 
-  :root[data-theme="slate"] .mq-hero-grain {
+  :root[data-theme="white"] .mq-hero-grain {
     opacity: 0.05;
   }
 
@@ -424,4 +424,65 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .mq-category-choice, .mq-plan-choice { transition: none !important; }
+}
+
+
+/* White tone: clean editorial surfaces while preserving the violet-blue identity. */
+:root[data-theme="white"] .mq-hero-grain {
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme="white"] .mq-pricing-grid {
+  background-image:
+    linear-gradient(rgba(85, 68, 120, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(85, 68, 120, 0.045) 1px, transparent 1px);
+}
+
+:root[data-theme="white"] .mq-pricing-aurora {
+  background: radial-gradient(circle, rgba(161, 0, 255, 0.12), rgba(84, 70, 180, 0.055) 42%, transparent 72%);
+}
+
+:root[data-theme="white"] .mq-pricing-orbit {
+  border-color: rgba(116, 83, 160, 0.13);
+  box-shadow: 0 0 0 34px rgba(116, 83, 160, 0.025), 0 0 0 82px rgba(116, 83, 160, 0.015);
+}
+
+:root[data-theme="white"] .mq-plan-choice {
+  border-color: #e2e5ee;
+  background: linear-gradient(115deg, #ffffff, #fbfbfe 62%, #f7f5fc);
+  box-shadow: 0 12px 32px rgba(28, 34, 58, 0.07), inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+:root[data-theme="white"] .mq-plan-choice::before {
+  background:
+    radial-gradient(ellipse at 92% 8%, rgba(161,91,255,.09), transparent 42%),
+    linear-gradient(120deg, transparent 35%, rgba(80,70,120,.025), transparent 70%);
+}
+
+:root[data-theme="white"] .mq-plan-choice::after {
+  background: linear-gradient(90deg, transparent, rgba(132,37,216,.09), transparent);
+}
+
+:root[data-theme="white"] .mq-plan-choice:hover,
+:root[data-theme="white"] .mq-plan-choice:focus-visible {
+  border-color: rgba(132,37,216,.42);
+  box-shadow: 0 18px 42px rgba(74, 48, 110, .12), inset 0 1px 0 #fff;
+  filter: none;
+}
+
+:root[data-theme="white"] .mq-plan-choice .mq-plan-sheen {
+  background: radial-gradient(ellipse at 85% 50%, rgba(150,92,220,.12), transparent 65%);
+}
+
+:root[data-theme="white"] .mq-plan-active {
+  border-color: rgba(132,37,216,.48) !important;
+  background:
+    radial-gradient(ellipse at 95% 5%, rgba(161,91,255,.12), transparent 52%),
+    linear-gradient(115deg, #f3eaff, #ffffff 66%, #f7f4ff) !important;
+  box-shadow: 0 20px 48px rgba(100, 56, 150, .13), inset 0 1px 0 #fff, 0 0 0 1px rgba(132,37,216,.08) !important;
+}
+
+:root[data-theme="white"] .mq-category-active {
+  background: radial-gradient(ellipse at 95% 5%, rgba(161,91,255,.11), transparent 54%), linear-gradient(115deg, #f3eaff, #fff 68%, #f7f4ff) !important;
 }
