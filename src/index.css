@@ -26,23 +26,24 @@
   --mq-grid-line: rgba(236, 235, 230, 0.028);
 }
 
-:root[data-theme="white"] {
-  --mq-bg: #f6f7fb;
-  --mq-bg-elevated: #ffffff;
-  --mq-surface: #ffffff;
-  --mq-surface-card: #ffffff;
-  --mq-surface-inset: #f0f2f7;
-  --mq-surface-widget: #fbfcff;
-  --mq-border: #e4e7ef;
-  --mq-border-strong: #cfd5e2;
-  --mq-text: #171b2b;
-  --mq-text-secondary: #343a4d;
-  --mq-muted: #687086;
-  --mq-violet: #8425d8;
-  --mq-blue: #3932bd;
-  --mq-accent-soft: #8425d8;
+:root[data-theme="opaline"] {
+  color-scheme: light;
+  --mq-bg: #eeeaf5;
+  --mq-bg-elevated: #f7f3fb;
+  --mq-surface: #f9f6fc;
+  --mq-surface-card: #fbf8ff;
+  --mq-surface-inset: #e7e0f0;
+  --mq-surface-widget: #f3eef9;
+  --mq-border: #d8cfe5;
+  --mq-border-strong: #bfb1d2;
+  --mq-text: #21182f;
+  --mq-text-secondary: #51445f;
+  --mq-muted: #796b88;
+  --mq-violet: #7540c8;
+  --mq-blue: #4259b8;
+  --mq-accent-soft: #7441b8;
   --mq-serif-shadow: none;
-  --mq-grid-line: rgba(31, 41, 66, 0.045);
+  --mq-grid-line: rgba(76, 52, 104, 0.075);
 }
 
 @layer base {
@@ -84,7 +85,7 @@
     animation: mq-grain-shift 0.72s steps(6, end) infinite;
   }
 
-  :root[data-theme="white"] .mq-hero-grain {
+  :root[data-theme="opaline"] .mq-hero-grain {
     opacity: 0.05;
   }
 
@@ -427,62 +428,86 @@
 }
 
 
-/* White tone: clean editorial surfaces while preserving the violet-blue identity. */
-:root[data-theme="white"] .mq-hero-grain {
-  opacity: 0.025;
+/* Opaline signature tone — pearl-lilac canvas, ink-plum type, amethyst light. */
+:root[data-theme="opaline"] body {
+  background:
+    radial-gradient(ellipse at 82% 4%, rgba(169, 133, 221, .18), transparent 34%),
+    radial-gradient(ellipse at 8% 42%, rgba(122, 145, 222, .11), transparent 38%),
+    var(--mq-bg);
+}
+
+:root[data-theme="opaline"] .mq-hero-grain {
+  opacity: .035;
   mix-blend-mode: multiply;
 }
 
-:root[data-theme="white"] .mq-pricing-grid {
+:root[data-theme="opaline"] .mq-pricing-grid {
   background-image:
-    linear-gradient(rgba(85, 68, 120, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(85, 68, 120, 0.045) 1px, transparent 1px);
+    linear-gradient(rgba(105, 78, 145, .07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(105, 78, 145, .07) 1px, transparent 1px);
 }
 
-:root[data-theme="white"] .mq-pricing-aurora {
-  background: radial-gradient(circle, rgba(161, 0, 255, 0.12), rgba(84, 70, 180, 0.055) 42%, transparent 72%);
+:root[data-theme="opaline"] .mq-pricing-aurora {
+  background: radial-gradient(circle, rgba(151, 96, 211, .2), rgba(110, 127, 205, .11) 42%, transparent 72%);
 }
 
-:root[data-theme="white"] .mq-pricing-orbit {
-  border-color: rgba(116, 83, 160, 0.13);
-  box-shadow: 0 0 0 34px rgba(116, 83, 160, 0.025), 0 0 0 82px rgba(116, 83, 160, 0.015);
+:root[data-theme="opaline"] .mq-pricing-orbit {
+  border-color: rgba(111, 78, 151, .18);
+  box-shadow: 0 0 0 34px rgba(111, 78, 151, .035), 0 0 0 82px rgba(111, 78, 151, .02);
 }
 
-:root[data-theme="white"] .mq-plan-choice {
-  border-color: #e2e5ee;
-  background: linear-gradient(115deg, #ffffff, #fbfbfe 62%, #f7f5fc);
-  box-shadow: 0 12px 32px rgba(28, 34, 58, 0.07), inset 0 1px 0 rgba(255,255,255,.95);
-}
-
-:root[data-theme="white"] .mq-plan-choice::before {
+:root[data-theme="opaline"] .mq-plan-choice {
+  border-color: #d7cce4;
   background:
-    radial-gradient(ellipse at 92% 8%, rgba(161,91,255,.09), transparent 42%),
-    linear-gradient(120deg, transparent 35%, rgba(80,70,120,.025), transparent 70%);
+    radial-gradient(ellipse at 92% 8%, rgba(164, 124, 211, .12), transparent 42%),
+    linear-gradient(120deg, #fbf8ff, #f2edf8 62%, #eee9f6);
+  box-shadow: 0 16px 38px rgba(67, 45, 91, .09), inset 0 1px 0 rgba(255,255,255,.9);
 }
 
-:root[data-theme="white"] .mq-plan-choice::after {
-  background: linear-gradient(90deg, transparent, rgba(132,37,216,.09), transparent);
+:root[data-theme="opaline"] .mq-plan-choice::before {
+  background:
+    radial-gradient(ellipse at 92% 8%, rgba(145, 91, 198, .13), transparent 42%),
+    linear-gradient(120deg, transparent 35%, rgba(255,255,255,.52), transparent 70%);
 }
 
-:root[data-theme="white"] .mq-plan-choice:hover,
-:root[data-theme="white"] .mq-plan-choice:focus-visible {
-  border-color: rgba(132,37,216,.42);
-  box-shadow: 0 18px 42px rgba(74, 48, 110, .12), inset 0 1px 0 #fff;
+:root[data-theme="opaline"] .mq-plan-choice::after {
+  background: linear-gradient(90deg, transparent, rgba(122, 77, 181, .13), transparent);
+}
+
+:root[data-theme="opaline"] .mq-plan-choice:hover,
+:root[data-theme="opaline"] .mq-plan-choice:focus-visible {
+  border-color: rgba(117, 64, 200, .48);
+  box-shadow: 0 22px 48px rgba(80, 53, 119, .15), inset 0 1px 0 #fff;
   filter: none;
 }
 
-:root[data-theme="white"] .mq-plan-choice .mq-plan-sheen {
-  background: radial-gradient(ellipse at 85% 50%, rgba(150,92,220,.12), transparent 65%);
+:root[data-theme="opaline"] .mq-plan-choice .mq-plan-sheen {
+  background: radial-gradient(ellipse at 85% 50%, rgba(137, 91, 194, .17), transparent 65%);
 }
 
-:root[data-theme="white"] .mq-plan-active {
-  border-color: rgba(132,37,216,.48) !important;
+:root[data-theme="opaline"] .mq-plan-active {
+  border-color: rgba(117, 64, 200, .58) !important;
   background:
-    radial-gradient(ellipse at 95% 5%, rgba(161,91,255,.12), transparent 52%),
-    linear-gradient(115deg, #f3eaff, #ffffff 66%, #f7f4ff) !important;
-  box-shadow: 0 20px 48px rgba(100, 56, 150, .13), inset 0 1px 0 #fff, 0 0 0 1px rgba(132,37,216,.08) !important;
+    radial-gradient(ellipse at 95% 5%, rgba(174, 132, 225, .24), transparent 52%),
+    linear-gradient(115deg, #e9def7, #f8f3fc 66%, #e9e8f8) !important;
+  box-shadow: 0 22px 52px rgba(93, 58, 140, .17), inset 0 1px 0 #fff, 0 0 0 1px rgba(117,64,200,.1) !important;
 }
 
-:root[data-theme="white"] .mq-category-active {
-  background: radial-gradient(ellipse at 95% 5%, rgba(161,91,255,.11), transparent 54%), linear-gradient(115deg, #f3eaff, #fff 68%, #f7f4ff) !important;
+:root[data-theme="opaline"] .mq-category-active {
+  background:
+    radial-gradient(ellipse at 95% 5%, rgba(174,132,225,.2), transparent 54%),
+    linear-gradient(115deg, #e9def7, #f8f3fc 68%, #e9e8f8) !important;
+}
+
+/* Bring dark-only showcase surfaces into the Opaline palette without changing layout. */
+:root[data-theme="opaline"] .bg-\[var\(--mq-bg\)\] { background-color: var(--mq-bg); }
+:root[data-theme="opaline"] .text-white { color: var(--mq-text); }
+:root[data-theme="opaline"] .text-\[\#f4f0fa\] { color: var(--mq-text); }
+:root[data-theme="opaline"] .text-\[\#d2ccda\] { color: var(--mq-text-secondary); }
+:root[data-theme="opaline"] .text-\[\#aaa4b5\],
+:root[data-theme="opaline"] .text-\[\#aaa1b4\] { color: var(--mq-muted); }
+:root[data-theme="opaline"] .border-white\/10 { border-color: var(--mq-border); }
+:root[data-theme="opaline"] .bg-white\/\[\.035\] { background-color: rgba(255,255,255,.55); }
+:root[data-theme="opaline"] .bg-\[linear-gradient\(155deg\,\#17151f\,\#111018_58\%\,\#141321\)\] {
+  background: linear-gradient(155deg, #fbf8ff, #f0eaf7 58%, #e9e7f4);
 }
