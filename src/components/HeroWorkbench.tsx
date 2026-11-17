@@ -174,11 +174,11 @@ export function HeroWorkbench({ onNavigate, theme }: HeroWorkbenchProps) {
         });
       }
 
-      const isSlate = themeRef.current === 'slate';
+      const isTitanium = themeRef.current === 'titanium';
 
       // Architectural radial coordinate rings anchored around core node
       ctx.save();
-      ctx.strokeStyle = isSlate ? 'rgba(180, 183, 191, 0.10)' : 'rgba(42, 43, 49, 0.75)';
+      ctx.strokeStyle = isTitanium ? 'rgba(55, 69, 91, 0.17)' : 'rgba(42, 43, 49, 0.75)';
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 5]);
       ctx.beginPath();
@@ -216,27 +216,27 @@ export function HeroWorkbench({ onNavigate, theme }: HeroWorkbenchProps) {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
         ctx.fillStyle = n.primary
-          ? isSlate
-            ? '#212638'
+          ? isTitanium
+            ? '#e5eaf2'
             : '#171522'
-          : isSlate
-          ? '#1a1f2d'
+          : isTitanium
+          ? '#f8fafc'
           : '#15161a';
         ctx.fill();
         ctx.lineWidth = n.primary ? 1.8 : 1.1;
         ctx.strokeStyle = n.primary
           ? '#a100ff'
-          : isSlate
-          ? '#41495d'
+          : isTitanium
+          ? '#c4ccd8'
           : '#2a2b31';
         ctx.stroke();
 
-        ctx.fillStyle = '#ecebe6';
+        ctx.fillStyle = isTitanium ? '#1c2636' : '#ecebe6';
         ctx.font = `600 ${width < 768 ? 9 : 10.5}px "Archivo", sans-serif`;
         ctx.textAlign = 'center';
         ctx.fillText(n.title, n.x, n.y - 2);
 
-        ctx.fillStyle = n.primary ? '#d28cff' : '#b4b7bf';
+        ctx.fillStyle = n.primary ? (isTitanium ? '#7138d5' : '#d28cff') : (isTitanium ? '#586579' : '#b4b7bf');
         ctx.font = `400 ${width < 768 ? 7.5 : 9}px "JetBrains Mono", monospace`;
         ctx.fillText(n.sub, n.x, n.y + 13);
       });
@@ -385,7 +385,7 @@ export function HeroWorkbench({ onNavigate, theme }: HeroWorkbenchProps) {
         aria-hidden="true"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(236, 235, 230, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 235, 230, 0.03) 1px, transparent 1px)',
+            theme === 'titanium' ? 'linear-gradient(rgba(38, 51, 72, 0.065) 1px, transparent 1px), linear-gradient(90deg, rgba(38, 51, 72, 0.065) 1px, transparent 1px)' : 'linear-gradient(rgba(236, 235, 230, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 235, 230, 0.03) 1px, transparent 1px)',
           backgroundSize: '48px 48px',
           ...(shouldReduceMotion ? {} : { y: gridY, opacity: gridOpacity }),
         }}
