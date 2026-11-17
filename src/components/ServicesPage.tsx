@@ -182,17 +182,27 @@ export default function ServicesPage() {
             </div>
 
             <div className="grid items-start gap-6 xl:grid-cols-[.72fr_1.28fr]">
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+              <motion.div
+                className="mq-plan-stack grid gap-3 sm:grid-cols-2 xl:grid-cols-1"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.18 }}
+                variants={{ hidden: {}, visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.12, delayChildren: reduceMotion ? 0 : 0.08 } } }}
+              >
                 {plans.map((plan,index)=>(
                   <motion.button
                     key={plan.id}
                     type="button"
                     onClick={()=>setSelectedPlanId(plan.id)}
-                    whileHover={reduceMotion?undefined:{x:5}}
-                    whileTap={reduceMotion?undefined:{scale:.99}}
-                    className={`mq-plan-choice group relative w-full overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300 sm:p-6 ${selectedPlanId===plan.id?'mq-plan-active border-[#b65cff]/80 bg-[#24132f] shadow-[0_12px_45px_rgba(145,42,210,.17)]':'border-white/10 bg-white/[.025] hover:border-white/25 hover:bg-white/[.055]'}`}
+                    variants={{ hidden: { opacity: 0, x: reduceMotion ? 0 : -42, y: reduceMotion ? 0 : 24, rotateY: reduceMotion ? 0 : -13, scale: reduceMotion ? 1 : .94 }, visible: { opacity: 1, x: 0, y: 0, rotateY: 0, scale: 1 } }}
+                    transition={{ duration: reduceMotion ? 0 : .72, ease: [.2, .75, .25, 1] }}
+                    whileHover={reduceMotion?undefined:{x:8,y:-5,rotateY:2,scale:1.015}}
+                    whileTap={reduceMotion?undefined:{scale:.985}}
+                    style={{ transformStyle: 'preserve-3d', perspective: 900, zIndex: selectedPlanId === plan.id ? 2 : 1 }}
+                    className={`mq-plan-choice group relative w-full overflow-hidden rounded-2xl border p-5 text-left transition-colors duration-300 sm:p-6 ${selectedPlanId===plan.id?'mq-plan-active border-[#b65cff]/80 bg-[#24132f] shadow-[0_12px_45px_rgba(145,42,210,.17)]':'border-white/10 bg-white/[.025] hover:border-white/25 hover:bg-white/[.055]'}`}
                     aria-pressed={selectedPlanId===plan.id}
                   >
+                    <span aria-hidden="true" className="mq-plan-sheen pointer-events-none absolute inset-0" />
                     {selectedPlanId===plan.id&&<motion.span layoutId="plan-active-rail" className="absolute inset-y-4 left-0 w-[3px] rounded-r-full bg-gradient-to-b from-[#f0c8ff] to-[#8b3dff]" />}
                     <div className="flex items-start justify-between gap-3">
                       <div>
@@ -209,7 +219,7 @@ export default function ServicesPage() {
                     {plan.featured&&<span className="mt-4 inline-flex rounded-full border border-[#c084fc]/30 bg-[#a100ff]/10 px-3 py-1 font-mono text-[9px] tracking-[.14em] text-[#e2baff]">MOST COMPLETE</span>}
                   </motion.button>
                 ))}
-              </div>
+              </motion.div>
 
               <div className="relative min-h-[650px]">
                 <div aria-hidden="true" className="mq-plan-glow pointer-events-none absolute -inset-5 rounded-[38px] blur-2xl" />
