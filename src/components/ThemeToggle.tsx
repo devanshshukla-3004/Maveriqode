@@ -1,6 +1,6 @@
 import { Contrast } from 'lucide-react';
 
-export type ThemeTone = 'obsidian';
+export type ThemeTone = 'obsidian' | 'titanium';
 
 interface ThemeToggleProps {
   theme: ThemeTone;
