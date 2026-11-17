@@ -412,76 +412,41 @@ export function ContactFooter({
             </AnimatePresence>
           </form>
 
-          <div className="flex flex-col gap-5 font-mono text-sm lg:pt-1">
-            <div className="relative overflow-hidden rounded-[28px] border border-[var(--mq-border)] bg-[linear-gradient(145deg,rgba(25,20,42,.92),rgba(10,12,24,.96))] p-4 sm:p-6 shadow-[0_28px_90px_rgba(0,0,0,.28)]">
-              <div aria-hidden="true" className="absolute inset-0 mq-blueprint-grid opacity-35" />
-              <div className="relative z-10 mb-1 flex items-center justify-between gap-3">
-                <span className="font-mono text-[9px] tracking-[.22em] text-[#c5a3ff]">MAVERIQODE / CORE ATELIER</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/20 bg-emerald-300/[0.07] px-2.5 py-1 font-mono text-[9px] text-emerald-200"><i className="h-1.5 w-1.5 rounded-full bg-emerald-300" /> SYSTEMS THINKING</span>
+          <div className="flex flex-col gap-6 lg:pt-1">
+            <div className="relative isolate overflow-hidden rounded-[28px] border border-[var(--mq-border)] bg-[var(--mq-surface)] p-7 sm:p-9">
+              <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#7c3aed]/15 blur-[75px]" />
+              <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-[#3158d8]/10 blur-[70px]" />
+              <div className="relative z-10 flex items-center justify-between gap-4">
+                <img src="/assets/aistudio/MAVERIQODE_symbol_only_transparent_149367a9.png" alt="MAVERIQODE symbol" referrerPolicy="no-referrer" className="h-11 w-auto object-contain select-none" />
+                <span className="rounded-full border border-[var(--mq-border)] px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.18em] text-[var(--mq-muted)]">Digital Engineering</span>
               </div>
-              <svg viewBox="0 0 520 420" role="img" aria-label="MAVERIQODE core atelier connecting software engineering, AI systems, automation, security and infrastructure" className="relative z-10 mx-auto block w-full max-w-[520px] overflow-visible">
-                <defs>
-                  <radialGradient id="mqCoreGlow"><stop offset="0%" stopColor="#8b35ef" stopOpacity=".25"/><stop offset="100%" stopColor="#8b35ef" stopOpacity="0"/></radialGradient>
-                  <linearGradient id="mqCoreLine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#a100ff"/><stop offset="100%" stopColor="#4b68ff"/></linearGradient>
-                </defs>
-                <circle cx="260" cy="210" r="188" fill="none" stroke="rgba(190,160,255,.12)" strokeDasharray="2 8" className="mq-footer-orbit"/>
-                <circle cx="260" cy="210" r="150" fill="url(#mqCoreGlow)"/>
-                <g fill="none" stroke="url(#mqCoreLine)" strokeWidth="1.6" opacity=".9">
-                  <path className="mq-footer-orbit-line" d="M260 210 L115 92"/><path className="mq-footer-orbit-line" d="M260 210 L350 55"/><path className="mq-footer-orbit-line" d="M260 210 L438 246"/><path className="mq-footer-orbit-line" d="M260 210 L290 365"/><path className="mq-footer-orbit-line" d="M260 210 L78 310"/>
-                </g>
-                <g fill="#a88aff"><circle cx="187" cy="150" r="2.6"/><circle cx="307" cy="130" r="2.6"/><circle cx="350" cy="226" r="2.6"/><circle cx="275" cy="286" r="2.6"/><circle cx="168" cy="260" r="2.6"/></g>
-                <g className="mq-footer-orbit-node">
-                  <circle cx="260" cy="210" r="55" fill="#f0eef8" stroke="#a100ff" strokeWidth="2.2"/>
-                  <text x="260" y="205" textAnchor="middle" fill="#202437" fontSize="11" fontWeight="700">MAVERIQODE</text>
-                  <text x="260" y="224" textAnchor="middle" fill="#8051c9" fontSize="9" fontFamily="monospace">Core Atelier</text>
-                </g>
-                {[
-                  {x:115,y:92,title:'INFRA',sub:'Cloud Fabric'},
-                  {x:350,y:55,title:'SOFTWARE',sub:'Engineering'},
-                  {x:438,y:246,title:'AI SYSTEMS',sub:'Intelligence'},
-                  {x:290,y:365,title:'AUTOMATION',sub:'Integration'},
-                  {x:78,y:310,title:'SECURITY',sub:'Hardening'}
-                ].map((node) => (
-                  <g key={node.title} className="mq-footer-orbit-node">
-                    <circle cx={node.x} cy={node.y} r="39" fill="#f1f2f7" stroke="#cbd0df" strokeWidth="1"/>
-                    <text x={node.x} y={node.y-2} textAnchor="middle" fill="#273044" fontSize="10" fontWeight="700">{node.title}</text>
-                    <text x={node.x} y={node.y+13} textAnchor="middle" fill="#657086" fontSize="8.5" fontFamily="monospace">{node.sub}</text>
-                  </g>
+              <div className="relative z-10 mt-12">
+                <p className="font-mono text-[10px] uppercase tracking-[.22em] text-[var(--mq-accent-soft)]">MAVERIQODE / BUSINESS</p>
+                <h3 className="mt-4 max-w-[15ch] font-display text-3xl sm:text-4xl font-bold leading-[1.05] tracking-[-.035em] text-[var(--mq-text)]">Build what moves you <span className="text-[var(--mq-accent-soft)]">forward.</span></h3>
+                <p className="mt-5 max-w-[38ch] font-sans text-sm leading-7 text-[var(--mq-muted)]">Thoughtful software, intelligent systems and digital experiences — engineered around the way your business works.</p>
+              </div>
+              <div className="relative z-10 mt-9 grid grid-cols-2 gap-3">
+                {['Software Engineering', 'AI Systems', 'Business Automation', 'Cloud & Security'].map((item) => (
+                  <div key={item} className="flex items-center gap-2 border-t border-[var(--mq-border)] pt-3 font-mono text-[10px] leading-5 text-[var(--mq-text-secondary)]">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#a100ff]" />{item}
+                  </div>
                 ))}
-              </svg>
-              <p className="relative z-10 mx-auto max-w-[38ch] text-center font-sans text-xs leading-6 text-[var(--mq-muted)]">One connected engineering practice. From infrastructure and security to intelligent systems and automation.</p>
+              </div>
             </div>
-            <motion.div
-              whileHover={
-                shouldReduceMotion
-                  ? undefined
-                  : { y: -2, scale: 1.02, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }
-              }
-              className="w-24 h-24 rounded-2xl overflow-hidden border border-[var(--mq-border)] hover:border-[#a100ff]/55 bg-black p-2 mb-1 transition-colors duration-200"
-            >
-              <img
-                src="/assets/aistudio/WhatsApp_Image_2026-11-12_at_21.51.02__1__3fcdf05a.jpeg"
-                alt="MAVERIQODE official brand emblem"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-contain select-none"
-              />
-            </motion.div>
-            <span className="text-xs text-[var(--mq-accent-soft)] tracking-wider">
-              Business Enquiries
-            </span>
-            <a
-              href={`mailto:${OFFICIAL_CONTACT_EMAIL}`}
-              className="group inline-flex items-center gap-1.5 text-[var(--mq-text)] hover:text-[var(--mq-accent-soft)] transition-colors w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a100ff] rounded"
-            >
-              <span>{OFFICIAL_CONTACT_EMAIL}</span>
-              <ArrowUpRight
-                className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                aria-hidden="true"
-              />
-            </a>
-            <p className="text-xs font-sans text-[var(--mq-muted)] leading-relaxed max-w-[40ch] mt-1">
-              Tell us about your business goals, required service, and project scope. Our team will get back to you.
-            </p>
+            <div className="rounded-[22px] border border-[var(--mq-border)] bg-[var(--mq-surface)]/70 p-5 sm:p-6">
+              <p className="font-mono text-[10px] uppercase tracking-[.2em] text-[var(--mq-muted)]">Have a project in mind?</p>
+              <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <p className="font-display text-lg font-semibold text-[var(--mq-text)]">Let’s talk business.</p>
+                  <a href={`mailto:${OFFICIAL_CONTACT_EMAIL}`} className="group mt-1 inline-flex items-center gap-1.5 break-all font-mono text-xs text-[var(--mq-accent-soft)] hover:text-[var(--mq-text)] transition-colors">
+                    {OFFICIAL_CONTACT_EMAIL}<ArrowUpRight className="h-3.5 w-3.5 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+                  </a>
+                </div>
+                <button type="button" onClick={() => nameInputRef.current?.focus()} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-[var(--mq-border-strong)] px-5 py-3 font-mono text-[10px] uppercase tracking-[.12em] text-[var(--mq-text)] transition-all hover:border-[#a100ff]/70 hover:bg-[#a100ff]/[.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a100ff]">
+                  Start an enquiry <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
