@@ -420,7 +420,7 @@ export function ContactFooter({
                 <img src="/assets/aistudio/MAVERIQODE_symbol_only_transparent_149367a9.png" alt="MAVERIQODE symbol" referrerPolicy="no-referrer" className="h-11 w-auto object-contain select-none" />
                 <span className="rounded-full border border-[var(--mq-border)] px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.18em] text-[var(--mq-muted)]">Digital Engineering</span>
               </div>
-              <div className="relative z-10 mt-12">
+              <div className="relative z-10 mt-6 sm:mt-7">
                 <p className="font-mono text-[10px] uppercase tracking-[.22em] text-[var(--mq-accent-soft)]">MAVERIQODE / BUSINESS</p>
                 <h3 className="mt-4 max-w-[15ch] font-display text-3xl sm:text-4xl font-bold leading-[1.05] tracking-[-.035em] text-[var(--mq-text)]">Build what moves you <span className="text-[var(--mq-accent-soft)]">forward.</span></h3>
                 <p className="mt-5 max-w-[38ch] font-sans text-sm leading-7 text-[var(--mq-muted)]">Thoughtful software, intelligent systems and digital experiences — engineered around the way your business works.</p>
