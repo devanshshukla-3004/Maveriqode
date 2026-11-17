@@ -48,8 +48,8 @@ export default function AdminApp() {
   useEffect(()=>{
     document.title='MAVERIQODE Admin — Control Center';
     if (window.location.hash.includes('type=recovery')) setPasswordReset(true);
-    supabase.auth.getSession().then(({data})=>void verify(data.session as Session|null));
-    const {data:{subscription}}=supabase.auth.onAuthStateChange((event,s)=>{if(event==='PASSWORD_RECOVERY')setPasswordReset(true);window.setTimeout(()=>void verify(s as Session|null),0);});
+    supabase.auth.getSession().then(({data}: {data: {session: Session|null}})=>void verify(data.session));
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((event: string,s: Session|null)=>{if(event==='PASSWORD_RECOVERY')setPasswordReset(true);window.setTimeout(()=>void verify(s as Session|null),0);});
     return ()=>subscription.unsubscribe();
   },[verify]);
 
