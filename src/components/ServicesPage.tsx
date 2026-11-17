@@ -148,7 +148,7 @@ export default function ServicesPage() {
         <section className="relative px-5 pb-20 pt-20 sm:px-8 sm:pt-28 lg:px-12">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 mq-blueprint-grid opacity-80"/>
           <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-0 h-[520px] w-[520px] rounded-full bg-[#6b21a8]/15 blur-[120px]"/>
-          <div className="relative mx-auto grid max-w-[1440px] items-end gap-12 lg:grid-cols-[1.2fr_.8fr]">
+          <div className="relative mx-auto grid max-w-[1440px] items-center gap-12 lg:grid-cols-[1.2fr_.8fr]">
             <motion.div initial={reduceMotion ? false : 'hidden'} animate="visible" variants={fadeUp} transition={{ duration: .7 }}>
               <p className="mb-5 font-mono text-xs tracking-[.2em] text-[var(--mq-accent-soft)]">MAVERIQODE / SERVICES & SOLUTIONS</p>
               <h1 className="max-w-4xl text-balance font-display text-[clamp(3rem,7vw,6.8rem)] font-extrabold leading-[.94] tracking-[-.065em]">Build the systems that <span className="mq-serif-accent font-medium text-[var(--mq-accent-soft)]">move business.</span></h1>
@@ -158,7 +158,7 @@ export default function ServicesPage() {
                 <a href="#automation-catalogue" className="inline-flex items-center gap-2 rounded-full border border-[var(--mq-border-strong)] px-6 py-3.5 text-sm font-semibold text-[var(--mq-text)] transition hover:border-[#bd7aff]">Browse 40 automations <ArrowRight size={16}/></a>
               </div>
             </motion.div>
-            <motion.div initial={reduceMotion ? false : { opacity: 0, scale: .96, y: 18 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: .8, delay: .12 }} className="rounded-[28px] border border-[var(--mq-border)] bg-[linear-gradient(145deg,rgba(161,0,255,.12),rgba(255,255,255,.025)_50%,rgba(42,0,200,.12))] p-6 sm:p-8">
+            <motion.div initial={reduceMotion ? false : { opacity: 0, scale: .96, y: 18 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: .8, delay: .12 }} className="relative -mt-2 rounded-[28px] border border-[var(--mq-border)] bg-[linear-gradient(145deg,rgba(161,0,255,.16),rgba(255,255,255,.025)_50%,rgba(42,0,200,.14))] p-6 shadow-[0_28px_90px_rgba(81,25,130,.16)] sm:p-8 lg:-translate-y-5">
               <div className="flex items-center justify-between border-b border-[var(--mq-border)] pb-5"><span className="font-mono text-[10px] tracking-[.18em] text-[var(--mq-muted)]">SERVICE FRAMEWORK</span><span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,.8)]"/></div>
               <div className="grid grid-cols-2 gap-4 py-7">
                 {[['05','Automation categories'],['40','AI workflow options'],['05','Commercial plans'],['01','Security-first approach']].map(([value,label])=><div key={label} className="rounded-2xl border border-[var(--mq-border)] bg-black/20 p-4"><p className="font-display text-4xl font-bold tracking-tight">{value}</p><p className="mt-2 text-xs text-[var(--mq-muted)]">{label}</p></div>)}
@@ -376,12 +376,40 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="border-y border-[var(--mq-border)] bg-[var(--mq-bg-elevated)] px-5 py-20 sm:px-8 lg:px-12">
-          <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[.8fr_1.2fr]">
-            <div><p className="font-mono text-xs tracking-[.18em] text-[var(--mq-accent-soft)]">03 / SECURITY BY DESIGN</p><h2 className="mt-4 text-4xl font-bold tracking-[-.04em]">Built with security in mind.</h2><p className="mt-5 text-sm leading-relaxed text-[var(--mq-muted)]">Security is part of the delivery process, not an afterthought. Controls are selected according to the application, data and agreed scope.</p></div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {['HTTPS and secure deployment configuration','Authentication and role-based access controls','Database permissions and data-boundary checks','Input validation and abuse protections','Backup and recovery considerations','Security review before handover'].map(item=><div key={item} className="flex items-start gap-3 rounded-2xl border border-[var(--mq-border)] bg-[var(--mq-surface)] p-5"><ShieldCheck size={18} className="mt-0.5 shrink-0 text-[var(--mq-accent-soft)]"/><p className="text-sm leading-relaxed text-[var(--mq-text-secondary)]">{item}</p></div>)}
+        <section className="relative isolate overflow-hidden border-y border-white/10 bg-[#09070f] px-5 py-24 sm:px-8 lg:px-12">
+          <div aria-hidden="true" className="mq-pricing-grid pointer-events-none absolute inset-0 opacity-45" />
+          <div aria-hidden="true" className="pointer-events-none absolute -left-48 top-10 h-[520px] w-[520px] rounded-full bg-[#7025a8]/20 blur-[140px]" />
+          <div aria-hidden="true" className="pointer-events-none absolute -right-40 bottom-[-220px] h-[520px] w-[520px] rounded-full bg-[#3510a0]/15 blur-[140px]" />
+          <div className="relative mx-auto max-w-[1440px]">
+            <div className="mb-12 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+              <motion.div initial={reduceMotion?false:{opacity:0,y:22}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.25}} transition={{duration:reduceMotion?0:.65,ease:[.22,1,.36,1]}} className="max-w-3xl">
+                <p className="mb-5 flex items-center gap-3 font-mono text-[10px] tracking-[.24em] text-[#d7a0ff]"><span className="h-px w-8 bg-[#b65cff]"/>03 / SECURITY BY DESIGN</p>
+                <h2 className="text-balance text-5xl font-bold leading-[.98] tracking-[-.065em] text-white sm:text-6xl lg:text-7xl">Trust is <span className="mq-serif-accent text-[#d7a0ff]">engineered.</span></h2>
+              </motion.div>
+              <p className="max-w-md text-sm leading-7 text-[#aaa1b4]">Security is built into the delivery process—not bolted on at the end. Controls are chosen around the application, the data it handles and the agreed scope.</p>
             </div>
+            <div className="grid gap-5 lg:grid-cols-[.72fr_1.28fr]">
+              <motion.div initial={reduceMotion?false:{opacity:0,x:-20}} whileInView={{opacity:1,x:0}} viewport={{once:true,amount:.2}} transition={{duration:reduceMotion?0:.7,ease:[.22,1,.36,1]}} className="relative flex min-h-[330px] flex-col justify-between overflow-hidden rounded-[28px] border border-[#c084fc]/25 bg-[linear-gradient(145deg,rgba(55,24,78,.7),rgba(16,12,24,.96)_65%)] p-7 sm:p-9">
+                <div aria-hidden="true" className="absolute -right-16 -top-20 h-64 w-64 rounded-full border border-[#d7a0ff]/15 shadow-[0_0_0_28px_rgba(215,160,255,.025),0_0_0_60px_rgba(215,160,255,.018)]"/>
+                <div className="relative flex items-center justify-between"><span className="font-mono text-[9px] tracking-[.2em] text-[#cba4e8]">SECURITY PRINCIPLES</span><ShieldCheck size={19} className="text-[#d7a0ff]"/></div>
+                <div className="relative"><p className="font-display text-7xl font-bold tracking-[-.07em] text-white sm:text-8xl">06</p><p className="mt-2 max-w-[220px] text-sm leading-6 text-[#bdb2c8]">Core safeguards considered across every engagement.</p></div>
+                <div className="relative flex items-center gap-2 border-t border-white/10 pt-5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,.8)]"/><span className="font-mono text-[9px] tracking-[.16em] text-[#aaa1b4]">SECURITY-FIRST DELIVERY</span></div>
+              </motion.div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  ['01','Secure deployment','HTTPS, SSL and secure environment configuration.'],
+                  ['02','Identity & access','Authentication and role-based access controls.'],
+                  ['03','Data boundaries','Database permissions and tenant/data isolation checks.'],
+                  ['04','Abuse prevention','Input validation, rate limits and request protections.'],
+                  ['05','Resilience','Backup, recovery and operational continuity considerations.'],
+                  ['06','Pre-handover review','A scoped security review before the system is handed over.'],
+                ].map(([number,title,description],index)=><motion.article key={number} initial={reduceMotion?false:{opacity:0,y:18}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.15}} transition={{duration:reduceMotion?0:.5,delay:reduceMotion?0:index*.06,ease:[.22,1,.36,1]}} whileHover={reduceMotion?undefined:{y:-3}} className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[.025] p-5 transition-colors duration-500 hover:border-[#c084fc]/40 hover:bg-[#a100ff]/[.06] sm:p-6">
+                    <div className="mb-5 flex items-center justify-between"><span className="font-mono text-[9px] tracking-[.16em] text-[#c89aff]">{number} / CONTROL</span><ShieldCheck size={16} className="text-[#9b7eae] transition-colors group-hover:text-[#e0b4ff]"/></div>
+                    <h3 className="text-base font-semibold tracking-tight text-white">{title}</h3><p className="mt-2 text-xs leading-6 text-[#a9a1b2]">{description}</p>
+                  </motion.article>)}
+              </div>
+            </div>
+            <p className="mt-7 text-center font-mono text-[9px] tracking-[.14em] text-[#777080]">SECURITY CONTROLS ARE SCOPED TO THE PRODUCT, DATA AND DELIVERY REQUIREMENTS</p>
           </div>
         </section>
 
