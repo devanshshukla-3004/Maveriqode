@@ -13,6 +13,7 @@ const plans = [
     id: '01',
     name: 'Website Development',
     price: '₹5,000',
+    originalPrice: '₹7,500',
     cadence: 'one-time',
     description: 'A complete, polished business website built to represent your brand online.',
     icon: Globe2,
@@ -26,6 +27,7 @@ const plans = [
     id: '02',
     name: 'Complete Business System',
     price: '₹10,000',
+    originalPrice: '₹15,000',
     cadence: 'one-time setup',
     monthly: '₹3,000 / month',
     description: 'A connected operating system for your website, customers and daily business operations.',
@@ -41,6 +43,7 @@ const plans = [
     id: '03',
     name: 'Website + SEO Starter',
     price: '₹1,000',
+    originalPrice: '₹1,500',
     cadence: 'per month',
     description: 'A managed online presence for businesses that want to get started simply.',
     icon: Sparkles,
@@ -54,6 +57,7 @@ const plans = [
     id: '04',
     name: 'Business Automation',
     price: '₹2,000',
+    originalPrice: '₹2,500',
     cadence: 'per automation / month',
     description: 'Automate one clearly defined repetitive workflow across your business.',
     icon: Bot,
@@ -67,6 +71,7 @@ const plans = [
     id: '05',
     name: 'Mobile App Development',
     price: '₹5,000',
+    originalPrice: '₹7,500',
     cadence: 'one-time development',
     monthly: '₹1,000 / month after 3 free months',
     description: 'A custom mobile app delivered against an agreed feature scope.',
@@ -149,7 +154,11 @@ export function SolutionsSection({ onSelectSolution }: SolutionsSectionProps) {
                     <div className="relative z-10 flex items-start justify-between">
                       <div>
                         <p className="font-mono text-[10px] tracking-[.22em]" style={{ color: plan.ink }}>MAVERIQODE / PLAN {plan.id}</p>
-                        <p className="mt-4 text-5xl font-black tracking-[-.085em] sm:text-6xl" style={{ color: plan.ink }}>{plan.price}</p>
+                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-white/55 line-through decoration-[#d7a0ff]/80">{plan.originalPrice}</span>
+                          <span className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-2.5 py-1 font-mono text-[9px] font-bold tracking-[.1em] text-emerald-200">{Math.round((1-Number(plan.price.replace(/[^0-9]/g,''))/Number(plan.originalPrice.replace(/[^0-9]/g,'')))*100)}% OFF</span>
+                        </div>
+                        <p className="mt-1 text-5xl font-black tracking-[-.085em] sm:text-6xl" style={{ color: plan.ink }}>{plan.price}</p>
                         <p className="mt-1 text-[10px] font-bold uppercase tracking-[.15em]" style={{ color: plan.ink }}>{plan.cadence}</p>
                       </div>
                       <div className="flex h-[70px] w-[70px] items-center justify-center rounded-[22px] border border-white/15 bg-white/[.07] shadow-[0_14px_35px_rgba(0,0,0,.28)] sm:h-[82px] sm:w-[82px]">
@@ -186,7 +195,7 @@ export function SolutionsSection({ onSelectSolution }: SolutionsSectionProps) {
                         type="button"
                         onClick={(event) => {
                           event.stopPropagation();
-                          onSelectSolution(plan.service, `Selected plan: ${plan.name}. Price: ${plan.price} (${plan.cadence}). ${plan.monthly ? `Ongoing management: ${plan.monthly}. ` : ''}Please discuss the scope and next steps for this plan.`);
+                          onSelectSolution(plan.service, `Selected plan: ${plan.name}. Standard price: ${plan.originalPrice}. Discounted price: ${plan.price} (${plan.cadence}). ${plan.monthly ? `Ongoing management: ${plan.monthly}. ` : ''}Please discuss the scope and next steps for this plan.`);
                         }}
                         className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#a56bff]/35 bg-gradient-to-r from-[#7627bd] to-[#3548b8] px-4 py-3 text-[10px] font-semibold text-white shadow-[0_8px_24px_rgba(106,48,190,.24)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(106,48,190,.36)] sm:px-5"
                       >
