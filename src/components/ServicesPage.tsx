@@ -118,7 +118,7 @@ const plans = [
 const fadeUp = { hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0 } };
 
 export default function ServicesPage() {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState('sales');
   const [selectedPlanId, setSelectedPlanId] = useState('business');
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
   const reduceMotion = useReducedMotion();
@@ -197,9 +197,9 @@ export default function ServicesPage() {
                     key={plan.id}
                     type="button"
                     onClick={()=>setSelectedPlanId(plan.id)}
-                    variants={{ hidden: { opacity: 0, x: reduceMotion ? 0 : -42, y: reduceMotion ? 0 : 24, rotateY: reduceMotion ? 0 : -13, scale: reduceMotion ? 1 : .94 }, visible: { opacity: 1, x: 0, y: 0, rotateY: 0, scale: 1 } }}
-                    transition={{ duration: reduceMotion ? 0 : .72, ease: [.2, .75, .25, 1] }}
-                    whileHover={reduceMotion?undefined:{x:8,y:-5,rotateY:2,scale:1.015}}
+                    variants={{ hidden: { opacity: 0, x: reduceMotion ? 0 : -26, y: reduceMotion ? 0 : 16, scale: reduceMotion ? 1 : .985 }, visible: { opacity: 1, x: 0, y: 0, scale: 1 } }}
+                    transition={{ duration: reduceMotion ? 0 : .62, ease: [.22, 1, .36, 1] }}
+                    whileHover={reduceMotion?undefined:{x:5,y:-3,scale:1.008}}
                     whileTap={reduceMotion?undefined:{scale:.985}}
                     style={{ transformStyle: 'preserve-3d', perspective: 900, zIndex: selectedPlanId === plan.id ? 2 : 1 }}
                     className={`mq-plan-choice group relative w-full overflow-hidden rounded-[22px] border p-5 text-left transition-colors duration-300 sm:p-6 ${selectedPlanId===plan.id?'mq-plan-active border-[#b65cff]/80 bg-[#24132f] shadow-[0_12px_45px_rgba(145,42,210,.17)]':'border-white/10 bg-white/[.025] hover:border-white/25 hover:bg-white/[.055]'}`}
@@ -231,10 +231,10 @@ export default function ServicesPage() {
                 <AnimatePresence mode="wait">
                   <motion.article
                     key={selectedPlan.id}
-                    initial={reduceMotion?false:{opacity:0,y:18,filter:'blur(8px)'}}
+                    initial={reduceMotion?false:{opacity:0,y:14,filter:'blur(5px)'}}
                     animate={{opacity:1,y:0,filter:'blur(0px)'}}
-                    exit={reduceMotion?undefined:{opacity:0,y:-12,filter:'blur(6px)'}}
-                    transition={{duration:reduceMotion?0:.32,ease:'easeOut'}}
+                    exit={reduceMotion?undefined:{opacity:0,y:-8,filter:'blur(4px)'}}
+                    transition={{duration:reduceMotion?0:.46,ease:[.22,1,.36,1]}}
                     className="relative h-full overflow-hidden rounded-[30px] border border-white/15 bg-[linear-gradient(145deg,rgba(41,22,55,.96),rgba(13,12,19,.98)_44%,rgba(12,13,23,.98))] p-6 shadow-[0_30px_100px_rgba(0,0,0,.38)] sm:p-9 lg:p-10"
                   >
                     <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-28 h-80 w-80 rounded-full border border-[#d5a0ff]/15 shadow-[0_0_0_28px_rgba(180,100,255,.025),0_0_0_64px_rgba(180,100,255,.018)]" />
@@ -281,29 +281,98 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section id="automation-catalogue" className="scroll-mt-24 px-5 py-20 sm:px-8 lg:px-12">
-          <div className="mx-auto max-w-[1440px]">
-            <div className="mb-10 max-w-3xl"><p className="font-mono text-xs tracking-[.18em] text-[var(--mq-accent-soft)]">02 / AI & BUSINESS AUTOMATION</p><h2 className="mt-4 text-4xl font-bold tracking-[-.04em] sm:text-5xl">Forty ways to remove repetitive work.</h2><p className="mt-5 text-base leading-relaxed text-[var(--mq-muted)]">Explore the automation catalogue by business function. Each workflow is scoped around your tools, data, approvals and operating requirements.</p></div>
-            <div className="mb-8 flex gap-2 overflow-x-auto pb-2">{[{id:'all',title:'All services'},...categories.map(category=>({id:category.id,title:category.title}))].map(item=><button key={item.id} type="button" onClick={()=>setActiveCategory(item.id)} className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-semibold transition ${activeCategory===item.id?'border-[#c084fc] bg-[#a100ff]/15 text-white':'border-[var(--mq-border)] text-[var(--mq-muted)] hover:text-white'}`}>{item.title}</button>)}</div>
-            <div className="space-y-4">
-              {visibleCategories.map(category=>(
-                <motion.section key={category.id} layout className="overflow-hidden rounded-3xl border border-[var(--mq-border)] bg-[var(--mq-surface)]">
-                  <div className="grid gap-5 border-b border-[var(--mq-border)] p-6 sm:p-8 md:grid-cols-[.75fr_1.25fr]">
-                    <div><p className="font-mono text-xs text-[var(--mq-accent-soft)]">{category.number} / CATEGORY</p><h3 className="mt-3 text-2xl font-bold tracking-tight">{category.title}</h3></div>
-                    <p className="max-w-2xl text-sm leading-relaxed text-[var(--mq-muted)] md:pt-5">{category.intro}</p>
-                  </div>
-                  <div className="grid gap-px bg-[var(--mq-border)] sm:grid-cols-2 xl:grid-cols-4">
-                    {category.services.map((service,index)=><article key={service.name} className="group bg-[var(--mq-surface)] p-5 transition duration-300 hover:-translate-y-1 hover:bg-[#1c1724] sm:p-6">
-                      <p className="font-mono text-[9px] tracking-[.14em] text-[var(--mq-accent-soft)]">{category.number}.{String(index+1).padStart(2,'0')} · {service.group}</p>
-                      <h4 className="mt-3 text-base font-semibold transition-colors group-hover:text-[#e2baff]">{service.name}</h4>
-                      <p className="mt-2 text-xs leading-relaxed text-[var(--mq-muted)]">{service.description}</p>
-                      <a href="/#contact" className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--mq-text-secondary)] transition hover:text-[#d8a9ff]">Discuss workflow <ArrowUpRight size={13}/></a>
-                    </article>)}
-                  </div>
-                </motion.section>
-              ))}
+        <section id="automation-catalogue" className="relative isolate scroll-mt-24 overflow-hidden border-y border-[var(--mq-border)] bg-[#09080f] px-5 py-24 sm:px-8 lg:px-12">
+          <div aria-hidden="true" className="mq-pricing-grid pointer-events-none absolute inset-0 opacity-50" />
+          <div aria-hidden="true" className="mq-pricing-aurora pointer-events-none absolute -right-48 top-20 h-[480px] w-[480px] rounded-full blur-[120px]" />
+          <div className="relative mx-auto max-w-[1440px]">
+            <div className="mb-14 flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
+              <div className="max-w-3xl">
+                <p className="mb-5 flex items-center gap-3 font-mono text-[10px] tracking-[.24em] text-[#d7a0ff]"><span className="h-px w-8 bg-[#b65cff]" /> 02 / AI & BUSINESS AUTOMATION</p>
+                <h2 className="text-balance text-5xl font-bold leading-[.98] tracking-[-.065em] sm:text-6xl lg:text-7xl">Make room for <span className="mq-serif-accent text-[#d7a0ff]">better work.</span></h2>
+              </div>
+              <p className="max-w-md text-sm leading-7 text-[#a6a0b2]">Forty practical automation workflows, organized by the way your business operates. Choose a category to explore what can be streamlined.</p>
             </div>
-            <p className="mt-7 text-xs leading-relaxed text-[var(--mq-muted)]">Automation pricing starts at ₹2,000 per automation per month. Final pricing depends on workflow complexity, connected platforms, AI usage and third-party service costs.</p>
+
+            <div className="grid items-start gap-8 xl:grid-cols-[.82fr_1.18fr]">
+              <div className="relative">
+                <div className="mb-5 flex items-center justify-between px-1"><span className="font-mono text-[9px] tracking-[.22em] text-[#9d91ac]">EXPLORE BY FUNCTION</span><span className="font-mono text-[9px] tracking-[.18em] text-[#b65cff]">05 CATEGORIES / 40 WORKFLOWS</span></div>
+                <div aria-hidden="true" className="pointer-events-none absolute -left-3 top-16 bottom-16 w-px bg-gradient-to-b from-transparent via-[#9b4cce]/50 to-transparent" />
+                <motion.div
+                  className="mq-plan-stack grid gap-4 sm:grid-cols-2 xl:grid-cols-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.16 }}
+                  variants={{ hidden: {}, visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.1, delayChildren: reduceMotion ? 0 : 0.06 } } }}
+                >
+                  {categories.map((category,index)=>(
+                    <motion.button
+                      key={category.id}
+                      type="button"
+                      onClick={()=>setActiveCategory(category.id)}
+                      variants={{ hidden: { opacity: 0, x: reduceMotion ? 0 : -28, y: reduceMotion ? 0 : 14 }, visible: { opacity: 1, x: 0, y: 0 } }}
+                      transition={{ duration: reduceMotion ? 0 : .62, ease: [.22,1,.36,1] }}
+                      whileHover={reduceMotion ? undefined : { x: 5, y: -2 }}
+                      whileTap={reduceMotion ? undefined : { scale: .99 }}
+                      style={{ zIndex: activeCategory === category.id ? 2 : 1 }}
+                      aria-pressed={activeCategory===category.id}
+                      className={`mq-plan-choice mq-category-choice group relative min-h-[126px] w-full overflow-hidden rounded-[22px] border p-5 text-left sm:p-6 ${activeCategory===category.id?'mq-plan-active mq-category-active':'border-white/10'}`}
+                    >
+                      <span aria-hidden="true" className="mq-plan-sheen pointer-events-none absolute inset-0" />
+                      <div className="flex items-start justify-between gap-4">
+                        <div><p className={`font-mono text-[9px] tracking-[.2em] ${activeCategory===category.id?'text-[#e2baff]':'text-[#777181]'}`}>{category.number} / AUTOMATION CATEGORY</p><h3 className="mt-3 text-lg font-semibold tracking-tight text-white sm:text-xl">{category.title}</h3><p className="mt-2 text-xs text-[#a7a0b2]">{category.services.length} workflows available</p></div>
+                        <span className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors duration-500 ${activeCategory===category.id?'border-[#d5a0ff]/60 bg-[#b65cff]/20 text-[#f0d8ff]':'border-white/10 text-[#7d7788] group-hover:text-white'}`}><ArrowUpRight size={15}/></span>
+                      </div>
+                    </motion.button>
+                  ))}
+                </motion.div>
+                <div className="mt-5 flex items-center justify-between gap-3 px-1">
+                  <span className="font-mono text-[9px] tracking-[.14em] text-[#82788f]">SELECT A CATEGORY TO EXPLORE</span>
+                  <button type="button" onClick={()=>setActiveCategory('all')} className={`rounded-full border px-3.5 py-2 font-mono text-[9px] tracking-[.12em] transition-colors duration-300 ${activeCategory==='all'?'border-[#c084fc]/60 bg-[#a100ff]/15 text-white':'border-white/10 text-[#a6a0b2] hover:border-[#c084fc]/50 hover:text-white'}`}>VIEW ALL 40</button>
+                </div>
+              </div>
+
+              <div className="relative min-h-[620px]">
+                <div aria-hidden="true" className="mq-plan-glow pointer-events-none absolute -inset-5 rounded-[38px] blur-2xl" />
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeCategory}
+                    initial={reduceMotion?false:{opacity:0,y:16,filter:'blur(7px)'}}
+                    animate={{opacity:1,y:0,filter:'blur(0px)'}}
+                    exit={reduceMotion?undefined:{opacity:0,y:-10,filter:'blur(5px)'}}
+                    transition={{duration:reduceMotion?0:.48,ease:[.22,1,.36,1]}}
+                    className="relative overflow-hidden rounded-[30px] border border-white/15 bg-[linear-gradient(145deg,rgba(41,22,55,.94),rgba(13,12,19,.98)_48%,rgba(12,13,23,.98))] p-6 shadow-[0_30px_100px_rgba(0,0,0,.34)] sm:p-8 lg:p-9"
+                  >
+                    {visibleCategories.map(category=>(
+                      <section key={category.id} className="relative">
+                        <div className="mb-7 flex flex-wrap items-end justify-between gap-4 border-b border-white/10 pb-6">
+                          <div><p className="font-mono text-[9px] tracking-[.2em] text-[#c89aff]">{category.number} / CATEGORY</p><h3 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl">{category.title}</h3><p className="mt-3 max-w-xl text-sm leading-6 text-[#aaa1b4]">{category.intro}</p></div>
+                          <span className="rounded-full border border-[#d5a0ff]/25 bg-[#a100ff]/10 px-3 py-1.5 font-mono text-[9px] tracking-[.12em] text-[#e1b9ff]">{category.services.length} WORKFLOWS</span>
+                        </div>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          {category.services.map((service,index)=>(
+                            <motion.article
+                              key={service.name}
+                              initial={reduceMotion?false:{opacity:0,y:10}}
+                              animate={{opacity:1,y:0}}
+                              transition={{duration:reduceMotion?0:.38,delay:reduceMotion?0:index*.035,ease:[.22,1,.36,1]}}
+                              whileHover={reduceMotion?undefined:{y:-3}}
+                              className="group rounded-2xl border border-white/[.09] bg-white/[.025] p-4 transition-colors duration-300 hover:border-[#bd7bff]/40 hover:bg-[#a100ff]/[.07] sm:p-5"
+                            >
+                              <p className="font-mono text-[9px] tracking-[.12em] text-[#c89aff]">{category.number}.{String(index+1).padStart(2,'0')} · {service.group}</p>
+                              <h4 className="mt-3 text-sm font-semibold leading-snug text-white transition-colors duration-300 group-hover:text-[#e5c8ff]">{service.name}</h4>
+                              <p className="mt-2 text-xs leading-relaxed text-[#aaa1b4]">{service.description}</p>
+                              <a href="/#contact" className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#d8d1e0] transition-colors duration-300 hover:text-[#e2baff]">Discuss workflow <ArrowUpRight size={13}/></a>
+                            </motion.article>
+                          ))}
+                        </div>
+                      </section>
+                    ))}
+                    {activeCategory==='all'&&<p className="mt-8 border-t border-white/10 pt-5 text-[11px] leading-5 text-[#958da0]">Automation pricing starts at ₹2,000 per automation per month. Final pricing depends on workflow complexity, connected platforms, AI usage and third-party service costs.</p>}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+            <p className="mt-7 text-center font-mono text-[9px] tracking-[.14em] text-[#777080]">CLEAR SCOPE · CONNECTED WORKFLOWS · HUMAN OVERSIGHT</p>
           </div>
         </section>
 
