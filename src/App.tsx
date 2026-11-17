@@ -246,15 +246,6 @@ export default function App() {
         <main>
           <HeroWorkbench onNavigate={navigateToSection} theme={theme} />
           <SectionDivider />
-          <LazySection
-            sectionId="company"
-            forceMount={Boolean(forcedSections.company)}
-            minHeightPx={760}
-          >
-            <GlobalSectionReveal>
-              <ManagedPageSection slug="company"><CompanySection onNotify={showToast} /></ManagedPageSection>
-            </GlobalSectionReveal>
-          </LazySection>
           <SectionDivider />
           <LazySection
             sectionId="capabilities"
@@ -283,6 +274,16 @@ export default function App() {
           >
             <GlobalSectionReveal>
               <WorkSection onRequestSimilar={handleRequestWithService} />
+            </GlobalSectionReveal>
+          </LazySection>
+          <SectionDivider />
+          <LazySection
+            sectionId="company"
+            forceMount={Boolean(forcedSections.company)}
+            minHeightPx={760}
+          >
+            <GlobalSectionReveal>
+              <ManagedPageSection slug="company"><CompanySection onNotify={showToast} /></ManagedPageSection>
             </GlobalSectionReveal>
           </LazySection>
         </main>
