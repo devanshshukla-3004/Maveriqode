@@ -1,10 +1,11 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, ShieldCheck, Sparkles } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 
 type Service = { name: string; description: string; group: string };
 type Category = { id: string; number: string; title: string; intro: string; services: Service[] };
+type Plan = { id: string; label: string; price: string; cadence: string; summary: string; features: string[]; note?: string; monthly?: string; monthlyFeatures?: string[]; featured?: boolean; published?: boolean };
 
 const categories: Category[] = [
   {
@@ -79,7 +80,7 @@ const categories: Category[] = [
   },
 ];
 
-const plans = [
+const fallbackPlans: Plan[] = [
   {
     id: 'website', label: 'Website Development', price: '₹5,000', cadence: 'one-time',
     summary: 'A complete business website, ready to represent your brand online.',
@@ -120,6 +121,8 @@ const fadeUp = { hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0 } };
 
 export default function ServicesPage() {
   const [activeCategory, setActiveCategory] = useState('sales');
+  const [managedPlans, setManagedPlans] = useState<Plan[]>(fallbackPlans);
+  useEffect(() => { let active = true; void supabase.from('website_content').select('content,status').eq('slug','plans').eq('status','published').maybeSingle().then(({data,error}) => { if (!active || error || !data || !data.content || typeof data.content !== 'object' || Array.isArray(data.content)) return; const items = (data.content as {items?: unknown}).items; if (Array.isArray(items)) { const valid = items.filter((item): item is Plan => Boolean(item) && typeof item === 'object' && !Array.isArray(item) && typeof (item as Plan).id === 'string' && typeof (item as Plan).label === 'string' && (item as Plan).published !== false); if (valid.length) setManagedPlans(valid); } }); return () => { active = false; }; }, []);
   const [selectedPlanId, setSelectedPlanId] = useState('business');
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [enquiryName, setEnquiryName] = useState('');
@@ -131,7 +134,7 @@ export default function ServicesPage() {
   const [enquiryError, setEnquiryError] = useState('');
   const [enquirySuccess, setEnquirySuccess] = useState(false);
   const [enquirySubmitting, setEnquirySubmitting] = useState(false);
-  const selectedPlan = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
+  const selectedPlan = managedPlans.find((plan) => plan.id === selectedPlanId) ?? managedPlans[0] ?? fallbackPlans[0];
   const reduceMotion = useReducedMotion();
   const visibleCategories = useMemo(() => activeCategory === 'all' ? categories : categories.filter((category) => category.id === activeCategory), [activeCategory]);
   const openPlanEnquiry = () => {
@@ -161,7 +164,7 @@ export default function ServicesPage() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setEnquiryError('Please enter a valid email address.'); return; }
     setEnquirySubmitting(true);
     setEnquiryError('');
-    const selected = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
+    const selected = managedPlans.find((plan) => plan.id === selectedPlanId) ?? managedPlans[0] ?? fallbackPlans[0];
     const message = [
       'Service enquiry from the MAVERIQODE Services page.',
       `Selected plan: ${selected.label}`,
@@ -249,7 +252,7 @@ export default function ServicesPage() {
                 viewport={{ once: true, amount: 0.18 }}
                 variants={{ hidden: {}, visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.12, delayChildren: reduceMotion ? 0 : 0.08 } } }}
               >
-                {plans.map((plan,index)=>(
+                {managedPlans.map((plan,index)=>(
                   <motion.button
                     key={plan.id}
                     type="button"
