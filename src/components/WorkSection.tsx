@@ -9,9 +9,9 @@ interface WorkSectionProps {
   onRequestSimilar: (service: ServiceOption, contextNote: string) => void;
 }
 
-type WorkBuild = { number: string; name: string; type: string; description: string; url: string; label: string; visual: string; tags: string[]; imageUrl?: string; published?: boolean };
+export type WorkBuild = { number: string; name: string; type: string; description: string; url: string; label: string; visual: string; tags: string[]; imageUrl?: string; published?: boolean };
 
-const fallbackBuilds: WorkBuild[] = [
+export const fallbackBuilds: WorkBuild[] = [
   {
     number: '01',
     name: 'Sanskriti Coaching Institute',
