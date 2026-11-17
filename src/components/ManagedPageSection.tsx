@@ -64,8 +64,8 @@ export function ManagedPageSection({ slug, children }: { slug: 'company' | 'capa
   const items = entries(content.items);
   const steps = processes(content.process);
   const questions = faqs(content.faqs);
-  const visibleQuestions = isCompany && questions.length === 0 ? COMPANY_FAQS : questions;
   const isCompany = slug === 'company';
+  const visibleQuestions = isCompany && questions.length === 0 ? COMPANY_FAQS : questions;
   const href = text(content.ctaHref);
   const safeHref = href.startsWith('mailto:') || href.startsWith('https://') || href.startsWith('#') ? href : '#contact';
 
