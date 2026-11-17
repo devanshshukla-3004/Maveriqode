@@ -198,3 +198,92 @@
     animation: none !important;
   }
 }
+
+
+@layer components {
+  .mq-plan-stack {
+    perspective: 1400px;
+    transform-style: preserve-3d;
+  }
+
+  .mq-plan-choice {
+    isolation: isolate;
+    transform-origin: left center;
+    box-shadow: 0 12px 34px rgba(0, 0, 0, .16);
+    transition: border-color .35s ease, background-color .35s ease, box-shadow .45s ease;
+  }
+
+  .mq-plan-choice::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    background: linear-gradient(112deg, transparent 20%, rgba(224, 183, 255, .12) 46%, transparent 70%);
+    transform: translateX(-120%);
+    transition: opacity .35s ease;
+  }
+
+  .mq-plan-choice:hover::after,
+  .mq-plan-choice:focus-visible::after {
+    opacity: 1;
+    animation: mq-plan-sweep .9s cubic-bezier(.2,.7,.2,1) both;
+  }
+
+  .mq-plan-sheen {
+    z-index: 0;
+    opacity: 0;
+    background: radial-gradient(360px circle at 50% 50%, rgba(191, 111, 255, .16), transparent 68%);
+    transition: opacity .4s ease;
+  }
+
+  .mq-plan-choice:hover .mq-plan-sheen,
+  .mq-plan-choice:focus-visible .mq-plan-sheen {
+    opacity: 1;
+  }
+
+  .mq-plan-choice > *:not(.mq-plan-sheen) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .mq-plan-active {
+    animation: mq-plan-selected 4.8s ease-in-out infinite;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 18px 54px rgba(145, 42, 210, .22), 0 0 0 1px rgba(190, 112, 255, .12);
+  }
+
+  .mq-plan-active::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(125deg, rgba(239,203,255,.7), transparent 34%, rgba(151,69,255,.55) 72%, rgba(239,203,255,.2));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  .mq-plan-choice:focus-visible {
+    outline: 2px solid #d7a0ff;
+    outline-offset: 4px;
+  }
+}
+
+@keyframes mq-plan-sweep {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(120%); }
+}
+
+@keyframes mq-plan-selected {
+  0%, 100% { box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 18px 54px rgba(145, 42, 210, .18), 0 0 0 1px rgba(190, 112, 255, .1); }
+  50% { box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 22px 64px rgba(145, 42, 210, .28), 0 0 24px rgba(172, 91, 255, .13); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mq-plan-active { animation: none !important; }
+  .mq-plan-choice::after { animation: none !important; transition: none !important; }
+}
