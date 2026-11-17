@@ -16,8 +16,8 @@ const plans = [
     cadence: 'one-time',
     description: 'A complete, polished business website built to represent your brand online.',
     icon: Globe2,
-    tone: 'from-[#b8dfff] via-[#d9caff] to-[#f8d6ef]',
-    ink: '#21143c',
+    tone: 'from-[#21152f] via-[#171323] to-[#111827]',
+    ink: '#f3eaff',
     features: ['Unlimited content pages', 'Responsive design for all screens', 'SEO foundation and metadata', 'Domain & hosting configuration', 'Custom admin panel', 'Enquiry forms and security hardening'],
     note: 'Domain renewals and premium third-party services are charged separately where applicable.',
     service: 'Software Engineering' as ServiceOption,
@@ -30,8 +30,8 @@ const plans = [
     monthly: '₹3,000 / month',
     description: 'A connected operating system for your website, customers and daily business operations.',
     icon: Layers3,
-    tone: 'from-[#d6b5ff] via-[#b7a0ff] to-[#93b8ff]',
-    ink: '#160c2c',
+    tone: 'from-[#32164d] via-[#21163e] to-[#17294b]',
+    ink: '#f6edff',
     featured: true,
     features: ['Website + SEO + hosting setup', 'Custom admin control panel', 'CRM and sales pipeline', 'ERP and operations modules', 'One business automation included', 'Monthly security audit and ongoing management'],
     note: 'Major new modules, paid integrations and external usage charges are quoted separately.',
@@ -44,8 +44,8 @@ const plans = [
     cadence: 'per month',
     description: 'A managed online presence for businesses that want to get started simply.',
     icon: Sparkles,
-    tone: 'from-[#b8f0d8] via-[#c8e8d8] to-[#f0f4c8]',
-    ink: '#102d25',
+    tone: 'from-[#142d2a] via-[#182b35] to-[#202b35]',
+    ink: '#e8fff7',
     features: ['Business website setup', 'Hosting configuration', 'Basic on-page SEO', 'Search metadata and indexing', 'Routine website upkeep', 'Basic security updates'],
     note: 'Final page structure, domain and hosting limits are confirmed before onboarding.',
     service: 'Digital Infrastructure' as ServiceOption,
@@ -57,8 +57,8 @@ const plans = [
     cadence: 'per automation / month',
     description: 'Automate one clearly defined repetitive workflow across your business.',
     icon: Bot,
-    tone: 'from-[#ffd8ad] via-[#ffb9c8] to-[#e5c7ff]',
-    ink: '#3b1d2c',
+    tone: 'from-[#352018] via-[#2c1a2a] to-[#251a36]',
+    ink: '#fff0e8',
     features: ['One selected automation workflow', 'Workflow mapping and configuration', 'Supported app/API integrations', 'Testing and deployment', 'Error notifications and monitoring', 'Ongoing workflow maintenance'],
     note: 'Third-party subscriptions, API credits and AI usage are separate unless included in the proposal.',
     service: 'Automation & Integration' as ServiceOption,
@@ -71,8 +71,8 @@ const plans = [
     monthly: '₹1,000 / month after 3 free months',
     description: 'A custom mobile app delivered against an agreed feature scope.',
     icon: Smartphone,
-    tone: 'from-[#a9d6ff] via-[#b8c6ff] to-[#d8b8ff]',
-    ink: '#172344',
+    tone: 'from-[#17263c] via-[#202044] to-[#2a1c3d]',
+    ink: '#eaf2ff',
     features: ['Custom app UI and user flows', 'Frontend and backend implementation', 'Database and API integration', 'Admin panel where required', 'Testing and deployment assistance', 'First 3 months management included'],
     note: 'Store accounts, paid services and third-party charges are separate.',
     service: 'SaaS & Product Development' as ServiceOption,
@@ -87,10 +87,10 @@ export function SolutionsSection({ onSelectSolution }: SolutionsSectionProps) {
   const move = (direction: number) => setActivePlan((current) => (current + direction + plans.length) % plans.length);
 
   return (
-    <section id="solutions" className="relative isolate overflow-hidden scroll-mt-20 bg-[#0b0811] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+    <section id="solutions" className="relative isolate overflow-hidden scroll-mt-20 bg-[#09090f] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 mq-blueprint-grid opacity-30" />
-      <div aria-hidden="true" className="pointer-events-none absolute -left-48 top-24 h-[520px] w-[520px] rounded-full bg-[#7627bd]/20 blur-[150px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute -right-48 bottom-0 h-[520px] w-[520px] rounded-full bg-[#3445b5]/15 blur-[150px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -left-48 top-24 h-[520px] w-[520px] rounded-full bg-[#7c2cff]/16 blur-[150px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-48 bottom-0 h-[520px] w-[520px] rounded-full bg-[#3158d8]/14 blur-[150px]" />
 
       <div className="relative z-10 mx-auto max-w-[1440px]">
         <motion.div
@@ -145,14 +145,14 @@ export function SolutionsSection({ onSelectSolution }: SolutionsSectionProps) {
                 >
                   <div className={`relative flex h-[220px] shrink-0 flex-col justify-between overflow-hidden bg-gradient-to-br p-7 sm:p-8 ${plan.tone}`}>
                     <div aria-hidden="true" className="absolute inset-0 opacity-25" style={{ backgroundImage: 'radial-gradient(rgba(20,10,40,.5) .8px, transparent .8px)', backgroundSize: '12px 12px' }} />
-                    <div aria-hidden="true" className="absolute -right-12 -top-24 h-72 w-72 rounded-full border border-black/15 shadow-[0_0_0_24px_rgba(20,10,40,.035),0_0_0_52px_rgba(20,10,40,.025)] transition-transform duration-700 group-hover:rotate-12" />
+                    <div aria-hidden="true" className="absolute -right-12 -top-24 h-72 w-72 rounded-full border border-white/10 shadow-[0_0_0_24px_rgba(177,105,255,.035),0_0_0_52px_rgba(75,111,255,.025)] transition-transform duration-700 group-hover:rotate-12" />
                     <div className="relative z-10 flex items-start justify-between">
                       <div>
                         <p className="font-mono text-[10px] tracking-[.22em]" style={{ color: plan.ink }}>MAVERIQODE / PLAN {plan.id}</p>
                         <p className="mt-4 text-5xl font-black tracking-[-.085em] sm:text-6xl" style={{ color: plan.ink }}>{plan.price}</p>
                         <p className="mt-1 text-[10px] font-bold uppercase tracking-[.15em]" style={{ color: plan.ink }}>{plan.cadence}</p>
                       </div>
-                      <div className="flex h-[70px] w-[70px] items-center justify-center rounded-[22px] border border-black/10 bg-white/35 shadow-[0_14px_35px_rgba(20,10,40,.13)] sm:h-[82px] sm:w-[82px]">
+                      <div className="flex h-[70px] w-[70px] items-center justify-center rounded-[22px] border border-white/15 bg-white/[.07] shadow-[0_14px_35px_rgba(0,0,0,.28)] sm:h-[82px] sm:w-[82px]">
                         <Icon size={36} strokeWidth={1.4} style={{ color: plan.ink }} />
                       </div>
                     </div>
@@ -162,33 +162,33 @@ export function SolutionsSection({ onSelectSolution }: SolutionsSectionProps) {
                     </div>
                   </div>
 
-                  <div className="flex flex-1 flex-col bg-[#f6f2ed] px-7 py-6 sm:px-8 sm:py-7">
+                  <div className="flex flex-1 flex-col bg-[linear-gradient(155deg,#17151f,#111018_58%,#141321)] px-7 py-6 sm:px-8 sm:py-7">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h3 className="text-[23px] font-bold leading-tight tracking-[-.045em] text-[#17131d] sm:text-[27px]">{plan.name}</h3>
-                        <p className="mt-2 max-w-[410px] text-[11px] leading-5 text-[#655e69] sm:text-xs">{plan.description}</p>
+                        <h3 className="text-[23px] font-bold leading-tight tracking-[-.045em] text-[#f4f0fa] sm:text-[27px]">{plan.name}</h3>
+                        <p className="mt-2 max-w-[410px] text-[11px] leading-5 text-[#aaa4b5] sm:text-xs">{plan.description}</p>
                       </div>
-                      {plan.featured && <span className="shrink-0 rounded-full bg-[#21132f] px-3 py-1.5 font-mono text-[8px] tracking-[.12em] text-white">COMPLETE</span>}
+                      {plan.featured && <span className="shrink-0 rounded-full bg-white/[.08] border border-white/10 px-3 py-1.5 font-mono text-[8px] tracking-[.12em] text-white">COMPLETE</span>}
                     </div>
-                    {plan.monthly && <p className="mt-3 inline-flex self-start rounded-full bg-[#e9def5] px-3 py-1.5 text-[10px] font-semibold text-[#4b286c]">{plan.monthly}</p>}
-                    <div className="my-4 h-px bg-[#dcd5dd]" />
+                    {plan.monthly && <p className="mt-3 inline-flex self-start rounded-full border border-[#a66bff]/25 bg-[#8d42d8]/15 px-3 py-1.5 text-[10px] font-semibold text-[#d9bcff]">{plan.monthly}</p>}
+                    <div className="my-4 h-px bg-white/10" />
                     <ul className="grid grid-cols-1 gap-y-2.5 sm:grid-cols-2 sm:gap-x-4">
                       {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-[10px] leading-[1.45] text-[#3c3542] sm:text-[11px]">
-                          <Check size={13} className="mt-px shrink-0 text-[#8b35c5]" />
+                        <li key={feature} className="flex items-start gap-2 text-[10px] leading-[1.45] text-[#d2ccda] sm:text-[11px]">
+                          <Check size={13} className="mt-px shrink-0 text-[#b77aff]" />
                           <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
                     <div className="mt-auto flex items-end justify-between gap-4 pt-4">
-                      <p className="max-w-[270px] text-[9px] leading-4 text-[#827987]">{plan.note}</p>
+                      <p className="max-w-[270px] text-[9px] leading-4 text-[#91899f]">{plan.note}</p>
                       <button
                         type="button"
                         onClick={(event) => {
                           event.stopPropagation();
                           onSelectSolution(plan.service, `Selected plan: ${plan.name}. Price: ${plan.price} (${plan.cadence}). ${plan.monthly ? `Ongoing management: ${plan.monthly}. ` : ''}Please discuss the scope and next steps for this plan.`);
                         }}
-                        className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#21132f] px-4 py-3 text-[10px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#7427bc] sm:px-5"
+                        className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#a56bff]/35 bg-gradient-to-r from-[#7627bd] to-[#3548b8] px-4 py-3 text-[10px] font-semibold text-white shadow-[0_8px_24px_rgba(106,48,190,.24)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(106,48,190,.36)] sm:px-5"
                       >
                         Discuss plan <ArrowUpRight size={14} />
                       </button>
