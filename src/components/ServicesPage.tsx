@@ -156,7 +156,7 @@ export default function ServicesPage() {
     const name = enquiryName.trim();
     const email = enquiryEmail.trim();
     if (name.length < 2) { setEnquiryError('Please enter your name or organization.'); return; }
-    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) { setEnquiryError('Please enter a valid email address.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\\.[^\s@]+$/.test(email)) { setEnquiryError('Please enter a valid email address.'); return; }
     setEnquirySubmitting(true);
     setEnquiryError('');
     const selected = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
@@ -168,7 +168,7 @@ export default function ServicesPage() {
       selectedWorkflow ? `Selected automation workflow: ${selectedWorkflow}` : '',
       enquiryOrganization.trim() ? `Business / organization: ${enquiryOrganization.trim()}` : '',
       enquiryDetails.trim() ? `Project details: ${enquiryDetails.trim()}` : '',
-    ].filter(Boolean).join('\\n');
+    ].filter(Boolean).join('\n');
     const { error } = await supabase.functions.invoke('website-enquiry', {
       body: { name, email, service: selected.label, message, website: '' },
     });
