@@ -138,3 +138,63 @@
     will-change: auto;
   }
 }
+
+
+@layer components {
+  .mq-pricing-grid {
+    background-image:
+      linear-gradient(rgba(226, 190, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(226, 190, 255, 0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at 55% 42%, black 8%, transparent 78%);
+  }
+
+  .mq-pricing-aurora {
+    background: radial-gradient(circle, rgba(151, 48, 212, 0.32), rgba(84, 34, 138, 0.12) 42%, transparent 72%);
+    animation: mq-aurora-drift 13s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .mq-pricing-orbit {
+    border: 1px solid rgba(207, 160, 255, 0.08);
+    box-shadow: 0 0 0 34px rgba(207, 160, 255, 0.018), 0 0 0 82px rgba(207, 160, 255, 0.012);
+    animation: mq-orbit-breathe 9s ease-in-out infinite;
+  }
+
+  .mq-plan-choice {
+    transform: translateZ(0);
+    backdrop-filter: blur(16px);
+  }
+
+  .mq-plan-active {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 16px 48px rgba(118, 38, 164, .16);
+  }
+
+  .mq-plan-glow {
+    background: radial-gradient(ellipse at 52% 42%, rgba(142, 55, 200, .18), transparent 68%);
+    animation: mq-panel-glow 7s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes mq-aurora-drift {
+  0% { transform: translate3d(-2%, 0, 0) scale(.94); }
+  100% { transform: translate3d(16%, 12%, 0) scale(1.12); }
+}
+
+@keyframes mq-orbit-breathe {
+  0%, 100% { transform: scale(.96) rotate(-7deg); opacity: .48; }
+  50% { transform: scale(1.04) rotate(7deg); opacity: .9; }
+}
+
+@keyframes mq-panel-glow {
+  0% { opacity: .45; transform: scale(.96); }
+  100% { opacity: .9; transform: scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mq-pricing-aurora,
+  .mq-pricing-orbit,
+  .mq-plan-glow {
+    animation: none !important;
+  }
+}
