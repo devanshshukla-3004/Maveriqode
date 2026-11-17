@@ -1,13 +1,17 @@
+import { useEffect, useState } from 'react';
 import { ArrowRight, ArrowUpRight, ExternalLink, Layers3, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ServiceOption } from '../data/maveriqodeData';
 import { EditorialSerifAccent } from './EditorialSerifAccent';
+import { supabase } from '../lib/supabase';
 
 interface WorkSectionProps {
   onRequestSimilar: (service: ServiceOption, contextNote: string) => void;
 }
 
-const builds = [
+type WorkBuild = { number: string; name: string; type: string; description: string; url: string; label: string; visual: string; tags: string[]; imageUrl?: string; published?: boolean };
+
+const fallbackBuilds: WorkBuild[] = [
   {
     number: '01',
     name: 'Sanskriti Coaching Institute',
@@ -99,6 +103,8 @@ function ProjectThumbnail({ visual }: { visual: string }) {
 
 export function WorkSection({ onRequestSimilar }: WorkSectionProps) {
   const reduceMotion = useReducedMotion();
+  const [builds, setBuilds] = useState<WorkBuild[]>(fallbackBuilds);
+  useEffect(() => { let active = true; void supabase.from('website_content').select('content,status').eq('slug','work').eq('status','published').maybeSingle().then(({data,error}) => { if (!active || error || !data || !data.content || typeof data.content !== 'object' || Array.isArray(data.content)) return; const items = (data.content as {items?: unknown}).items; if (Array.isArray(items)) { const valid = items.filter((item): item is WorkBuild => Boolean(item) && typeof item === 'object' && !Array.isArray(item) && typeof (item as WorkBuild).name === 'string' && typeof (item as WorkBuild).url === 'string' && (item as WorkBuild).published !== false); if (valid.length) setBuilds(valid); } }); return () => { active = false; }; }, []);
 
   return (
     <section id="work" className="relative isolate overflow-hidden scroll-mt-20 bg-[var(--mq-bg)] px-5 py-24 transition-colors duration-200 sm:px-8 lg:px-12 lg:py-32">
@@ -122,7 +128,7 @@ export function WorkSection({ onRequestSimilar }: WorkSectionProps) {
           </div>
           <div className="lg:justify-self-end lg:max-w-[470px]">
             <p className="text-sm leading-7 text-[var(--mq-text-secondary)] sm:text-base">A look at selected demonstration builds across education, fitness and healthcare. Each one explores how thoughtful software can shape a clearer digital experience.</p>
-            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--mq-border)] bg-[var(--mq-surface)] px-3.5 py-2 font-mono text-[9px] tracking-[.14em] text-[var(--mq-muted)]"><span className="h-1.5 w-1.5 rounded-full bg-[#a66bff]" />4 DEMONSTRATION BUILDS</div>
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--mq-border)] bg-[var(--mq-surface)] px-3.5 py-2 font-mono text-[9px] tracking-[.14em] text-[var(--mq-muted)]"><span className="h-1.5 w-1.5 rounded-full bg-[#a66bff]" />{builds.length} DEMONSTRATION BUILDS</div>
           </div>
         </motion.div>
 
@@ -142,10 +148,10 @@ export function WorkSection({ onRequestSimilar }: WorkSectionProps) {
               whileHover={reduceMotion ? undefined : { y: -6 }}
               className="group relative overflow-hidden rounded-[24px] border border-[var(--mq-border)] bg-[var(--mq-surface-card)]"
             >
-              <div className={`relative h-[250px] overflow-hidden bg-gradient-to-br sm:h-[300px] ${visualStyles[build.visual]}`}>
+              <div className={`relative h-[250px] overflow-hidden bg-gradient-to-br sm:h-[300px] ${visualStyles[build.visual] || visualStyles.education}`}>
                 <div aria-hidden="true" className="absolute inset-0 opacity-[.18]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.24) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.24) 1px,transparent 1px)', backgroundSize: '34px 34px' }} />
                 <div aria-hidden="true" className="absolute -right-14 -top-28 h-80 w-80 rounded-full border border-white/15 shadow-[0_0_0_28px_rgba(255,255,255,.025),0_0_0_58px_rgba(255,255,255,.02)] transition-transform duration-700 group-hover:rotate-12 group-hover:scale-105" />
-                <ProjectThumbnail visual={build.visual} />
+                {build.imageUrl ? <img src={build.imageUrl} alt={`${build.name} preview`} loading="lazy" className="absolute inset-0 h-full w-full object-cover" /> : <ProjectThumbnail visual={build.visual} />}
                 <div className="absolute left-6 top-5 z-10 flex items-center gap-2 rounded-full border border-white/15 bg-black/30 px-3 py-1.5 backdrop-blur-md">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#c18aff]" />
                   <span className="font-mono text-[8px] tracking-[.16em] text-white/80">DEMONSTRATION BUILD</span>
