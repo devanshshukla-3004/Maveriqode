@@ -271,7 +271,7 @@ export default function App() {
             minHeightPx={680}
           >
             <GlobalSectionReveal>
-              <ManagedPageSection slug="solutions"><SolutionsSection onSelectSolution={handleRequestWithService} /></ManagedPageSection>
+              <SolutionsSection onSelectSolution={handleRequestWithService} />
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
