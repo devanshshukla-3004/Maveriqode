@@ -68,7 +68,7 @@ export function useSectionMeta(activeSection: NavSectionId) {
     const fallback = updateSectionMetaTags(activeSection);
     void supabase.from('website_content').select('seo_title,seo_description')
       .eq('slug', slug).eq('status', 'published').maybeSingle()
-      .then(({ data, error }) => {
+      .then(({ data, error }: { data: any; error: any }) => {
         if (!active || error || !data) return;
         updateSectionMetaTags(activeSection, {
           title: typeof data.seo_title === 'string' ? data.seo_title : fallback.title,
