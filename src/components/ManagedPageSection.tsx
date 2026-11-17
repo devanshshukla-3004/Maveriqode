@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { ArrowUpRight, Check, ChevronDown } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { supabase } from '../lib/supabase';
+import { COMPANY_FAQS } from '../data/maveriqodeData';
 
 type Entry = {
   eyebrow?: string;
@@ -64,6 +65,7 @@ export function ManagedPageSection({ slug, children }: { slug: 'company' | 'capa
   const steps = processes(content.process);
   const questions = faqs(content.faqs);
   const isCompany = slug === 'company';
+  const visibleQuestions = isCompany && questions.length === 0 ? COMPANY_FAQS : questions;
   const href = text(content.ctaHref);
   const safeHref = href.startsWith('mailto:') || href.startsWith('https://') || href.startsWith('#') ? href : '#contact';
 
@@ -106,9 +108,9 @@ export function ManagedPageSection({ slug, children }: { slug: 'company' | 'capa
           </motion.article>)}
         </div>}
 
-        {questions.length > 0 && <div className="pt-12 border-t border-[var(--mq-border)] grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        {visibleQuestions.length > 0 && <div className="pt-12 border-t border-[var(--mq-border)] grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           <div className="lg:col-span-5"><p className="font-mono text-xs text-[var(--mq-accent-soft)] mb-3">ENGINEERING PROCESS · FAQ</p><h3 className="font-display font-extrabold text-3xl text-[var(--mq-text)]">Clear answers. No hidden layers.</h3></div>
-          <div className="lg:col-span-7 border-t border-[var(--mq-border)]">{questions.map((faq,index) => <div key={index} className="border-b border-[var(--mq-border)]">
+          <div className="lg:col-span-7 border-t border-[var(--mq-border)]">{visibleQuestions.map((faq,index) => <div key={index} className="border-b border-[var(--mq-border)]">
             <button type="button" aria-expanded={openFaq===index} onClick={()=>setOpenFaq(openFaq===index?-1:index)} className="w-full py-5 text-left flex justify-between items-center gap-4 text-sm sm:text-base font-semibold text-[var(--mq-text)]">{text(faq.question)}<ChevronDown size={18} className={openFaq===index?'rotate-180 transition-transform':'transition-transform'}/></button>
             {openFaq===index && <p className="pb-5 pr-8 text-sm text-[var(--mq-muted)] leading-relaxed">{text(faq.answer)}</p>}
           </div>)}</div>
