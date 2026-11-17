@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, ShieldCheck, Sparkles } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { supabase } from '../lib/supabase';
 
 type Service = { name: string; description: string; group: string };
 type Category = { id: string; number: string; title: string; intro: string; services: Service[] };
@@ -120,9 +121,63 @@ const fadeUp = { hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0 } };
 export default function ServicesPage() {
   const [activeCategory, setActiveCategory] = useState('sales');
   const [selectedPlanId, setSelectedPlanId] = useState('business');
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
+  const [enquiryName, setEnquiryName] = useState('');
+  const [enquiryEmail, setEnquiryEmail] = useState('');
+  const [enquiryOrganization, setEnquiryOrganization] = useState('');
+  const [enquiryDetails, setEnquiryDetails] = useState('');
+  const [selectedWorkflow, setSelectedWorkflow] = useState('');
+  const [enquiryError, setEnquiryError] = useState('');
+  const [enquirySuccess, setEnquirySuccess] = useState(false);
+  const [enquirySubmitting, setEnquirySubmitting] = useState(false);
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
   const reduceMotion = useReducedMotion();
   const visibleCategories = useMemo(() => activeCategory === 'all' ? categories : categories.filter((category) => category.id === activeCategory), [activeCategory]);
+  const openPlanEnquiry = () => {
+    setSelectedWorkflow('');
+    setEnquiryDetails('');
+    setEnquiryError('');
+    setEnquirySuccess(false);
+    setEnquiryOpen(true);
+  };
+
+  const openWorkflowEnquiry = (workflow: string) => {
+    setSelectedPlanId('automation');
+    setSelectedWorkflow(workflow);
+    setEnquiryDetails('');
+    setEnquiryError('');
+    setEnquirySuccess(false);
+    setEnquiryOpen(true);
+  };
+
+  const handleEnquirySubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (enquirySubmitting) return;
+    const name = enquiryName.trim();
+    const email = enquiryEmail.trim();
+    if (name.length < 2) { setEnquiryError('Please enter your name or organization.'); return; }
+    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) { setEnquiryError('Please enter a valid email address.'); return; }
+    setEnquirySubmitting(true);
+    setEnquiryError('');
+    const selected = plans.find((plan) => plan.id === selectedPlanId) ?? plans[0];
+    const message = [
+      'Service enquiry from the MAVERIQODE Services page.',
+      `Selected plan: ${selected.label}`,
+      `Displayed pricing: ${selected.price} (${selected.cadence})`,
+      selected.monthly ? `Additional management: ${selected.monthly}` : '',
+      selectedWorkflow ? `Selected automation workflow: ${selectedWorkflow}` : '',
+      enquiryOrganization.trim() ? `Business / organization: ${enquiryOrganization.trim()}` : '',
+      enquiryDetails.trim() ? `Project details: ${enquiryDetails.trim()}` : '',
+    ].filter(Boolean).join('\\n');
+    const { error } = await supabase.functions.invoke('website-enquiry', {
+      body: { name, email, service: selected.label, message, website: '' },
+    });
+    setEnquirySubmitting(false);
+    if (error) { setEnquiryError('We could not submit your enquiry right now. Please try again or email maveriqode@gmail.com.'); return; }
+    setEnquirySuccess(true);
+    setEnquiryName(''); setEnquiryEmail(''); setEnquiryOrganization(''); setEnquiryDetails('');
+  };
+
 
   return (
     <div className="min-h-screen bg-[var(--mq-bg)] text-[var(--mq-text)]">
@@ -271,7 +326,7 @@ export default function ServicesPage() {
 
                     <div className="relative mt-8 flex flex-col justify-between gap-5 border-t border-white/10 pt-6 sm:flex-row sm:items-end">
                       <p className="max-w-xl text-[11px] leading-5 text-[#958da0]">{selectedPlan.note}</p>
-                      <a href="/#contact" className="inline-flex shrink-0 items-center justify-center gap-3 rounded-full bg-white px-6 py-3.5 text-xs font-bold text-[#100d16] transition hover:-translate-y-1 hover:bg-[#e7c9ff]">Discuss this plan <ArrowUpRight size={15}/></a>
+                      <button type="button" onClick={openPlanEnquiry} className="inline-flex shrink-0 items-center justify-center gap-3 rounded-full bg-white px-6 py-3.5 text-xs font-bold text-[#100d16] transition hover:-translate-y-1 hover:bg-[#e7c9ff]">Discuss this plan <ArrowUpRight size={15}/></button>
                     </div>
                   </motion.article>
                 </AnimatePresence>
@@ -361,7 +416,7 @@ export default function ServicesPage() {
                               <p className="font-mono text-[9px] tracking-[.12em] text-[#c89aff]">{category.number}.{String(index+1).padStart(2,'0')} · {service.group}</p>
                               <h4 className="mt-3 text-sm font-semibold leading-snug text-white transition-colors duration-300 group-hover:text-[#e5c8ff]">{service.name}</h4>
                               <p className="mt-2 text-xs leading-relaxed text-[#aaa1b4]">{service.description}</p>
-                              <a href="/#contact" className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#d8d1e0] transition-colors duration-300 hover:text-[#e2baff]">Discuss workflow <ArrowUpRight size={13}/></a>
+                              <button type="button" onClick={()=>openWorkflowEnquiry(service.name)} className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#d8d1e0] transition-colors duration-300 hover:text-[#e2baff]">Discuss workflow <ArrowUpRight size={13}/></button>
                             </motion.article>
                           ))}
                         </div>
@@ -416,10 +471,41 @@ export default function ServicesPage() {
         <section className="px-5 py-20 sm:px-8 lg:px-12">
           <div className="mx-auto flex max-w-[1440px] flex-col items-start justify-between gap-8 rounded-[30px] border border-[#a100ff]/35 bg-[radial-gradient(circle_at_85%_20%,rgba(161,0,255,.18),transparent_35%),var(--mq-surface)] p-8 sm:p-12 lg:flex-row lg:items-end">
             <div className="max-w-3xl"><p className="font-mono text-xs tracking-[.18em] text-[var(--mq-accent-soft)]">LET'S BUILD</p><h2 className="mt-4 text-4xl font-bold tracking-[-.04em] sm:text-5xl">Have a business problem to solve?</h2><p className="mt-5 text-sm leading-relaxed text-[var(--mq-muted)]">Tell us what is slowing your team down. We will help define the right scope, delivery approach and commercial plan.</p></div>
-            <a href="/#contact" className="inline-flex shrink-0 items-center gap-3 rounded-full bg-white px-7 py-4 text-sm font-bold text-black transition hover:bg-[#e6caff]">Start a conversation <ArrowUpRight size={17}/></a>
+            <button type="button" onClick={openPlanEnquiry} className="inline-flex shrink-0 items-center gap-3 rounded-full bg-white px-7 py-4 text-sm font-bold text-black transition hover:bg-[#e6caff]">Start a conversation <ArrowUpRight size={17}/></button>
           </div>
         </section>
       </main>
+      <AnimatePresence>
+        {enquiryOpen && (
+          <motion.div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/75 p-4 backdrop-blur-md sm:p-6" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(event)=>{if(event.target===event.currentTarget&&!enquirySubmitting)setEnquiryOpen(false);}}>
+            <motion.section role="dialog" aria-modal="true" aria-labelledby="service-enquiry-title" initial={reduceMotion?false:{opacity:0,y:24,scale:.98}} animate={{opacity:1,y:0,scale:1}} exit={reduceMotion?undefined:{opacity:0,y:14,scale:.99}} transition={{duration:reduceMotion?0:.32,ease:[.22,1,.36,1]}} className="relative my-auto w-full max-w-2xl overflow-hidden rounded-[28px] border border-[#c084fc]/25 bg-[linear-gradient(145deg,#21132d,#0d0b13_58%,#10101a)] p-6 shadow-[0_35px_120px_rgba(0,0,0,.65)] sm:p-9">
+              <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-28 h-72 w-72 rounded-full bg-[#a100ff]/15 blur-[90px]"/>
+              <div className="relative">
+                <div className="flex items-start justify-between gap-5 border-b border-white/10 pb-6">
+                  <div><p className="font-mono text-[9px] tracking-[.2em] text-[#d7a0ff]">MAVERIQODE / PROJECT ENQUIRY</p><h2 id="service-enquiry-title" className="mt-3 text-3xl font-bold tracking-[-.04em] text-white sm:text-4xl">Let’s shape your <span className="mq-serif-accent text-[#d7a0ff]">next move.</span></h2><p className="mt-2 text-sm text-[#aaa1b4]">Confirm your selection and tell us a little about what you need.</p></div>
+                  <button type="button" onClick={()=>setEnquiryOpen(false)} disabled={enquirySubmitting} aria-label="Close enquiry form" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:border-white/30 hover:text-white">×</button>
+                </div>
+                {enquirySuccess ? (
+                  <div role="status" className="py-12 text-center"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-400/10 text-emerald-300"><Check size={24}/></span><h3 className="mt-5 text-2xl font-semibold text-white">Enquiry received.</h3><p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#aaa1b4]">Thanks for considering MAVERIQODE. Your selected plan and project details have been sent to our team. We’ll get in touch using your email.</p><button type="button" onClick={()=>setEnquiryOpen(false)} className="mt-7 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#100d16] transition hover:bg-[#e7c9ff]">Done</button></div>
+                ) : (
+                  <form onSubmit={handleEnquirySubmit} className="relative mt-7 grid gap-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Name / contact person<input required minLength={2} maxLength={120} value={enquiryName} onChange={e=>setEnquiryName(e.target.value)} placeholder="Your name" className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#b65cff]"/></label>
+                      <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Email address<input required type="email" maxLength={254} value={enquiryEmail} onChange={e=>setEnquiryEmail(e.target.value)} placeholder="you@company.com" className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#b65cff]"/></label>
+                    </div>
+                    <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Business / organization <span className="font-normal text-[#82788f]">Optional</span><input maxLength={180} value={enquiryOrganization} onChange={e=>setEnquiryOrganization(e.target.value)} placeholder="Company or organization name" className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#b65cff]"/></label>
+                    <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">Selected plan<select value={selectedPlanId} onChange={e=>{setSelectedPlanId(e.target.value);if(e.target.value!=='automation')setSelectedWorkflow('');}} className="w-full rounded-xl border border-[#b65cff]/35 bg-[#17111f] px-4 py-3.5 text-sm text-white outline-none focus:border-[#d7a0ff]">{plans.map(plan=><option key={plan.id} value={plan.id}>{plan.label} — {plan.price} ({plan.cadence})</option>)}</select></label>
+                    {selectedWorkflow && selectedPlanId==='automation' && <div className="rounded-xl border border-[#b65cff]/25 bg-[#a100ff]/10 px-4 py-3"><p className="font-mono text-[9px] tracking-[.16em] text-[#c89aff]">SELECTED AUTOMATION</p><p className="mt-1 text-sm font-semibold text-white">{selectedWorkflow}</p></div>}
+                    <label className="grid gap-2 text-xs font-medium text-[#d8d1e0]">What would you like to build? <span className="font-normal text-[#82788f]">Optional</span><textarea rows={3} maxLength={3000} value={enquiryDetails} onChange={e=>setEnquiryDetails(e.target.value)} placeholder="Share your goals, requirements, preferred timeline or questions..." className="w-full resize-y rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-[#777181] focus:border-[#b65cff]"/></label>
+                    {enquiryError && <p role="alert" className="text-xs text-rose-300">{enquiryError}</p>}
+                    <div className="mt-1 flex flex-col justify-between gap-4 border-t border-white/10 pt-5 sm:flex-row sm:items-center"><p className="max-w-sm text-[10px] leading-5 text-[#8f879a]">This is a project enquiry, not a payment or confirmed order. We’ll contact you to finalize scope and next steps.</p><button type="submit" disabled={enquirySubmitting} className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#a100ff] to-[#5b22d5] px-7 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60">{enquirySubmitting?'Sending enquiry…':'Submit enquiry'} <ArrowUpRight size={15}/></button></div>
+                  </form>
+                )}
+              </div>
+            </motion.section>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <footer className="border-t border-[var(--mq-border)] px-5 py-7 sm:px-8 lg:px-12"><div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 text-xs text-[var(--mq-muted)] sm:flex-row"><span>© 2026 MAVERIQODE. Digital Engineering & Technology.</span><div className="flex gap-5"><a href="/" className="hover:text-white">Home</a><a href="/#company" className="hover:text-white">Company</a><a href="/#contact" className="hover:text-white">Contact</a></div></div></footer>
     </div>
   );
