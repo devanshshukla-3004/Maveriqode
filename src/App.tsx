@@ -8,7 +8,7 @@ import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ToastMessage, ToastNotification } from './components/ToastNotification';
 import { SectionDivider } from './components/SectionDivider';
-import { ThemeToggle, ThemeTone } from './components/ThemeToggle';
+import { ThemeTone } from './components/ThemeToggle';
 import { LazySection } from './components/LazySection';
 import { ManagedPageSection } from './components/ManagedPageSection';
 import {
@@ -82,11 +82,7 @@ export default function App() {
     const hash = window.location.hash.replace('#', '') as NavSectionId;
     return hash ? { [hash]: true } : {};
   });
-  const [theme, setTheme] = useState<ThemeTone>(() => {
-    if (typeof window === 'undefined') return 'obsidian';
-    const savedTheme = window.localStorage.getItem('mq-theme');
-    return savedTheme === 'white' || savedTheme === 'slate' || savedTheme === 'titanium' || savedTheme === 'titanium' ? 'titanium' : 'obsidian';
-  });
+  const theme: ThemeTone = 'obsidian';
   const nameInputRef = useRef<HTMLInputElement>(null);
   const activeSectionRef = useRef<NavSectionId>(activeSection);
 
@@ -97,21 +93,12 @@ export default function App() {
   useSectionMeta(activeSection);
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'titanium') {
-      root.setAttribute('data-theme', 'titanium');
-    } else {
-      root.removeAttribute('data-theme');
-    }
+    document.documentElement.removeAttribute('data-theme');
     try {
-      window.localStorage.setItem('mq-theme', theme);
+      window.localStorage.removeItem('mq-theme');
     } catch {
       // Ignore storage errors in restricted contexts
     }
-  }, [theme]);
-
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'obsidian' ? 'titanium' : 'obsidian'));
   }, []);
 
   const showToast = useCallback((title: string, description: string) => {
@@ -196,12 +183,6 @@ export default function App() {
 
       if (isEditable) return;
 
-      if (e.key === 't' || e.key === 'T') {
-        e.preventDefault();
-        toggleTheme();
-        return;
-      }
-
       const activeEl = document.activeElement;
       const isBodyFocused =
         activeEl === document.body ||
@@ -232,7 +213,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [navigateToSection, toggleTheme]);
+  }, [navigateToSection]);
 
   return (
     <MotionConfig
@@ -302,7 +283,6 @@ export default function App() {
           />
         </GlobalSectionReveal>
 
-        <ThemeToggle theme={theme} onToggle={toggleTheme} />
         <BackToTopButton onScrollTop={() => setActiveSection('home')} />
         <ToastNotification toast={toast} onDismiss={dismissToast} />
         <CustomCursor />

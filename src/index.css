@@ -539,3 +539,110 @@
 :root[data-theme="titanium"] .bg-\[var\(--mq-bg\)\] { background-color: var(--mq-bg); }
 :root[data-theme="titanium"] .text-white { color: var(--mq-text); }
 :root[data-theme="titanium"] .border-white\/10 { border-color: var(--mq-border); }
+
+
+/* NEW YEAR — midnight celebration tone: champagne gold, icy blue and quiet starlight. */
+:root[data-theme="titanium"] {
+  color-scheme: dark;
+  --mq-bg: #080b18;
+  --mq-bg-elevated: #10172a;
+  --mq-surface: #151d32;
+  --mq-surface-card: #18223a;
+  --mq-surface-inset: #0b1122;
+  --mq-surface-widget: #111a2e;
+  --mq-border: rgba(207, 190, 143, .2);
+  --mq-border-strong: rgba(232, 207, 145, .38);
+  --mq-text: #f5f0df;
+  --mq-text-secondary: #d8d7d0;
+  --mq-muted: #aeb8ca;
+  --mq-violet: #d6b66d;
+  --mq-blue: #7db9df;
+  --mq-accent-soft: #f0d58d;
+  --mq-serif-shadow: 0 1px 12px rgba(224, 190, 112, .18);
+  --mq-grid-line: rgba(202, 216, 239, .045);
+}
+
+:root[data-theme="titanium"] body {
+  background:
+    radial-gradient(ellipse at 82% 0%, rgba(91, 153, 205, .19), transparent 34%),
+    radial-gradient(ellipse at 12% 24%, rgba(211, 174, 94, .13), transparent 32%),
+    radial-gradient(ellipse at 68% 88%, rgba(101, 89, 166, .12), transparent 36%),
+    var(--mq-bg);
+}
+
+:root[data-theme="titanium"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .34;
+  background-image:
+    radial-gradient(2px 2px at 12% 18%, rgba(255, 229, 166, .8) 45%, transparent 70%),
+    radial-gradient(1.5px 1.5px at 76% 14%, rgba(184, 222, 255, .8) 45%, transparent 70%),
+    radial-gradient(2px 2px at 88% 62%, rgba(255, 229, 166, .75) 45%, transparent 70%),
+    radial-gradient(1.5px 1.5px at 34% 78%, rgba(184, 222, 255, .7) 45%, transparent 70%),
+    radial-gradient(1px 1px at 58% 42%, rgba(255, 255, 255, .8) 45%, transparent 70%);
+  background-size: 100% 100%;
+  animation: mq-newyear-starlight 7s ease-in-out infinite alternate;
+}
+
+:root[data-theme="titanium"] .mq-hero-grain {
+  opacity: .025;
+  mix-blend-mode: screen;
+}
+
+:root[data-theme="titanium"] .mq-pricing-aurora {
+  background: radial-gradient(circle, rgba(211, 174, 94, .2), rgba(91, 153, 205, .13) 42%, transparent 72%);
+}
+
+:root[data-theme="titanium"] .mq-pricing-orbit {
+  border-color: rgba(232, 207, 145, .2);
+  box-shadow: 0 0 0 34px rgba(232, 207, 145, .025), 0 0 0 82px rgba(125, 185, 223, .018);
+}
+
+:root[data-theme="titanium"] .mq-plan-choice {
+  border-color: rgba(232, 207, 145, .22);
+  background: linear-gradient(125deg, rgba(255,255,255,.075), rgba(255,255,255,.018) 58%, rgba(211,174,94,.055));
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+:root[data-theme="titanium"] .mq-plan-active {
+  border-color: rgba(240, 213, 141, .78) !important;
+  background:
+    radial-gradient(ellipse at 95% 5%, rgba(211,174,94,.2), transparent 52%),
+    linear-gradient(120deg, #293047, #172139 62%, #20213a) !important;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, .3), inset 0 1px 0 rgba(255,255,255,.13), 0 0 28px rgba(211,174,94,.1) !important;
+}
+
+:root[data-theme="titanium"] #solutions {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(211,174,94,.09), transparent 38%),
+    linear-gradient(180deg, #0c1223, #111a2d 52%, #0a1020) !important;
+}
+
+:root[data-theme="titanium"] #solutions h2,
+:root[data-theme="titanium"] #solutions h3,
+:root[data-theme="titanium"] #solutions .text-white { color: #f5f0df !important; }
+
+:root[data-theme="titanium"] #solutions p { color: #b8c2d2; }
+
+:root[data-theme="titanium"] #solutions article {
+  border-color: rgba(232, 207, 145, .22) !important;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .32) !important;
+}
+
+:root[data-theme="titanium"] #solutions article > div:first-child {
+  background-image: linear-gradient(130deg, #29344e, #1b2d43 58%, #423b45) !important;
+}
+
+@keyframes mq-newyear-starlight {
+  0% { opacity: .18; transform: translate3d(0, 0, 0); }
+  100% { opacity: .42; transform: translate3d(0, -5px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="titanium"] body::before { animation: none !important; }
+}
+
+

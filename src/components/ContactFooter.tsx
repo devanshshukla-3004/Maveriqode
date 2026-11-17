@@ -39,12 +39,18 @@ export function ContactFooter({
   onNotify,
 }: ContactFooterProps) {
   const [name, setName] = useState('');
+  const [company, setCompany] = useState('');
+  const [phone, setPhone] = useState('');
+  const [plan, setPlan] = useState('');
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [preparedInquiry, setPreparedInquiry] = useState<{
     name: string;
+    company: string;
+    phone: string;
     email: string;
     service: ServiceOption;
+    plan: string;
     note: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -59,18 +65,27 @@ export function ContactFooter({
 
   const buildMailtoHref = (inquiry: {
     name: string;
+    company: string;
+    phone: string;
     email: string;
     service: ServiceOption;
+    plan: string;
     note: string;
   }) => {
-    const subject = encodeURIComponent(
-      `Engineering Inquiry: ${inquiry.service} — ${inquiry.name}`
-    );
-    const body = encodeURIComponent(
-      `Hello MAVERIQODE,\n\nName / Organization: ${inquiry.name}\nReply Email: ${inquiry.email}\nCapability Area: ${inquiry.service}${
-        inquiry.note ? `\nProblem / Scope Notes: ${inquiry.note}` : ''
-      }\n\nLet's discuss next steps.`
-    );
+    const subject = encodeURIComponent(`Project Enquiry: ${inquiry.plan || inquiry.service} — ${inquiry.name}`);
+    const body = encodeURIComponent([
+      'Hello MAVERIQODE,',
+      '',
+      `Contact Person: ${inquiry.name}`,
+      `Business / Organization: ${inquiry.company || 'Not provided'}`,
+      `Phone: ${inquiry.phone}`,
+      `Reply Email: ${inquiry.email}`,
+      `Required Service: ${inquiry.service}`,
+      `Interested Plan: ${inquiry.plan || 'Not selected'}`,
+      inquiry.note ? `Project Details: ${inquiry.note}` : '',
+      '',
+      'Please contact me to discuss the next steps.',
+    ].filter(Boolean).join('\n'));
     return `mailto:${OFFICIAL_CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   };
 
@@ -79,10 +94,16 @@ export function ContactFooter({
     if (isSubmitting) return;
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
+    const trimmedPhone = phone.trim();
     const website = (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
 
     if (trimmedName.length < 2) {
       setErrorMessage('Please enter your name or organization.');
+      return;
+    }
+
+    if (!/^\+?[0-9][0-9\s().-]{6,18}$/.test(trimmedPhone)) {
+      setErrorMessage('Please enter a valid phone number with country code.');
       return;
     }
 
@@ -96,8 +117,11 @@ export function ContactFooter({
     setIsSubmitting(true);
     const inquiry = {
       name: trimmedName,
+      company: company.trim(),
+      phone: trimmedPhone,
       email: trimmedEmail,
       service: selectedService,
+      plan,
       note: contextNote.trim(),
     };
 
@@ -105,8 +129,13 @@ export function ContactFooter({
       body: {
         name: inquiry.name,
         email: inquiry.email,
+        phone: inquiry.phone,
         service: inquiry.service,
-        message: inquiry.note || '',
+        message: [
+          inquiry.company ? `Business / Organization: ${inquiry.company}` : '',
+          inquiry.plan ? `Interested Plan: ${inquiry.plan}` : '',
+          inquiry.note ? `Project Details: ${inquiry.note}` : '',
+        ].filter(Boolean).join('\n\n'),
         website,
       },
     });
@@ -121,15 +150,26 @@ export function ContactFooter({
     setPreparedInquiry(inquiry);
     onNotify('Enquiry received', 'Your request has been securely submitted to MAVERIQODE.');
     setName('');
+    setCompany('');
+    setPhone('');
+    setPlan('');
     setEmail('');
     onContextNoteChange('');
   };
 
   const handleCopyBrief = async () => {
     if (!preparedInquiry) return;
-    const text = `MAVERIQODE Engineering Inquiry\nTo: ${OFFICIAL_CONTACT_EMAIL}\nName / Organization: ${preparedInquiry.name}\nReply Email: ${preparedInquiry.email}\nCapability Area: ${preparedInquiry.service}${
-      preparedInquiry.note ? `\nScope Notes: ${preparedInquiry.note}` : ''
-    }`;
+    const text = [
+      'MAVERIQODE Project Enquiry',
+      `To: ${OFFICIAL_CONTACT_EMAIL}`,
+      `Contact Person: ${preparedInquiry.name}`,
+      `Business / Organization: ${preparedInquiry.company || 'Not provided'}`,
+      `Phone: ${preparedInquiry.phone}`,
+      `Reply Email: ${preparedInquiry.email}`,
+      `Required Service: ${preparedInquiry.service}`,
+      `Interested Plan: ${preparedInquiry.plan || 'Not selected'}`,
+      preparedInquiry.note ? `Project Details: ${preparedInquiry.note}` : '',
+    ].filter(Boolean).join('\n');
 
     try {
       await navigator.clipboard.writeText(text);
@@ -146,8 +186,11 @@ export function ContactFooter({
   return (
     <footer
       id="contact"
-      className="scroll-mt-20 pt-24 pb-12 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
+      className="relative isolate scroll-mt-20 overflow-hidden pt-24 pb-10 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
     >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#a100ff]/70 to-transparent" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-12 h-[560px] w-[560px] rounded-full bg-[#7026d9]/10 blur-[150px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -left-48 bottom-0 h-[420px] w-[420px] rounded-full bg-[#3158d8]/[0.07] blur-[150px]" />
       <motion.div
         variants={shouldReduceMotion ? undefined : STAGGER_CONTAINER_VARIANTS}
         initial={shouldReduceMotion ? false : 'hidden'}
@@ -192,11 +235,23 @@ export function ContactFooter({
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Your Name / Organization"
+                  placeholder="Contact Person / Your Name"
                   className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
                 />
               </div>
 
+              <div>
+                <label htmlFor="leadCompany" className="sr-only">Business / Organization (Optional)</label>
+                <input
+                  id="leadCompany"
+                  type="text"
+                  maxLength={160}
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  placeholder="Business / Organization (Optional)"
+                  className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
+                />
+              </div>
               <div>
                 <label htmlFor="leadEmail" className="sr-only">
                   Email Address
@@ -215,8 +270,24 @@ export function ContactFooter({
             </div>
 
             <div>
+              <label htmlFor="leadPhone" className="sr-only">Phone Number</label>
+              <input
+                id="leadPhone"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                maxLength={24}
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Phone Number (with country code)"
+                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
+              />
+            </div>
+
+            <div>
               <label htmlFor="leadService" className="sr-only">
-                Select Engineering Capability
+                Select Required Service
               </label>
               <select
                 id="leadService"
@@ -233,16 +304,34 @@ export function ContactFooter({
             </div>
 
             <div>
+              <label htmlFor="leadPlan" className="sr-only">Interested Plan (Optional)</label>
+              <select
+                id="leadPlan"
+                value={plan}
+                onChange={(e) => setPlan(e.target.value)}
+                className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
+              >
+                <option value="" className="bg-[#15161a] text-[#ecebe6]">Interested Plan (Optional)</option>
+                <option value="Website Development" className="bg-[#15161a] text-[#ecebe6]">Website Development</option>
+                <option value="Complete Business System" className="bg-[#15161a] text-[#ecebe6]">Complete Business System</option>
+                <option value="Website + SEO Starter" className="bg-[#15161a] text-[#ecebe6]">Website + SEO Starter</option>
+                <option value="Business Automation" className="bg-[#15161a] text-[#ecebe6]">Business Automation</option>
+                <option value="Mobile App Development" className="bg-[#15161a] text-[#ecebe6]">Mobile App Development</option>
+                <option value="Not sure — need guidance" className="bg-[#15161a] text-[#ecebe6]">Not sure — need guidance</option>
+              </select>
+            </div>
+
+            <div>
               <label htmlFor="leadContext" className="sr-only">
-                Problem Summary or Technical Context (Optional)
+                Project Details / What do you need? (Optional)
               </label>
-              <input
+              <textarea
                 id="leadContext"
-                type="text"
+                rows={4}
                 maxLength={5000}
                 value={contextNote}
                 onChange={(e) => onContextNoteChange(e.target.value)}
-                placeholder="Problem summary, system context, or technical goals (optional)"
+                placeholder="Briefly describe your business, project requirements, goals, or timeline (optional)"
                 className="w-full px-4 py-3.5 rounded-[10px] bg-[var(--mq-surface)] border border-[var(--mq-border)] text-[var(--mq-text)] placeholder-[var(--mq-muted)] text-sm focus:outline-none focus:border-[#a100ff] transition-colors"
               />
             </div>
@@ -298,7 +387,7 @@ export function ContactFooter({
                       aria-hidden="true"
                     />
                     <span>
-                      Your enquiry has been received for {preparedInquiry.name} ({preparedInquiry.service}). The MAVERIQODE team can now review it.
+                      Your enquiry is in. Our team will review the details and reach out using your preferred contact information.
                     </span>
                   </div>
                   <div className="flex items-center gap-4 shrink-0">
@@ -323,42 +412,45 @@ export function ContactFooter({
             </AnimatePresence>
           </form>
 
-          <div className="flex flex-col gap-3 font-mono text-sm lg:pt-1">
-            <motion.div
-              whileHover={
-                shouldReduceMotion
-                  ? undefined
-                  : { y: -2, scale: 1.02, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }
-              }
-              className="w-24 h-24 rounded-2xl overflow-hidden border border-[var(--mq-border)] hover:border-[#a100ff]/55 bg-black p-2 mb-1 transition-colors duration-200"
-            >
-              <img
-                src="/assets/aistudio/WhatsApp_Image_2026-11-12_at_21.51.02__1__3fcdf05a.jpeg"
-                alt="MAVERIQODE official brand emblem"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-contain select-none"
-              />
-            </motion.div>
-            <span className="text-xs text-[var(--mq-accent-soft)] tracking-wider">
-              Direct Engineering Email
-            </span>
-            <a
-              href={`mailto:${OFFICIAL_CONTACT_EMAIL}`}
-              className="group inline-flex items-center gap-1.5 text-[var(--mq-text)] hover:text-[var(--mq-accent-soft)] transition-colors w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a100ff] rounded"
-            >
-              <span>{OFFICIAL_CONTACT_EMAIL}</span>
-              <ArrowUpRight
-                className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                aria-hidden="true"
-              />
-            </a>
-            <p className="text-xs font-sans text-[var(--mq-muted)] leading-relaxed max-w-[40ch] mt-1">
-              Share your problem statement, constraints, or architecture questions directly by email.
-            </p>
+          <div className="flex flex-col gap-6 lg:pt-1">
+            <div className="relative isolate overflow-hidden rounded-[28px] border border-[var(--mq-border)] bg-[var(--mq-surface)] p-7 sm:p-9">
+              <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#7c3aed]/15 blur-[75px]" />
+              <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-[#3158d8]/10 blur-[70px]" />
+              <div className="relative z-10 flex items-center justify-between gap-4">
+                <img src="/assets/aistudio/MAVERIQODE_symbol_only_transparent_149367a9.png" alt="MAVERIQODE symbol" referrerPolicy="no-referrer" className="h-11 w-auto object-contain select-none" />
+                <span className="rounded-full border border-[var(--mq-border)] px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.18em] text-[var(--mq-muted)]">Digital Engineering</span>
+              </div>
+              <div className="relative z-10 mt-6 sm:mt-7">
+                <p className="font-mono text-[10px] uppercase tracking-[.22em] text-[var(--mq-accent-soft)]">MAVERIQODE / BUSINESS</p>
+                <h3 className="mt-4 max-w-[15ch] font-display text-3xl sm:text-4xl font-bold leading-[1.05] tracking-[-.035em] text-[var(--mq-text)]">Build what moves you <span className="text-[var(--mq-accent-soft)]">forward.</span></h3>
+                <p className="mt-5 max-w-[38ch] font-sans text-sm leading-7 text-[var(--mq-muted)]">Thoughtful software, intelligent systems and digital experiences — engineered around the way your business works.</p>
+              </div>
+              <div className="relative z-10 mt-9 grid grid-cols-2 gap-3">
+                {['Software Engineering', 'AI Systems', 'Business Automation', 'Cloud & Security'].map((item) => (
+                  <div key={item} className="flex items-center gap-2 border-t border-[var(--mq-border)] pt-3 font-mono text-[10px] leading-5 text-[var(--mq-text-secondary)]">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#a100ff]" />{item}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[22px] border border-[var(--mq-border)] bg-[var(--mq-surface)]/70 p-5 sm:p-6">
+              <p className="font-mono text-[10px] uppercase tracking-[.2em] text-[var(--mq-muted)]">Have a project in mind?</p>
+              <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <p className="font-display text-lg font-semibold text-[var(--mq-text)]">Let’s talk business.</p>
+                  <a href={`mailto:${OFFICIAL_CONTACT_EMAIL}`} className="group mt-1 inline-flex items-center gap-1.5 break-all font-mono text-xs text-[var(--mq-accent-soft)] hover:text-[var(--mq-text)] transition-colors">
+                    {OFFICIAL_CONTACT_EMAIL}<ArrowUpRight className="h-3.5 w-3.5 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+                  </a>
+                </div>
+                <button type="button" onClick={() => nameInputRef.current?.focus()} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-[var(--mq-border-strong)] px-5 py-3 font-mono text-[10px] uppercase tracking-[.12em] text-[var(--mq-text)] transition-all hover:border-[#a100ff]/70 hover:bg-[#a100ff]/[.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a100ff]">
+                  Start an enquiry <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[var(--mq-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-[var(--mq-muted)]">
+        <div className="relative pt-8 border-t border-[var(--mq-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-[var(--mq-muted)]">
           <span className="inline-flex items-center gap-2.5">
             <img
               src="/assets/aistudio/MAVERIQODE_symbol_only_transparent_149367a9.png"
@@ -382,6 +474,7 @@ export function ContactFooter({
                 {item.label}
               </a>
             ))}
+            <a href="/admin" className="hover:text-[var(--mq-text)] transition-colors whitespace-nowrap">Admin</a>
             <AmbientSoundToggle />
           </div>
         </div>
