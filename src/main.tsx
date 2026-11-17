@@ -15,7 +15,7 @@ if (!isAdminRoute) {
     .eq('slug', 'site-seo')
     .eq('status', 'published')
     .maybeSingle()
-    .then(({ data }) => {
+    .then(({ data }: { data: any }) => {
       if (isServicesRoute) {
         document.title = 'Services & Pricing | MAVERIQODE';
         document.querySelector('meta[name="description"]')?.setAttribute('content', 'Explore MAVERIQODE website development, business management systems, mobile apps and AI automation services with transparent starting prices.');
