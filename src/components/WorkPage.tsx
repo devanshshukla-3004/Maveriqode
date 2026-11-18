@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, ArrowUpRight, ArrowRight, Layers3, Sparkles, Code2, BrainCircuit, Workflow, Globe2, Smartphone } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ArrowRight, Layers3, Sparkles, Code2, Workflow, Globe2, Smartphone } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { fallbackBuilds, type WorkBuild } from './WorkSection';
@@ -7,7 +7,6 @@ import { fallbackBuilds, type WorkBuild } from './WorkSection';
 const categories = [
   { id: 'all', name: 'All work', note: 'Every idea, brought to life', icon: Layers3 },
   { id: 'Software Engineering', name: 'Software Engineering', note: 'Web platforms & custom systems', icon: Code2 },
-  { id: 'AI & Intelligent Systems', name: 'AI & Intelligent Systems', note: 'Applied AI, agents & RAG', icon: BrainCircuit },
   { id: 'Automation & Integration', name: 'Automation & Integration', note: 'Connected workflows that scale', icon: Workflow },
   { id: 'SaaS & Product Development', name: 'SaaS & Product Development', note: 'Products, portals & platforms', icon: Layers3 },
   { id: 'Website Development', name: 'Website Development', note: 'Brand-led digital experiences', icon: Globe2 },
@@ -19,10 +18,8 @@ type PortfolioBuild = WorkBuild & { category?: string };
 function inferCategory(item: PortfolioBuild) {
   if (item.category && categories.some((x) => x.id === item.category)) return item.category;
   const value = (item.type + ' ' + item.tags.join(' ')).toLowerCase();
-  if (/education|institute|coaching|school|college/.test(value)) return 'Software Engineering';
-  if (/ai|intelligent|rag|machine learning/.test(value)) return 'AI & Intelligent Systems';
+  if (/website|web design|landing page|corporate site|education|institute|coaching|school|college|healthcare|fitness/.test(value)) return 'Website Development';
   if (/automation|integration|workflow/.test(value)) return 'Automation & Integration';
-  if (/website|web design|landing page|corporate site/.test(value)) return 'Website Development';
   if (/app|android|ios|mobile/.test(value)) return 'App Development';
   if (/saas|product|membership|portal|management system/.test(value)) return 'SaaS & Product Development';
   return 'Software Engineering';
@@ -92,12 +89,12 @@ export default function WorkPage() {
             <div className="mb-6 flex items-center gap-3 text-[10px] font-semibold tracking-[.32em] text-violet-200/75"><span className="h-px w-9 bg-violet-300/70"/> MAVERIQODE / SELECTED WORK</div>
             <h1 className="text-[clamp(4.8rem,10vw,10.8rem)] font-semibold leading-[.78] tracking-[-.09em]">WE MAKE<br/><span className="bg-gradient-to-r from-[#eee5ff] via-[#c29aff] to-[#7891ff] bg-clip-text text-transparent">DIGITAL</span><br/><span className="text-white/90">MATTER<span className="text-violet-300">.</span></span></h1>
             <p className="mt-10 max-w-lg text-base leading-8 text-white/55 sm:text-lg">From ambitious ideas to intelligent platforms. Explore the systems, products and digital experiences we bring to life.</p>
-            <div className="mt-9 flex flex-wrap items-center gap-5"><a href="#projects" onClick={()=>setActive('all')} className="group inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-xs font-semibold text-black transition hover:bg-violet-100">Explore projects <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"/></a><span className="text-[9px] uppercase tracking-[.22em] text-white/35">{items.filter(x=>x.published!==false).length.toString().padStart(2,'0')} published builds <span className="mx-2 text-violet-300">/</span> 06 disciplines</span></div>
+            <div className="mt-9 flex flex-wrap items-center gap-5"><a href="#projects" onClick={()=>setActive('all')} className="group inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-xs font-semibold text-black transition hover:bg-violet-100">Explore projects <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"/></a><span className="text-[9px] uppercase tracking-[.22em] text-white/35">{items.filter(x=>x.published!==false).length.toString().padStart(2,'0')} published builds <span className="mx-2 text-violet-300">/</span> 05 disciplines</span></div>
           </motion.div>
           <div className="relative mx-auto h-[480px] w-full max-w-[650px] sm:h-[590px]">
             <motion.div initial={reduceMotion?false:{opacity:0,x:70,rotate:8}} animate={{opacity:1,x:0,rotate:5}} transition={{duration:1,ease:[.16,1,.3,1],delay:.15}} className="absolute right-[2%] top-[4%] z-10 w-[76%] overflow-hidden rounded-[26px] border border-white/20 bg-[#15121d] shadow-[0_35px_100px_rgba(0,0,0,.55)]">
               <div className="flex items-center gap-1.5 border-b border-white/10 bg-black/35 px-4 py-3"><i className="h-2 w-2 rounded-full bg-white/30"/><i className="h-2 w-2 rounded-full bg-white/20"/><i className="h-2 w-2 rounded-full bg-white/20"/><span className="ml-2 text-[8px] tracking-[.2em] text-white/35">MAVERIQODE / LIVE WORK</span></div>
-              <div className="relative aspect-[1.35] overflow-hidden">{items[0]?.imageUrl?<img src={items[0].imageUrl} alt={items[0].name} className="h-full w-full object-contain bg-[#09090d]"/>:<div className="h-full bg-gradient-to-br from-violet-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"/><div className="absolute bottom-4 left-5"><div className="text-[8px] tracking-[.25em] text-white/60">01 / FEATURED BUILD</div><div className="mt-1 text-lg font-semibold">{items[0]?.name||'Digital experiences'}</div></div></div>
+              <div className="relative aspect-[1.35] overflow-hidden">{items[0]?.imageUrl?<img src={items[0].imageUrl} alt={items[0].name} className="h-full w-full object-cover object-center bg-[#09090d]"/>:<div className="h-full bg-gradient-to-br from-violet-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"/><div className="absolute bottom-4 left-5"><div className="text-[8px] tracking-[.25em] text-white/60">01 / FEATURED BUILD</div><div className="mt-1 text-lg font-semibold">{items[0]?.name||'Digital experiences'}</div></div></div>
             </motion.div>
             <motion.div initial={reduceMotion?false:{opacity:0,x:-60,y:50,rotate:-10}} animate={{opacity:1,x:0,y:0,rotate:-7}} transition={{duration:1.1,ease:[.16,1,.3,1],delay:.35}} className="absolute bottom-[5%] left-[0%] z-20 w-[61%] overflow-hidden rounded-[24px] border border-white/20 bg-[#11121c] shadow-[0_30px_90px_rgba(0,0,0,.6)]">
               <div className="relative aspect-[1.25] overflow-hidden">{items[1]?.imageUrl?<img src={items[1].imageUrl} alt={items[1].name} className="h-full w-full object-contain bg-[#09090d]"/>:<div className="h-full bg-gradient-to-br from-blue-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"/><div className="absolute bottom-4 left-4"><div className="text-[8px] tracking-[.2em] text-white/55">02 / DIGITAL PLATFORM</div><div className="mt-1 text-sm font-semibold">{items[1]?.name||'Intelligent platforms'}</div></div></div>
@@ -133,7 +130,7 @@ export default function WorkPage() {
           <motion.div key={active} initial={reduceMotion?false:{opacity:0,y:18}} animate={{opacity:1,y:0}} exit={reduceMotion?{opacity:0}:{opacity:0,y:-10}} transition={{duration:.35}} className="grid gap-x-7 gap-y-12 md:grid-cols-2">
             {visible.map((item,i)=><motion.article key={item.number+item.name} initial={reduceMotion?false:{opacity:0,y:28,rotateX:3}} whileInView={{opacity:1,y:0,rotateX:0}} viewport={{once:true,amount:.12}} transition={{duration:.65,delay:reduceMotion?0:i*.08,ease:[.16,1,.3,1]}} className="group">
               <a href={item.url} target="_blank" rel="noreferrer" className="relative block aspect-[16/9] overflow-hidden rounded-[28px] shadow-[0_24px_80px_rgba(0,0,0,.3)] border border-white/10 bg-[#09090d]">
-                {item.imageUrl?<img src={item.imageUrl} alt={item.name} className="absolute inset-0 h-full w-full object-contain bg-[#09090d] transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.035]"/>:<VisualFallback item={item}/>}
+                {item.imageUrl?<img src={item.imageUrl} alt={item.name} className="absolute inset-0 h-full w-full object-cover object-center bg-[#09090d] transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.035]"/>:<VisualFallback item={item}/>}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-40"/>
                 <span className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-black/25 text-white backdrop-blur-md transition duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-black"><ArrowUpRight size={17}/></span>
               </a>
