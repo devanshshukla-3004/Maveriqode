@@ -9,7 +9,7 @@ interface WorkSectionProps {
   onRequestSimilar: (service: ServiceOption, contextNote: string) => void;
 }
 
-export type WorkBuild = { number: string; name: string; type: string; description: string; url: string; label: string; visual: string; tags: string[]; imageUrl?: string; published?: boolean };
+export type WorkBuild = { number: string; name: string; type: string; description: string; url: string; label: string; visual: string; tags: string[]; imageUrl?: string; imageStoragePath?: string; published?: boolean };
 
 export const fallbackBuilds: WorkBuild[] = [
   {

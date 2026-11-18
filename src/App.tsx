@@ -229,22 +229,22 @@ export default function App() {
           <SectionDivider />
           <SectionDivider />
           <LazySection
-            sectionId="capabilities"
-            forceMount={Boolean(forcedSections.capabilities)}
-            minHeightPx={780}
-          >
-            <GlobalSectionReveal>
-              <CapabilitiesSection onRequestService={handleRequestWithService} />
-            </GlobalSectionReveal>
-          </LazySection>
-          <SectionDivider />
-          <LazySection
             sectionId="solutions"
             forceMount={Boolean(forcedSections.solutions)}
             minHeightPx={680}
           >
             <GlobalSectionReveal>
               <SolutionsSection onSelectSolution={handleRequestWithService} />
+            </GlobalSectionReveal>
+          </LazySection>
+          <SectionDivider />
+          <LazySection
+            sectionId="capabilities"
+            forceMount={Boolean(forcedSections.capabilities)}
+            minHeightPx={780}
+          >
+            <GlobalSectionReveal>
+              <CapabilitiesSection onRequestService={handleRequestWithService} />
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
