@@ -81,27 +81,36 @@ export default function WorkPage() {
       </div>
     </header>
 
-    <main className="relative mx-auto max-w-[1440px] px-5 pb-28 pt-16 sm:px-8 sm:pt-24 lg:px-12">
-      <motion.div {...reveal} transition={{duration:.75,ease:[.16,1,.3,1]}} className="grid max-w-6xl items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
-        <a href="/" className="mb-9 inline-flex items-center gap-2 text-xs text-white/45 transition hover:text-white"><ArrowLeft size={14}/> Back to home</a>
-        <div className="mb-5 flex items-center gap-3 text-[10px] font-semibold tracking-[.3em] text-violet-200/70"><span className="h-px w-8 bg-violet-300/70"/><Sparkles size={13}/> SELECTED WORK & DEMONSTRATIONS</div>
-        <h1 className="text-6xl font-semibold leading-[.9] tracking-[-.065em] sm:text-7xl lg:text-[112px]">Built with<br/><span className="bg-gradient-to-r from-[#e7d7ff] via-[#b78bff] to-[#7c91ff] bg-clip-text text-transparent">intent.</span></h1>
-        <p className="mt-7 max-w-2xl text-base leading-8 text-white/55 sm:text-lg">A growing archive of digital products, platforms and engineering experiments across the systems we build.</p>
-        <div className="mt-10 flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-[.2em] text-white/35"><span className="rounded-full border border-white/10 px-4 py-2">Portfolio archive</span><span className="rounded-full border border-white/10 px-4 py-2">{items.filter(x=>x.published!==false).length.toString().padStart(2,'0')} published builds</span><span className="rounded-full border border-white/10 px-4 py-2">6 engineering categories</span></div>
-        <motion.div initial={reduceMotion?false:{opacity:0,scale:.86,rotate:5}} animate={{opacity:1,scale:1,rotate:0}} transition={{duration:1.1,ease:[.16,1,.3,1]}} className="relative mx-auto aspect-square w-full max-w-[520px]">
-          <div className="absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(142,83,255,.28),rgba(62,75,180,.1)_45%,transparent_70%)] blur-2xl"/>
-          <motion.div animate={reduceMotion?{}:{rotate:360}} transition={{duration:70,repeat:Infinity,ease:'linear'}} className="absolute inset-[8%] rounded-full border border-dashed border-violet-200/25"/>
-          <motion.div animate={reduceMotion?{}:{rotate:-360}} transition={{duration:95,repeat:Infinity,ease:'linear'}} className="absolute inset-[20%] rounded-full border border-white/10"/>
-          <div className="absolute inset-[29%] grid place-items-center rounded-[32%] border border-violet-200/25 bg-gradient-to-br from-[#38205c] via-[#17162d] to-[#0b0b12] shadow-[0_0_100px_rgba(132,75,255,.28)]">
-            <div className="text-center"><div className="mx-auto mb-3 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-violet-500 to-blue-500 shadow-[0_0_40px_rgba(133,88,255,.45)]"><Sparkles size={28}/></div><div className="text-[10px] font-bold tracking-[.25em]">MAVERIQODE</div><div className="mt-2 text-[8px] tracking-[.24em] text-white/40">ENGINEER WHAT'S NEXT</div></div>
+    <main className="relative mx-auto max-w-[1600px] px-5 pb-28 sm:px-8 lg:px-12">
+      <section className="relative flex min-h-[780px] flex-col justify-center overflow-hidden border-b border-white/10 py-20 lg:min-h-[860px]">
+        <div className="pointer-events-none absolute inset-0 opacity-70" style={{backgroundImage:'radial-gradient(ellipse at 72% 46%,rgba(102,57,194,.22),transparent 36%),radial-gradient(ellipse at 18% 75%,rgba(37,68,156,.15),transparent 32%)'}}/>
+        <div className="pointer-events-none absolute -right-24 top-10 h-[620px] w-[620px] rounded-full border border-violet-200/[.08]"/>
+        <div className="pointer-events-none absolute -right-8 top-28 h-[480px] w-[480px] rounded-full border border-violet-200/[.08]"/>
+        <div className="relative z-10 grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
+          <motion.div {...reveal} transition={{duration:.8,ease:[.16,1,.3,1]}} className="relative">
+            <a href="/" className="mb-16 inline-flex items-center gap-2 text-xs text-white/40 transition hover:text-white"><ArrowLeft size={14}/> Back to home</a>
+            <div className="mb-6 flex items-center gap-3 text-[10px] font-semibold tracking-[.32em] text-violet-200/75"><span className="h-px w-9 bg-violet-300/70"/> MAVERIQODE / SELECTED WORK</div>
+            <h1 className="text-[clamp(4.8rem,10vw,10.8rem)] font-semibold leading-[.78] tracking-[-.09em]">WE MAKE<br/><span className="bg-gradient-to-r from-[#eee5ff] via-[#c29aff] to-[#7891ff] bg-clip-text text-transparent">DIGITAL</span><br/><span className="text-white/90">MATTER<span className="text-violet-300">.</span></span></h1>
+            <p className="mt-10 max-w-lg text-base leading-8 text-white/55 sm:text-lg">From ambitious ideas to intelligent platforms. Explore the systems, products and digital experiences we bring to life.</p>
+            <div className="mt-9 flex flex-wrap items-center gap-5"><a href="#projects" onClick={()=>setActive('all')} className="group inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-xs font-semibold text-black transition hover:bg-violet-100">Explore projects <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"/></a><span className="text-[9px] uppercase tracking-[.22em] text-white/35">{items.filter(x=>x.published!==false).length.toString().padStart(2,'0')} published builds <span className="mx-2 text-violet-300">/</span> 06 disciplines</span></div>
+          </motion.div>
+          <div className="relative mx-auto h-[480px] w-full max-w-[650px] sm:h-[590px]">
+            <motion.div initial={reduceMotion?false:{opacity:0,x:70,rotate:8}} animate={{opacity:1,x:0,rotate:5}} transition={{duration:1,ease:[.16,1,.3,1],delay:.15}} className="absolute right-[2%] top-[4%] z-10 w-[76%] overflow-hidden rounded-[26px] border border-white/20 bg-[#15121d] shadow-[0_35px_100px_rgba(0,0,0,.55)]">
+              <div className="flex items-center gap-1.5 border-b border-white/10 bg-black/35 px-4 py-3"><i className="h-2 w-2 rounded-full bg-white/30"/><i className="h-2 w-2 rounded-full bg-white/20"/><i className="h-2 w-2 rounded-full bg-white/20"/><span className="ml-2 text-[8px] tracking-[.2em] text-white/35">MAVERIQODE / LIVE WORK</span></div>
+              <div className="relative aspect-[1.35] overflow-hidden">{items[0]?.imageUrl?<img src={items[0].imageUrl} alt={items[0].name} className="h-full w-full object-cover"/>:<div className="h-full bg-gradient-to-br from-violet-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"/><div className="absolute bottom-4 left-5"><div className="text-[8px] tracking-[.25em] text-white/60">01 / FEATURED BUILD</div><div className="mt-1 text-lg font-semibold">{items[0]?.name||'Digital experiences'}</div></div></div>
+            </motion.div>
+            <motion.div initial={reduceMotion?false:{opacity:0,x:-60,y:50,rotate:-10}} animate={{opacity:1,x:0,y:0,rotate:-7}} transition={{duration:1.1,ease:[.16,1,.3,1],delay:.35}} className="absolute bottom-[5%] left-[0%] z-20 w-[61%] overflow-hidden rounded-[24px] border border-white/20 bg-[#11121c] shadow-[0_30px_90px_rgba(0,0,0,.6)]">
+              <div className="relative aspect-[1.25] overflow-hidden">{items[1]?.imageUrl?<img src={items[1].imageUrl} alt={items[1].name} className="h-full w-full object-cover"/>:<div className="h-full bg-gradient-to-br from-blue-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"/><div className="absolute bottom-4 left-4"><div className="text-[8px] tracking-[.2em] text-white/55">02 / DIGITAL PLATFORM</div><div className="mt-1 text-sm font-semibold">{items[1]?.name||'Intelligent platforms'}</div></div></div>
+            </motion.div>
+            <motion.div animate={reduceMotion?{}:{y:[0,-13,0],rotate:[0,2,0]}} transition={{duration:7,repeat:Infinity,ease:'easeInOut'}} className="absolute left-[3%] top-[8%] z-30 rounded-2xl border border-violet-200/20 bg-[#181323]/90 px-4 py-3 shadow-2xl backdrop-blur-xl"><div className="text-[8px] tracking-[.25em] text-violet-200/60">OUR APPROACH</div><div className="mt-1 text-xs font-medium">Think. Build. Evolve.</div></motion.div>
+            <div className="absolute bottom-[3%] right-[1%] z-30 rounded-full border border-white/15 bg-black/55 px-4 py-2 text-[8px] tracking-[.22em] text-white/60 backdrop-blur-xl">INDEPENDENT DEMONSTRATIONS</div>
+            <div className="pointer-events-none absolute inset-[12%] rounded-full border border-dashed border-violet-200/10"/>
           </div>
-          <div className="absolute left-[1%] top-[22%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">01 / STRATEGY</div>
-          <div className="absolute right-[0%] top-[24%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">02 / DESIGN</div>
-          <div className="absolute right-[1%] bottom-[20%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">03 / ENGINEERING</div>
-          <div className="absolute left-[1%] bottom-[18%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">04 / INTELLIGENCE</div>
-        </motion.div>
-      </motion.div>
-
+        </div>
+        <div className="relative mt-16 overflow-hidden border-y border-white/10 py-4">
+          <motion.div animate={reduceMotion?{}:{x:['0%','-50%']}} transition={{duration:28,repeat:Infinity,ease:'linear'}} className="flex w-max gap-8 whitespace-nowrap text-[10px] font-medium tracking-[.3em] text-white/35"><span>SOFTWARE ENGINEERING ✳ AI SYSTEMS ✳ PRODUCT DEVELOPMENT ✳ AUTOMATION ✳ CYBERSECURITY ✳ DIGITAL INFRASTRUCTURE ✳</span><span>SOFTWARE ENGINEERING ✳ AI SYSTEMS ✳ PRODUCT DEVELOPMENT ✳ AUTOMATION ✳ CYBERSECURITY ✳ DIGITAL INFRASTRUCTURE ✳</span></motion.div>
+        </div>
+      </section>
       <section className="mt-12 border-t border-white/10 pt-10 sm:mt-16 sm:pt-12">
         <div className="mb-7 flex flex-col justify-between gap-4 lg:flex-row lg:items-end"><div><div className="text-[10px] tracking-[.25em] text-violet-200/60">EXPLORE BY DISCIPLINE</div><h2 className="mt-2 text-2xl font-medium tracking-tight sm:text-3xl">Browse the work</h2></div><p className="max-w-md text-sm leading-6 text-white/40">Choose a service category to explore related projects and demonstrations.</p></div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
