@@ -412,7 +412,7 @@ export function ContactFooter({
             </AnimatePresence>
           </form>
 
-          <div className="flex flex-col gap-6 lg:pt-1">
+          <div className="flex flex-col gap-6 lg:pt-[4.5rem]">
             <div className="relative isolate overflow-hidden rounded-[28px] border border-[var(--mq-border)] bg-[var(--mq-surface)] p-7 sm:p-9">
               <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#7c3aed]/15 blur-[75px]" />
               <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-[#3158d8]/10 blur-[70px]" />
