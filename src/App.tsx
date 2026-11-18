@@ -28,9 +28,6 @@ const CapabilitiesSection = lazy(() =>
 const SolutionsSection = lazy(() =>
   import('./components/SolutionsSection').then((m) => ({ default: m.SolutionsSection }))
 );
-const WorkSection = lazy(() =>
-  import('./components/WorkSection').then((m) => ({ default: m.WorkSection }))
-);
 
 const GLOBAL_SECTION_VARIANTS = {
   hidden: { opacity: 0, y: 18 },
@@ -248,15 +245,6 @@ export default function App() {
             </GlobalSectionReveal>
           </LazySection>
           <SectionDivider />
-          <LazySection
-            sectionId="work"
-            forceMount={Boolean(forcedSections.work)}
-            minHeightPx={520}
-          >
-            <GlobalSectionReveal>
-              <WorkSection onRequestSimilar={handleRequestWithService} />
-            </GlobalSectionReveal>
-          </LazySection>
           <SectionDivider />
           <LazySection
             sectionId="company"
