@@ -70,9 +70,9 @@ export function Navbar({ activeSection, onNavigate }: NavbarProps) {
             return (
               <a
                 key={item.id}
-                href={item.id === 'solutions' ? '/services' : `#${item.id}`}
+                href={item.id === 'solutions' ? '/services' : item.id === 'work' ? '/work' : `#${item.id}`}
                 onClick={(e) => {
-                  if (item.id === 'solutions') { setMobileOpen(false); return; }
+                  if (item.id === 'solutions' || item.id === 'work') { setMobileOpen(false); return; }
                   e.preventDefault();
                   handleSelect(item.id);
                 }}
