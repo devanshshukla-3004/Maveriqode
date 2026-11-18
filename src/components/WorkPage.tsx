@@ -88,7 +88,6 @@ export default function WorkPage() {
         <h1 className="text-6xl font-semibold leading-[.9] tracking-[-.065em] sm:text-7xl lg:text-[112px]">Built with<br/><span className="bg-gradient-to-r from-[#e7d7ff] via-[#b78bff] to-[#7c91ff] bg-clip-text text-transparent">intent.</span></h1>
         <p className="mt-7 max-w-2xl text-base leading-8 text-white/55 sm:text-lg">A growing archive of digital products, platforms and engineering experiments across the systems we build.</p>
         <div className="mt-10 flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-[.2em] text-white/35"><span className="rounded-full border border-white/10 px-4 py-2">Portfolio archive</span><span className="rounded-full border border-white/10 px-4 py-2">{items.filter(x=>x.published!==false).length.toString().padStart(2,'0')} published builds</span><span className="rounded-full border border-white/10 px-4 py-2">6 engineering categories</span></div>
-      </motion.div>
         <motion.div initial={reduceMotion?false:{opacity:0,scale:.86,rotate:5}} animate={{opacity:1,scale:1,rotate:0}} transition={{duration:1.1,ease:[.16,1,.3,1]}} className="relative mx-auto aspect-square w-full max-w-[520px]">
           <div className="absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(142,83,255,.28),rgba(62,75,180,.1)_45%,transparent_70%)] blur-2xl"/>
           <motion.div animate={reduceMotion?{}:{rotate:360}} transition={{duration:70,repeat:Infinity,ease:'linear'}} className="absolute inset-[8%] rounded-full border border-dashed border-violet-200/25"/>
@@ -101,6 +100,7 @@ export default function WorkPage() {
           <div className="absolute right-[1%] bottom-[20%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">03 / ENGINEERING</div>
           <div className="absolute left-[1%] bottom-[18%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">04 / INTELLIGENCE</div>
         </motion.div>
+      </motion.div>
 
       <section className="mt-12 border-t border-white/10 pt-10 sm:mt-16 sm:pt-12">
         <div className="mb-7 flex flex-col justify-between gap-4 lg:flex-row lg:items-end"><div><div className="text-[10px] tracking-[.25em] text-violet-200/60">EXPLORE BY DISCIPLINE</div><h2 className="mt-2 text-2xl font-medium tracking-tight sm:text-3xl">Browse the work</h2></div><p className="max-w-md text-sm leading-6 text-white/40">Choose a service category to explore related projects and demonstrations.</p></div>
