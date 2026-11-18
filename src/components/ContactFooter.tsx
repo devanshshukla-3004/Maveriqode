@@ -186,7 +186,7 @@ export function ContactFooter({
   return (
     <footer
       id="contact"
-      className="relative isolate scroll-mt-20 overflow-hidden pt-24 pb-10 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
+      className="relative isolate scroll-mt-28 overflow-hidden pt-32 sm:pt-36 pb-10 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#a100ff]/70 to-transparent" />
       <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-12 h-[560px] w-[560px] rounded-full bg-[#7026d9]/10 blur-[150px]" />
