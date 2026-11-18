@@ -13,8 +13,8 @@ export interface NavItem {
 
 export const PRIMARY_NAV_ITEMS: NavItem[] = [
   { id: 'home', label: 'Home' },
-  { id: 'capabilities', label: 'Capabilities' },
   { id: 'solutions', label: 'Solutions' },
+  { id: 'capabilities', label: 'Capabilities' },
   { id: 'work', label: 'Work' },
   { id: 'company', label: 'Company' },
   { id: 'contact', label: 'Contact' },

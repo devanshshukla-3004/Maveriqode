@@ -186,7 +186,7 @@ export function ContactFooter({
   return (
     <footer
       id="contact"
-      className="relative isolate scroll-mt-20 overflow-hidden pt-24 pb-10 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
+      className="relative isolate scroll-mt-28 overflow-hidden pt-32 sm:pt-36 pb-10 px-5 sm:px-8 lg:px-12 bg-[var(--mq-bg)] transition-colors duration-200"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#a100ff]/70 to-transparent" />
       <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-12 h-[560px] w-[560px] rounded-full bg-[#7026d9]/10 blur-[150px]" />
@@ -412,7 +412,7 @@ export function ContactFooter({
             </AnimatePresence>
           </form>
 
-          <div className="flex flex-col gap-6 lg:pt-1">
+          <div className="flex flex-col gap-6 lg:pt-[4.5rem]">
             <div className="relative isolate overflow-hidden rounded-[28px] border border-[var(--mq-border)] bg-[var(--mq-surface)] p-7 sm:p-9">
               <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#7c3aed]/15 blur-[75px]" />
               <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-[#3158d8]/10 blur-[70px]" />
