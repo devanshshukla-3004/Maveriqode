@@ -151,7 +151,7 @@ export function WorkSection({ onRequestSimilar }: WorkSectionProps) {
               <div className={`relative h-[250px] overflow-hidden bg-gradient-to-br sm:h-[300px] ${visualStyles[build.visual] || visualStyles.education}`}>
                 <div aria-hidden="true" className="absolute inset-0 opacity-[.18]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.24) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.24) 1px,transparent 1px)', backgroundSize: '34px 34px' }} />
                 <div aria-hidden="true" className="absolute -right-14 -top-28 h-80 w-80 rounded-full border border-white/15 shadow-[0_0_0_28px_rgba(255,255,255,.025),0_0_0_58px_rgba(255,255,255,.02)] transition-transform duration-700 group-hover:rotate-12 group-hover:scale-105" />
-                {build.imageUrl ? <img src={build.imageUrl} alt={`${build.name} preview`} loading="lazy" className="absolute inset-0 h-full w-full object-cover" /> : <ProjectThumbnail visual={build.visual} />}
+                {build.imageUrl ? <img src={build.imageUrl} alt={`${build.name} preview`} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none group-hover:scale-[1.045]" /> : <ProjectThumbnail visual={build.visual} />}
                 <div className="absolute left-6 top-5 z-10 flex items-center gap-2 rounded-full border border-white/15 bg-black/30 px-3 py-1.5 backdrop-blur-md">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#c18aff]" />
                   <span className="font-mono text-[8px] tracking-[.16em] text-white/80">DEMONSTRATION BUILD</span>
