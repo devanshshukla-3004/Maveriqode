@@ -82,18 +82,30 @@ export default function WorkPage() {
     </header>
 
     <main className="relative mx-auto max-w-[1440px] px-5 pb-28 pt-16 sm:px-8 sm:pt-24 lg:px-12">
-      <motion.div {...reveal} transition={{duration:.75,ease:[.16,1,.3,1]}} className="max-w-4xl">
+      <motion.div {...reveal} transition={{duration:.75,ease:[.16,1,.3,1]}} className="grid max-w-6xl items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
         <a href="/" className="mb-9 inline-flex items-center gap-2 text-xs text-white/45 transition hover:text-white"><ArrowLeft size={14}/> Back to home</a>
         <div className="mb-5 flex items-center gap-3 text-[10px] font-semibold tracking-[.3em] text-violet-200/70"><span className="h-px w-8 bg-violet-300/70"/><Sparkles size={13}/> SELECTED WORK & DEMONSTRATIONS</div>
-        <h1 className="text-5xl font-semibold leading-[.98] tracking-[-.055em] sm:text-7xl lg:text-[104px]">Built with<br/><span className="bg-gradient-to-r from-[#e7d7ff] via-[#b78bff] to-[#7c91ff] bg-clip-text text-transparent">intent.</span></h1>
+        <h1 className="text-6xl font-semibold leading-[.9] tracking-[-.065em] sm:text-7xl lg:text-[112px]">Built with<br/><span className="bg-gradient-to-r from-[#e7d7ff] via-[#b78bff] to-[#7c91ff] bg-clip-text text-transparent">intent.</span></h1>
         <p className="mt-7 max-w-2xl text-base leading-8 text-white/55 sm:text-lg">A growing archive of digital products, platforms and engineering experiments across the systems we build.</p>
         <div className="mt-10 flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-[.2em] text-white/35"><span className="rounded-full border border-white/10 px-4 py-2">Portfolio archive</span><span className="rounded-full border border-white/10 px-4 py-2">{items.filter(x=>x.published!==false).length.toString().padStart(2,'0')} published builds</span><span className="rounded-full border border-white/10 px-4 py-2">6 engineering categories</span></div>
       </motion.div>
+        <motion.div initial={reduceMotion?false:{opacity:0,scale:.86,rotate:5}} animate={{opacity:1,scale:1,rotate:0}} transition={{duration:1.1,ease:[.16,1,.3,1]}} className="relative mx-auto aspect-square w-full max-w-[520px]">
+          <div className="absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(142,83,255,.28),rgba(62,75,180,.1)_45%,transparent_70%)] blur-2xl"/>
+          <motion.div animate={reduceMotion?{}:{rotate:360}} transition={{duration:70,repeat:Infinity,ease:'linear'}} className="absolute inset-[8%] rounded-full border border-dashed border-violet-200/25"/>
+          <motion.div animate={reduceMotion?{}:{rotate:-360}} transition={{duration:95,repeat:Infinity,ease:'linear'}} className="absolute inset-[20%] rounded-full border border-white/10"/>
+          <div className="absolute inset-[29%] grid place-items-center rounded-[32%] border border-violet-200/25 bg-gradient-to-br from-[#38205c] via-[#17162d] to-[#0b0b12] shadow-[0_0_100px_rgba(132,75,255,.28)]">
+            <div className="text-center"><div className="mx-auto mb-3 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-violet-500 to-blue-500 shadow-[0_0_40px_rgba(133,88,255,.45)]"><Sparkles size={28}/></div><div className="text-[10px] font-bold tracking-[.25em]">MAVERIQODE</div><div className="mt-2 text-[8px] tracking-[.24em] text-white/40">ENGINEER WHAT'S NEXT</div></div>
+          </div>
+          <div className="absolute left-[1%] top-[22%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">01 / STRATEGY</div>
+          <div className="absolute right-[0%] top-[24%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">02 / DESIGN</div>
+          <div className="absolute right-[1%] bottom-[20%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">03 / ENGINEERING</div>
+          <div className="absolute left-[1%] bottom-[18%] rounded-2xl border border-white/15 bg-[#15131d]/90 px-4 py-3 text-[10px] text-violet-100 shadow-xl backdrop-blur-xl">04 / INTELLIGENCE</div>
+        </motion.div>
 
-      <section className="mt-20 border-t border-white/10 pt-8 sm:mt-28">
+      <section className="mt-12 border-t border-white/10 pt-10 sm:mt-16 sm:pt-12">
         <div className="mb-7 flex flex-col justify-between gap-4 lg:flex-row lg:items-end"><div><div className="text-[10px] tracking-[.25em] text-violet-200/60">EXPLORE BY DISCIPLINE</div><h2 className="mt-2 text-2xl font-medium tracking-tight sm:text-3xl">Browse the work</h2></div><p className="max-w-md text-sm leading-6 text-white/40">Choose a service category to explore related projects and demonstrations.</p></div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((c,i)=><motion.button key={c.id} type="button" onClick={()=>setActive(c.id)} initial={reduceMotion?false:{opacity:0,y:14}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.45,delay:reduceMotion?0:i*.045}} className={`group relative min-h-[112px] overflow-hidden rounded-2xl border p-4 text-left transition-all duration-500 ${active===c.id?'border-violet-300/50 bg-violet-300/[.11] shadow-[0_12px_50px_rgba(120,65,210,.12)]':'border-white/[.09] bg-white/[.025] hover:-translate-y-1 hover:border-white/20 hover:bg-white/[.055]'}`}>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((c,i)=><motion.button key={c.id} type="button" onClick={()=>setActive(c.id)} initial={reduceMotion?false:{opacity:0,y:14}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.45,delay:reduceMotion?0:i*.045}} className={`group relative min-h-[148px] overflow-hidden rounded-[22px] border p-5 text-left transition-all duration-500 ${active===c.id?'border-violet-300/50 bg-violet-300/[.11] shadow-[0_12px_50px_rgba(120,65,210,.12)]':'border-white/[.09] bg-white/[.025] hover:-translate-y-1 hover:border-white/20 hover:bg-white/[.055]'}`}>
             <div className="flex items-center justify-between"><span className="text-[9px] tracking-[.22em] text-white/35">{String(i+1).padStart(2,'0')}</span><span className={`text-xs tabular-nums ${active===c.id?'text-violet-200':'text-white/30'}`}>{String(categoryCounts[c.id]||0).padStart(2,'0')}</span></div>
             <div className="mt-4 text-sm font-semibold tracking-tight text-white/90">{c.name}</div><div className="mt-1 text-[11px] text-white/40">{c.note}</div>
             <div className="absolute bottom-0 left-4 right-4 h-px origin-left scale-x-0 bg-gradient-to-r from-violet-300 to-blue-300 transition-transform duration-500 group-hover:scale-x-100"/>
@@ -101,13 +113,13 @@ export default function WorkPage() {
         </div>
       </section>
 
-      <section className="mt-16 sm:mt-20">
-        <div className="mb-7 flex items-end justify-between border-b border-white/10 pb-5"><div><div className="text-[10px] tracking-[.25em] text-white/35">PROJECT INDEX</div><h2 className="mt-2 text-2xl font-medium tracking-tight">{categories.find(x=>x.id===active)?.name}</h2></div><span className="text-xs tabular-nums text-white/40">{visible.length.toString().padStart(2,'0')} projects</span></div>
+      <section id="projects" className="mt-20 scroll-mt-28 sm:mt-28">
+        <div className="mb-7 flex items-end justify-between border-b border-white/10 pb-5"><div><div className="text-[10px] tracking-[.25em] text-white/35">PROJECT INDEX</div><h2 className="mt-2 text-3xl font-medium tracking-tight sm:text-4xl">{categories.find(x=>x.id===active)?.name}</h2></div><span className="text-xs tabular-nums text-white/40">{visible.length.toString().padStart(2,'0')} projects</span></div>
         <AnimatePresence mode="wait">
-          <motion.div key={active} initial={reduceMotion?false:{opacity:0,y:18}} animate={{opacity:1,y:0}} exit={reduceMotion?{opacity:0}:{opacity:0,y:-10}} transition={{duration:.35}} className="grid gap-7 md:grid-cols-2">
+          <motion.div key={active} initial={reduceMotion?false:{opacity:0,y:18}} animate={{opacity:1,y:0}} exit={reduceMotion?{opacity:0}:{opacity:0,y:-10}} transition={{duration:.35}} className="grid gap-x-7 gap-y-12 md:grid-cols-2">
             {visible.map((item,i)=><motion.article key={item.number+item.name} initial={reduceMotion?false:{opacity:0,y:28,rotateX:3}} whileInView={{opacity:1,y:0,rotateX:0}} viewport={{once:true,amount:.12}} transition={{duration:.65,delay:reduceMotion?0:i*.08,ease:[.16,1,.3,1]}} className="group">
-              <a href={item.url} target="_blank" rel="noreferrer" className="relative block aspect-[1.38] overflow-hidden rounded-[24px] border border-white/10 bg-[#111018]">
-                {item.imageUrl?<img src={item.imageUrl} alt={item.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06]"/>:<VisualFallback item={item}/>}
+              <a href={item.url} target="_blank" rel="noreferrer" className="relative block aspect-[1.18] overflow-hidden rounded-[28px] shadow-[0_24px_80px_rgba(0,0,0,.3)] md:aspect-[1.25] border border-white/10 bg-[#111018]">
+                {item.imageUrl?<img src={item.imageUrl} alt={item.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.09]"/>:<VisualFallback item={item}/>}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-40"/>
                 <span className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-black/25 text-white backdrop-blur-md transition duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-black"><ArrowUpRight size={17}/></span>
               </a>
