@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, ArrowUpRight, ArrowRight, Layers3, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ArrowRight, Layers3, Sparkles, Code2, BrainCircuit, Workflow, Globe2, Smartphone } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { fallbackBuilds, type WorkBuild } from './WorkSection';
 
 const categories = [
-  { id: 'all', name: 'All work', note: 'Complete portfolio' },
-  { id: 'Software Engineering', name: 'Software Engineering', note: 'Web platforms & systems' },
-  { id: 'AI & Intelligent Systems', name: 'AI & Intelligent Systems', note: 'Applied AI & RAG' },
-  { id: 'Automation & Integration', name: 'Automation & Integration', note: 'Connected workflows' },
-  { id: 'SaaS & Product Development', name: 'SaaS & Product Development', note: 'Products & portals' },
-  { id: 'Cybersecurity', name: 'Cybersecurity', note: 'Security engineering' },
-  { id: 'Digital Infrastructure', name: 'Digital Infrastructure', note: 'Cloud & operations' },
+  { id: 'all', name: 'All work', note: 'Every idea, brought to life', icon: Layers3 },
+  { id: 'Software Engineering', name: 'Software Engineering', note: 'Web platforms & custom systems', icon: Code2 },
+  { id: 'AI & Intelligent Systems', name: 'AI & Intelligent Systems', note: 'Applied AI, agents & RAG', icon: BrainCircuit },
+  { id: 'Automation & Integration', name: 'Automation & Integration', note: 'Connected workflows that scale', icon: Workflow },
+  { id: 'SaaS & Product Development', name: 'SaaS & Product Development', note: 'Products, portals & platforms', icon: Layers3 },
+  { id: 'Website Development', name: 'Website Development', note: 'Brand-led digital experiences', icon: Globe2 },
+  { id: 'App Development', name: 'App Development', note: 'Mobile apps & application systems', icon: Smartphone },
 ];
 
 type PortfolioBuild = WorkBuild & { category?: string };
@@ -22,9 +22,9 @@ function inferCategory(item: PortfolioBuild) {
   if (/education|institute|coaching|school|college/.test(value)) return 'Software Engineering';
   if (/ai|intelligent|rag|machine learning/.test(value)) return 'AI & Intelligent Systems';
   if (/automation|integration|workflow/.test(value)) return 'Automation & Integration';
+  if (/website|web design|landing page|corporate site/.test(value)) return 'Website Development';
+  if (/app|android|ios|mobile/.test(value)) return 'App Development';
   if (/saas|product|membership|portal|management system/.test(value)) return 'SaaS & Product Development';
-  if (/security|cyber/.test(value)) return 'Cybersecurity';
-  if (/cloud|infrastructure|devops/.test(value)) return 'Digital Infrastructure';
   return 'Software Engineering';
 }
 
@@ -97,10 +97,10 @@ export default function WorkPage() {
           <div className="relative mx-auto h-[480px] w-full max-w-[650px] sm:h-[590px]">
             <motion.div initial={reduceMotion?false:{opacity:0,x:70,rotate:8}} animate={{opacity:1,x:0,rotate:5}} transition={{duration:1,ease:[.16,1,.3,1],delay:.15}} className="absolute right-[2%] top-[4%] z-10 w-[76%] overflow-hidden rounded-[26px] border border-white/20 bg-[#15121d] shadow-[0_35px_100px_rgba(0,0,0,.55)]">
               <div className="flex items-center gap-1.5 border-b border-white/10 bg-black/35 px-4 py-3"><i className="h-2 w-2 rounded-full bg-white/30"/><i className="h-2 w-2 rounded-full bg-white/20"/><i className="h-2 w-2 rounded-full bg-white/20"/><span className="ml-2 text-[8px] tracking-[.2em] text-white/35">MAVERIQODE / LIVE WORK</span></div>
-              <div className="relative aspect-[1.35] overflow-hidden">{items[0]?.imageUrl?<img src={items[0].imageUrl} alt={items[0].name} className="h-full w-full object-cover"/>:<div className="h-full bg-gradient-to-br from-violet-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"/><div className="absolute bottom-4 left-5"><div className="text-[8px] tracking-[.25em] text-white/60">01 / FEATURED BUILD</div><div className="mt-1 text-lg font-semibold">{items[0]?.name||'Digital experiences'}</div></div></div>
+              <div className="relative aspect-[1.35] overflow-hidden">{items[0]?.imageUrl?<img src={items[0].imageUrl} alt={items[0].name} className="h-full w-full object-contain bg-[#09090d]"/>:<div className="h-full bg-gradient-to-br from-violet-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"/><div className="absolute bottom-4 left-5"><div className="text-[8px] tracking-[.25em] text-white/60">01 / FEATURED BUILD</div><div className="mt-1 text-lg font-semibold">{items[0]?.name||'Digital experiences'}</div></div></div>
             </motion.div>
             <motion.div initial={reduceMotion?false:{opacity:0,x:-60,y:50,rotate:-10}} animate={{opacity:1,x:0,y:0,rotate:-7}} transition={{duration:1.1,ease:[.16,1,.3,1],delay:.35}} className="absolute bottom-[5%] left-[0%] z-20 w-[61%] overflow-hidden rounded-[24px] border border-white/20 bg-[#11121c] shadow-[0_30px_90px_rgba(0,0,0,.6)]">
-              <div className="relative aspect-[1.25] overflow-hidden">{items[1]?.imageUrl?<img src={items[1].imageUrl} alt={items[1].name} className="h-full w-full object-cover"/>:<div className="h-full bg-gradient-to-br from-blue-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"/><div className="absolute bottom-4 left-4"><div className="text-[8px] tracking-[.2em] text-white/55">02 / DIGITAL PLATFORM</div><div className="mt-1 text-sm font-semibold">{items[1]?.name||'Intelligent platforms'}</div></div></div>
+              <div className="relative aspect-[1.25] overflow-hidden">{items[1]?.imageUrl?<img src={items[1].imageUrl} alt={items[1].name} className="h-full w-full object-contain bg-[#09090d]"/>:<div className="h-full bg-gradient-to-br from-blue-900 to-slate-950"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"/><div className="absolute bottom-4 left-4"><div className="text-[8px] tracking-[.2em] text-white/55">02 / DIGITAL PLATFORM</div><div className="mt-1 text-sm font-semibold">{items[1]?.name||'Intelligent platforms'}</div></div></div>
             </motion.div>
             <motion.div animate={reduceMotion?{}:{y:[0,-13,0],rotate:[0,2,0]}} transition={{duration:7,repeat:Infinity,ease:'easeInOut'}} className="absolute left-[3%] top-[8%] z-30 rounded-2xl border border-violet-200/20 bg-[#181323]/90 px-4 py-3 shadow-2xl backdrop-blur-xl"><div className="text-[8px] tracking-[.25em] text-violet-200/60">OUR APPROACH</div><div className="mt-1 text-xs font-medium">Think. Build. Evolve.</div></motion.div>
             <div className="absolute bottom-[3%] right-[1%] z-30 rounded-full border border-white/15 bg-black/55 px-4 py-2 text-[8px] tracking-[.22em] text-white/60 backdrop-blur-xl">INDEPENDENT DEMONSTRATIONS</div>
@@ -108,17 +108,22 @@ export default function WorkPage() {
           </div>
         </div>
         <div className="relative mt-16 overflow-hidden border-y border-white/10 py-4">
-          <motion.div animate={reduceMotion?{}:{x:['0%','-50%']}} transition={{duration:28,repeat:Infinity,ease:'linear'}} className="flex w-max gap-8 whitespace-nowrap text-[10px] font-medium tracking-[.3em] text-white/35"><span>SOFTWARE ENGINEERING ✳ AI SYSTEMS ✳ PRODUCT DEVELOPMENT ✳ AUTOMATION ✳ CYBERSECURITY ✳ DIGITAL INFRASTRUCTURE ✳</span><span>SOFTWARE ENGINEERING ✳ AI SYSTEMS ✳ PRODUCT DEVELOPMENT ✳ AUTOMATION ✳ CYBERSECURITY ✳ DIGITAL INFRASTRUCTURE ✳</span></motion.div>
+          <motion.div animate={reduceMotion?{}:{x:['0%','-50%']}} transition={{duration:28,repeat:Infinity,ease:'linear'}} className="flex w-max gap-8 whitespace-nowrap text-[10px] font-medium tracking-[.3em] text-white/35"><span>SOFTWARE ENGINEERING ✳ AI SYSTEMS ✳ PRODUCT DEVELOPMENT ✳ AUTOMATION ✳ WEBSITE DEVELOPMENT ✳ APP DEVELOPMENT ✳</span><span>SOFTWARE ENGINEERING ✳ AI SYSTEMS ✳ PRODUCT DEVELOPMENT ✳ AUTOMATION ✳ CYBERSECURITY ✳ DIGITAL INFRASTRUCTURE ✳</span></motion.div>
         </div>
       </section>
-      <section className="mt-12 border-t border-white/10 pt-10 sm:mt-16 sm:pt-12">
-        <div className="mb-7 flex flex-col justify-between gap-4 lg:flex-row lg:items-end"><div><div className="text-[10px] tracking-[.25em] text-violet-200/60">EXPLORE BY DISCIPLINE</div><h2 className="mt-2 text-2xl font-medium tracking-tight sm:text-3xl">Browse the work</h2></div><p className="max-w-md text-sm leading-6 text-white/40">Choose a service category to explore related projects and demonstrations.</p></div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((c,i)=><motion.button key={c.id} type="button" onClick={()=>setActive(c.id)} initial={reduceMotion?false:{opacity:0,y:14}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.45,delay:reduceMotion?0:i*.045}} className={`group relative min-h-[148px] overflow-hidden rounded-[22px] border p-5 text-left transition-all duration-500 ${active===c.id?'border-violet-300/50 bg-violet-300/[.11] shadow-[0_12px_50px_rgba(120,65,210,.12)]':'border-white/[.09] bg-white/[.025] hover:-translate-y-1 hover:border-white/20 hover:bg-white/[.055]'}`}>
-            <div className="flex items-center justify-between"><span className="text-[9px] tracking-[.22em] text-white/35">{String(i+1).padStart(2,'0')}</span><span className={`text-xs tabular-nums ${active===c.id?'text-violet-200':'text-white/30'}`}>{String(categoryCounts[c.id]||0).padStart(2,'0')}</span></div>
-            <div className="mt-4 text-sm font-semibold tracking-tight text-white/90">{c.name}</div><div className="mt-1 text-[11px] text-white/40">{c.note}</div>
-            <div className="absolute bottom-0 left-4 right-4 h-px origin-left scale-x-0 bg-gradient-to-r from-violet-300 to-blue-300 transition-transform duration-500 group-hover:scale-x-100"/>
-          </motion.button>)}
+      <section className="relative mt-16 overflow-hidden border-y border-white/10 py-12 sm:mt-20 sm:py-16">
+        <div className="pointer-events-none absolute -right-24 top-0 h-96 w-96 rounded-full bg-violet-500/[.08] blur-[100px]"/>
+        <div className="relative mb-9 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+          <div><div className="flex items-center gap-3 text-[10px] font-semibold tracking-[.3em] text-violet-200/65"><span className="h-px w-8 bg-violet-300/60"/> WHAT WE BUILD</div><h2 className="mt-4 text-4xl font-semibold tracking-[-.055em] sm:text-6xl">Explore our <span className="bg-gradient-to-r from-violet-200 to-blue-300 bg-clip-text text-transparent">craft.</span></h2></div>
+          <p className="max-w-sm text-sm leading-7 text-white/45">Different disciplines. One standard of craft. Choose a field and discover what we can make possible.</p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {categories.map((c,i)=>{const Icon=c.icon;const selected=active===c.id;return <motion.button key={c.id} type="button" onClick={()=>setActive(c.id)} initial={reduceMotion?false:{opacity:0,y:22}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.15}} whileHover={reduceMotion?{}:{y:-5}} transition={{duration:.5,delay:reduceMotion?0:i*.055,ease:[.16,1,.3,1]}} className={`group relative min-h-[190px] overflow-hidden rounded-[26px] border p-6 text-left transition-colors duration-500 sm:p-7 ${selected?'border-violet-300/50 bg-gradient-to-br from-violet-400/[.16] via-[#17131f] to-blue-400/[.08]':'border-white/[.09] bg-[#0d0d12] hover:border-violet-200/30'}`}>
+            <div className={`pointer-events-none absolute -right-8 -top-10 h-40 w-40 rounded-full blur-3xl transition-opacity duration-700 ${selected?'bg-violet-400/20 opacity-100':'bg-violet-400/10 opacity-0 group-hover:opacity-100'}`}/>
+            <div className="relative flex items-start justify-between"><div className={`grid h-12 w-12 place-items-center rounded-2xl border transition-all duration-500 ${selected?'border-violet-200/30 bg-violet-300/15 text-violet-100':'border-white/10 bg-white/[.035] text-white/55 group-hover:border-violet-200/25 group-hover:text-violet-100'}`}><Icon size={20}/></div><span className="text-[10px] tracking-[.2em] text-white/35">{String(i).padStart(2,'0')} <span className="mx-2 text-violet-200/40">/</span> {String(categoryCounts[c.id]||0).padStart(2,'0')} BUILDS</span></div>
+            <div className="relative mt-8 flex items-end justify-between gap-3"><div><h3 className="text-lg font-semibold tracking-tight text-white/90 sm:text-xl">{c.name}</h3><p className="mt-2 text-xs text-white/40">{c.note}</p></div><span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-all duration-500 ${selected?'rotate-45 border-violet-200/40 bg-violet-200 text-[#09090d]':'border-white/15 text-white/45 group-hover:translate-x-1 group-hover:border-violet-200/40 group-hover:text-violet-100'}`}><ArrowUpRight size={16}/></span></div>
+            <div className={`absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-violet-300 via-blue-300 to-transparent transition-all duration-700 ${selected?'w-full':'w-0 group-hover:w-full'}`}/>
+          </motion.button>})}
         </div>
       </section>
 
@@ -127,8 +132,8 @@ export default function WorkPage() {
         <AnimatePresence mode="wait">
           <motion.div key={active} initial={reduceMotion?false:{opacity:0,y:18}} animate={{opacity:1,y:0}} exit={reduceMotion?{opacity:0}:{opacity:0,y:-10}} transition={{duration:.35}} className="grid gap-x-7 gap-y-12 md:grid-cols-2">
             {visible.map((item,i)=><motion.article key={item.number+item.name} initial={reduceMotion?false:{opacity:0,y:28,rotateX:3}} whileInView={{opacity:1,y:0,rotateX:0}} viewport={{once:true,amount:.12}} transition={{duration:.65,delay:reduceMotion?0:i*.08,ease:[.16,1,.3,1]}} className="group">
-              <a href={item.url} target="_blank" rel="noreferrer" className="relative block aspect-[1.18] overflow-hidden rounded-[28px] shadow-[0_24px_80px_rgba(0,0,0,.3)] md:aspect-[1.25] border border-white/10 bg-[#111018]">
-                {item.imageUrl?<img src={item.imageUrl} alt={item.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.09]"/>:<VisualFallback item={item}/>}
+              <a href={item.url} target="_blank" rel="noreferrer" className="relative block aspect-[16/9] overflow-hidden rounded-[28px] shadow-[0_24px_80px_rgba(0,0,0,.3)] border border-white/10 bg-[#09090d]">
+                {item.imageUrl?<img src={item.imageUrl} alt={item.name} className="absolute inset-0 h-full w-full object-contain bg-[#09090d] transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.035]"/>:<VisualFallback item={item}/>}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-40"/>
                 <span className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-black/25 text-white backdrop-blur-md transition duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-black"><ArrowUpRight size={17}/></span>
               </a>
